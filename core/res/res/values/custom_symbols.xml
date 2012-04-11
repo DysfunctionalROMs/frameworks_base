@@ -153,5 +153,9 @@
   <java-symbol type="anim" name="slide_out_right_no_fade" />
   <java-symbol type="anim" name="no_animation" />
   <java-symbol type="array" name="anim_controls_entries" />
+
+  <!-- Config.xml entries -->
+  <java-symbol type="string" name="config_deviceKeyHandlerLib" />
+  <java-symbol type="string" name="config_deviceKeyHandlerClass" />
   
 </resources>
