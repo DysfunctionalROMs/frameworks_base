@@ -6540,6 +6540,12 @@ public final class Settings {
         public static final String QS_TILES = "sysui_qs_tiles";
 
         /**
+         * Whether to display the ADB notification.
+         * @hide
+         */
+        public static final String ADB_NOTIFY = "adb_notify";
+
+        /**
          * Whether to show four tiles per row.
          * @hide
          */
