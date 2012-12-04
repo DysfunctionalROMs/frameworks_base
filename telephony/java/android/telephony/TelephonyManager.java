@@ -1429,6 +1429,17 @@ public class TelephonyManager {
        } catch (NullPointerException ex) {
            return null;
        }
+   }
+
+    /**
+     * {@hide}
+     */
+    public void toggleLTE(boolean on) {
+        try {
+            getITelephony().toggleLTE(on);
+        } catch (RemoteException e) {
+            //Silently fail
+        }
     }
 
     /** Unknown network class. {@hide} */
