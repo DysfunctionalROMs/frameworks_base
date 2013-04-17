@@ -1639,7 +1639,7 @@ public final class Settings {
         public static void getNonLegacyMovedKeys(HashSet<String> outKeySet) {
             outKeySet.addAll(MOVED_TO_GLOBAL);
         }
-        
+
         /**
          * Look up a boolean in the database.
          * @param resolver to access the database with
@@ -1676,7 +1676,7 @@ public final class Settings {
             return putString(cr, name, value ? "1" : "0");
         }
 
-        /**		
+        /**
          * Look up a name in the database.
          * @param resolver to access the database with
          * @param name to look up in the table
@@ -2984,7 +2984,7 @@ public final class Settings {
          * @hide
          */
         public static final String TOAST_ANIMATION = "toast_animation";
-		
+
         /**
          *
          * @hide
@@ -3041,7 +3041,7 @@ public final class Settings {
 
         /** @hide */
         public static final Validator SETUP_WIZARD_HAS_RUN_VALIDATOR = sBooleanValidator;
-        
+
         /**
          * Show the pending notification counts as overlays on the status bar
          * @hide
@@ -3075,7 +3075,7 @@ public final class Settings {
          */
         @Deprecated
         public static final String ANIMATOR_DURATION_SCALE = Global.ANIMATOR_DURATION_SCALE;
-        
+
         /**
          * Use EdgeGesture Service for system gestures in PhoneWindowManager
          * @hide
@@ -3086,8 +3086,8 @@ public final class Settings {
          *
          * @hide
          */
-        public static final String ANIMATION_CONTROLS_NO_SCROLL = "animation_controls_no_scroll";        
-        
+        public static final String ANIMATION_CONTROLS_NO_SCROLL = "animation_controls_no_scroll";
+
         /**
          * Determine custom scroll friction.
          * @hide
@@ -3110,7 +3110,7 @@ public final class Settings {
          * Determine custom overfling distance.
          * @hide
          */
-        public static final String CUSTOM_OVERFLING_DISTANCE = "custom_overfling_distance";        
+        public static final String CUSTOM_OVERFLING_DISTANCE = "custom_overfling_distance";
 
         /**
          * Control whether the accelerometer will be used to change screen
@@ -3715,7 +3715,7 @@ public final class Settings {
         // DarkKat additions start
 
         /**
-         * Whether to include advanced reboot options in power menu for 
+         * Whether to include advanced reboot options in power menu for
          * quick rebooting, rebooting into recovery and rebooting into bootloader
          * @hide
          */
@@ -4034,7 +4034,7 @@ public final class Settings {
          * @hide
          */
         public static final String MENU_VISIBILITY = "menu_visibility";
-        
+
         /**
          * Whether to show the IME arrows in the status bar
          * @hide
@@ -4186,7 +4186,7 @@ public final class Settings {
         /**
          * @hide
          */
-        public static final String PA_PIE_JUICE = "pa_pie_juice";        
+        public static final String PA_PIE_JUICE = "pa_pie_juice";
 
         /**
          * @hide
@@ -4227,7 +4227,7 @@ public final class Settings {
          * @hide
          */
         public static final String PA_PIE_CHEVRON = "pa_pie_chevron";
-        
+
         /**
          * Change quick settings tiles animation style
          *
@@ -4354,13 +4354,13 @@ public final class Settings {
          * @hide
          */
         public static final String CLOCK_USE_SECOND = "clock_use_second";
-        
+
         /**
          * Swap volume buttons when the screen is rotated
          * @hide
          */
         public static final String SWAP_VOLUME_BUTTONS = "swap_volume_buttons";
-        
+
         /**
          * whether to enable torch on lockscreen
          * @hide
@@ -4398,12 +4398,12 @@ public final class Settings {
          */
         public static final String VOLUME_UP_LEAVE_ZEN = "volume_up_leave_zen";
 
-        /** 
+        /**
          *
          * @hide
          */
         public static final String STATUS_BAR_CUSTOM_HEADER_PROVIDER = "status_bar_custom_header_provider";
-        
+
         /**
          * Statusbar BROKEN logo
          * @hide
@@ -4552,7 +4552,7 @@ public final class Settings {
          * @hide
          */
         public static final String ON_THE_GO_SERVICE_RESTART = "on_the_go_service_restart";
-		
+
          /**
          * Recent app sidebar content
          *
@@ -4611,7 +4611,7 @@ public final class Settings {
          * @hide
          */
         public static final String DASHBOARD_SWITCHES = "dashboard_switches";
-        
+
         /**
          * Whether the proximity sensor will adjust call to speaker
          * @hide
@@ -4746,7 +4746,7 @@ public final class Settings {
          * @hide
          */
         public static final String DISABLE_FC_NOTIFICATIONS = "disable_fc_notifications";
-        
+
         /**
          * Whether to show the IME switcher in the status bar
          * @hide
@@ -4845,6 +4845,15 @@ public final class Settings {
          */
         public static final String KEYGUARD_STATUSBAR_CLOCK_DATE_FORMAT = "keyguard_statusbar_clock_date_format";
 
+        /**
+         * MediaScanner behavior on boot.
+         * 0 = enabled
+         * 1 = ask (notification)
+         * 2 = disabled
+         * @hide
+         */
+         public static final String MEDIA_SCANNER_ON_BOOT = "media_scanner_on_boot";
+
        /**
          * Whether the notification light will be allowed when in zen mode during downtime
          * @hide
@@ -4883,8 +4892,8 @@ public final class Settings {
          *  @hide
          */
         public static final String SYSTEMUI_RECENTS_MEM_DISPLAY = "systemui_recents_mem_display";
-        
-        /** 
+
+        /**
          * Whether to show the battery fully charged notification
          * @hide
          */
@@ -4900,7 +4909,7 @@ public final class Settings {
         * USB Data automatic unlock
         */
        public static final String USB_DATA_AUTO_UNLOCK = "usb_data_auto_unlock";
-       
+
        /**
         * Custom Icon for the logo
         * @hide
@@ -4941,8 +4950,8 @@ public final class Settings {
         public static final String ANIMATION_CONTROLS_DURATION = "animation_controls_duration";
         public static final String ANIMATION_CONTROLS_NO_OVERRIDE = "animation_controls_no_override";
         public static final String ANIMATION_CONTROLS_EXIT_ONLY = "animation_controls_exit_only";
-        public static final String ANIMATION_CONTROLS_REVERSE_EXIT = "animation_controls_reverse_exit";		
-		
+        public static final String ANIMATION_CONTROLS_REVERSE_EXIT = "animation_controls_reverse_exit";
+
         /**
          * ListView Animations
          * 0 == None
@@ -4957,7 +4966,7 @@ public final class Settings {
           * @hide
           */
         public static final String LISTVIEW_ANIMATION = "listview_animation";
-        
+
          /**
          * ListView Interpolators
          * 0 == None
@@ -4971,7 +4980,7 @@ public final class Settings {
          * @hide
          */
         public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
-        
+
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
@@ -7562,7 +7571,7 @@ public final class Settings {
          * @hide
          */
         public static final String QS_SHOW_BRIGHTNESS_SLIDER = "qs_show_brightness_slider";
-         
+
          /**
          * List of QS tile names
          * @hide
@@ -9515,7 +9524,7 @@ public final class Settings {
          * @hide
          */
         public static final String POLICY_CONTROL_STYLE = "policy_control_style";
-        
+
         /**
          * @hide
          */
