@@ -1074,6 +1074,18 @@ static void android_hardware_Camera_sendVendorCommand(JNIEnv *env, jobject thiz,
 
     if (camera->sendCommand(cmd, arg1, arg2) != NO_ERROR) {
         jniThrowRuntimeException(env, "sending vendor command failed");
+	}
+}
+
+static void android_hardware_Camera_sendRawCommand(JNIEnv *env, jobject thiz, jint arg1, jint arg2, jint arg3)
+{
+    ALOGV("sendRawCommand %d, %d, %d", arg1, arg2, arg3);
+    sp<Camera> camera = get_native_camera(env, thiz, NULL);
+    if (camera == 0) return;
+
+    if (camera->sendCommand(arg1, arg2, arg3) != NO_ERROR) {
+        jniThrowRuntimeException(env, "send raw command failed");
+
     }
 }
 
@@ -1176,9 +1188,15 @@ static JNINativeMethod camMethods[] = {
   { "enableFocusMoveCallback",
     "(I)V",
     (void *)android_hardware_Camera_enableFocusMoveCallback},
+<<<<<<< HEAD
   { "_sendVendorCommand",
     "(III)V",
     (void *)android_hardware_Camera_sendVendorCommand },
+=======
+  { "sendRawCommand",
+    "(III)V",
+    (void *)android_hardware_Camera_sendRawCommand},
+>>>>>>> 4f3fd6b... Add support for sending raw commands
 };
 
 struct field {
