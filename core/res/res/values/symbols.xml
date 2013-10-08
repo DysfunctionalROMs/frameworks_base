@@ -2422,4 +2422,8 @@
   <!-- keypress optimization -->
   <java-symbol type="bool" name="config_enableKeypressOptimization" />
   <java-symbol type="array" name="keypress_param_value" />
+
+  <!-- Gesture Sensor -->
+  <java-symbol type="bool" name="config_enableGestureService" />
+
 </resources>
