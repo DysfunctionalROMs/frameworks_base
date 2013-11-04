@@ -2466,4 +2466,9 @@
          true will use SystemClock.elapsedRealtimeNanos() to set timestamp. -->
     <bool name="config_useSystemClockforSensors">false</bool>
 
+    <!-- If a dock provides a lid switch, that lid can be removed. This
+         setting is used to determine, whether lidOpenRotation has to be
+         applied. -->
+    <bool name="config_hasRemovableLid">false</bool>
+
 </resources>

@@ -2392,6 +2392,9 @@
   <!-- monitor locale change -->
   <java-symbol type="bool" name="config_monitor_locale_change" />
 
+  <!-- Config.xml entries -->
+  <java-symbol type="bool" name="config_hasRemovableLid" />
+
   <!-- display for radio tech -->
   <java-symbol type="bool" name="config_display_rat" />
 
