@@ -157,5 +157,8 @@
   <!-- Config.xml entries -->
   <java-symbol type="string" name="config_deviceKeyHandlerLib" />
   <java-symbol type="string" name="config_deviceKeyHandlerClass" />
+
+  <!-- Samsung STK Support -->
+  <java-symbol type="bool" name="config_samsung_stk" />
   
 </resources>
