@@ -2842,6 +2842,11 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_QUICK_QS_PULLDOWN = "status_bar_quick_qs_pulldown";
+        /**
+         * Whether to show/hide status bar native battery percentage
+         * @hide
+         */
+        public static final String STATUS_BAR_NATIVE_BATTERY_PERCENTAGE = "status_bar_native_battery_percentage";
 
         /**
          * Whether to show reboot in power menu 
