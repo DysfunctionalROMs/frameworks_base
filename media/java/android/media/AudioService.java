@@ -52,6 +52,7 @@ import android.media.audiopolicy.AudioMix;
 import android.media.audiopolicy.AudioPolicy;
 import android.media.audiopolicy.AudioPolicyConfig;
 import android.media.audiopolicy.IAudioPolicyCallback;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
@@ -536,6 +537,8 @@ public class AudioService extends IAudioService.Stub {
 
     private int mDockState = Intent.EXTRA_DOCK_STATE_UNDOCKED;
 
+    private boolean mVolumeKeysControlMediaStream;
+
     // Used when safe volume warning message display is requested by setStreamVolume(). In this
     // case, the new requested volume, stream type and device are stored in mPendingVolumeCommand
     // and used later when/if disableSafeMediaVolume() is called.
@@ -1019,6 +1022,9 @@ public class AudioService extends IAudioService.Stub {
 
             updateRingerModeAffectedStreams();
             readDockAudioSettings(cr);
+
+            mVolumeKeysControlMediaStream = Settings.System.getIntForUser(cr,
+                    Settings.System.VOLUME_KEYS_CONTROL_MEDIA_STREAM, 0, UserHandle.USER_CURRENT) == 1;
         }
 
         mMuteAffectedStreams = System.getIntForUser(cr,
@@ -3420,9 +3426,15 @@ public class AudioService extends IAudioService.Stub {
                         Log.v(TAG, "getActiveStreamType: Forcing STREAM_MUSIC stream active");
                     return AudioSystem.STREAM_MUSIC;
                     } else {
-                        if (DEBUG_VOL)
-                            Log.v(TAG, "getActiveStreamType: Forcing STREAM_RING b/c default");
-                        return AudioSystem.STREAM_RING;
+                        if (mVolumeKeysControlMediaStream) {
+                            if (DEBUG_VOL)
+                                Log.v(TAG, "getActiveStreamType: Forcing STREAM_MUSIC b/c default setting");
+                            return AudioSystem.STREAM_MUSIC;
+                        } else {
+                            if (DEBUG_VOL)
+                                Log.v(TAG, "getActiveStreamType: Forcing STREAM_RING b/c default");
+                             return AudioSystem.STREAM_RING;
+                        }
                 }
             } else if (isAfMusicActiveRecently(0)) {
                 if (DEBUG_VOL)
@@ -4585,22 +4597,36 @@ public class AudioService extends IAudioService.Stub {
                 Settings.System.MODE_RINGER_STREAMS_AFFECTED), false, this);
             mContentResolver.registerContentObserver(Settings.Global.getUriFor(
                 Settings.Global.DOCK_AUDIO_MEDIA_ENABLED), false, this);
+            mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                Settings.System.VOLUME_KEYS_CONTROL_MEDIA_STREAM), false, this,
+                UserHandle.USER_ALL);
         }
 
         @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
+        public void onChange(boolean selfChange, Uri uri) {
+            super.onChange(selfChange, uri);
             // FIXME This synchronized is not necessary if mSettingsLock only protects mRingerMode.
             //       However there appear to be some missing locks around mRingerModeMutedStreams
             //       and mRingerModeAffectedStreams, so will leave this synchronized for now.
             //       mRingerModeMutedStreams and mMuteAffectedStreams are safe (only accessed once).
             synchronized (mSettingsLock) {
-                if (updateRingerModeAffectedStreams()) {
-                    /*
-                     * Ensure all stream types that should be affected by ringer mode
-                     * are in the proper state.
-                     */
-                    setRingerModeInt(getRingerModeInternal(), false);
+                if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.VOLUME_KEYS_CONTROL_MEDIA_STREAM))) {
+                    mVolumeKeysControlMediaStream = Settings.System.getIntForUser(mContentResolver,
+                            Settings.System.VOLUME_KEYS_CONTROL_MEDIA_STREAM, 0,
+                            UserHandle.USER_CURRENT) == 1;
+                } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.MODE_RINGER_STREAMS_AFFECTED))) {
+                    if (updateRingerModeAffectedStreams()) {
+                        /*
+                         * Ensure all stream types that should be affected by ringer mode
+                         * are in the proper state.
+                         */
+                        setRingerModeInt(getRingerModeInternal(), false);
+                    }
+                } else if (uri.equals(Settings.Global.getUriFor(
+                    Settings.Global.DOCK_AUDIO_MEDIA_ENABLED))) {
+                    readDockAudioSettings(mContentResolver);
                 }
                 readDockAudioSettings(mContentResolver);
             }
