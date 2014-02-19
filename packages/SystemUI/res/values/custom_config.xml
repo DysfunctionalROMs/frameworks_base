@@ -38,6 +38,9 @@
 
     <!-- Doze: alternate schedule -->
     <string name="doze_pulse_schedule_alternate" translatable="false">1s</string>
+    
+    <!-- Default value how much apps show the app screenshot on recents view entry -->
+    <integer name="expanded_items_default">2</integer>
 
 </resources>
 
