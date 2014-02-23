@@ -41,6 +41,8 @@ import android.content.res.TypedArray;
 import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.hardware.input.InputManager;
+import android.Manifest;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.IAudioService;
@@ -571,7 +573,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     // Whether to go to sleep entering theater mode from power button
     private boolean mGoToSleepOnButtonPressTheaterMode;
 
-    // Screenshot trigger states
+    // Screenshot/screen record trigger states
+
     // Time to volume and power must be pressed within this interval of each other.
     private static final long SCREENSHOT_CHORD_DEBOUNCE_DELAY_MILLIS = 150;
     // Increase the chord delay when taking a screenshot from the keyguard
@@ -595,6 +598,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private boolean mVolumeWakeScreen;
     private boolean mVolumeMusicControls;
     private boolean mIsLongPress;
+    private boolean mScreenRecordChordEnabled = true;
+    private boolean mVolumeUpKeyConsumedByScreenRecordChord;
 
     /* The number of steps between min and max brightness */
     private static final int BRIGHTNESS_STEPS = 10;
@@ -1165,7 +1170,34 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mHandler.removeCallbacks(mScreenshotRunnable);
     }
 
-    private final Runnable mEndCallLongPress = new Runnable() {
+    private void interceptScreenRecordChord() {
+        if (mScreenRecordChordEnabled
+                && mVolumeUpKeyTriggered && mPowerKeyTriggered && !mVolumeDownKeyTriggered) {
+            final long now = SystemClock.uptimeMillis();
+            if (now <= mVolumeUpKeyTime + SCREENSHOT_CHORD_DEBOUNCE_DELAY_MILLIS
+                    && now <= mPowerKeyTime + SCREENSHOT_CHORD_DEBOUNCE_DELAY_MILLIS) {
+                mVolumeUpKeyConsumedByScreenRecordChord = true;
+                cancelPendingPowerKeyAction();
+
+                mHandler.postDelayed(mScreenRecordRunnable, getScreenRecordChordLongPressDelay());
+            }
+        }
+    }
+
+    private long getScreenRecordChordLongPressDelay() {
+        if (mKeyguardDelegate.isShowing()) {
+            // Double the time it takes to take a screenshot from the keyguard
+            return (long) (KEYGUARD_SCREENSHOT_CHORD_DELAY_MULTIPLIER *
+                    ViewConfiguration.getGlobalActionKeyTimeout());
+        }
+        return ViewConfiguration.getGlobalActionKeyTimeout();
+    }
+
+    private void cancelPendingScreenRecordChordAction() {
+        mHandler.removeCallbacks(mScreenRecordRunnable);
+    }
+
+    private final Runnable mPowerLongPress = new Runnable() {
         @Override
         public void run() {
             mEndCallKeyHandled = true;
@@ -1193,9 +1225,16 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 mContext.startService(intent);
             } catch (Exception e) {
                 Slog.e(TAG, "Exception when start SystemAgent service", e);
-			}
-		}
-	};
+            }
+        }
+    };
+
+    private final Runnable mScreenRecordRunnable = new Runnable() {
+        @Override
+        public void run() {
+            performScreenRecord();
+        }
+    };
 
     private final Runnable mBackLongPress = new Runnable() {
         public void run() {
@@ -2596,6 +2635,26 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
         if (keyCode == KeyEvent.KEYCODE_BACK && !down) {
             mHandler.removeCallbacks(mBackLongPress);
+        }
+
+        // If we think we might have a volume up & power key chord on the way
+        // but we're not sure, then tell the dispatcher to wait a little while and
+        // try again later before dispatching.
+        if (mScreenRecordChordEnabled && (flags & KeyEvent.FLAG_FALLBACK) == 0) {
+            if (mVolumeUpKeyTriggered && !mPowerKeyTriggered) {
+                final long now = SystemClock.uptimeMillis();
+                final long timeoutTime = mVolumeUpKeyTime + SCREENSHOT_CHORD_DEBOUNCE_DELAY_MILLIS;
+                if (now < timeoutTime) {
+                    return timeoutTime - now;
+                }
+            }
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP
+                    && mVolumeUpKeyConsumedByScreenRecordChord) {
+                if (!down) {
+                    mVolumeUpKeyConsumedByScreenRecordChord = false;
+                }
+                return -1;
+            }
         }
 
         // First we always handle the home key here, so applications
@@ -4747,6 +4806,25 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
     }
 
+    final Object mScreenRecordLock = new Object();
+    ServiceConnection mScreenRecordConnection = null;
+
+    final Runnable mScreenRecordTimeout = new Runnable() {
+        @Override public void run() {
+            synchronized (mScreenRecordLock) {
+                if (mScreenRecordConnection != null) {
+                    mContext.unbindService(mScreenRecordConnection);
+                    mScreenRecordConnection = null;
+                }
+            }
+        }
+    };
+
+    private void performScreenRecord() {
+        final Intent recordIntent = new Intent("org.chameleonos.action.NOTIFY_RECORD_SERVICE");
+        mContext.sendBroadcast(recordIntent, Manifest.permission.RECORD_SCREEN);
+	}
+
     /** {@inheritDoc} */
     @Override
     public int interceptKeyBeforeQueueing(KeyEvent event, int policyFlags) {
@@ -4862,6 +4940,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                             mScreenshotChordVolumeDownKeyTime = event.getDownTime();
                             mScreenshotChordVolumeDownKeyConsumed = false;
                             cancelPendingPowerKeyAction();
+                            interceptScreenshotLog();
                             interceptScreenshotChord();
                         }
                     } else {
@@ -4875,13 +4954,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                             mVolumeUpKeyTriggered = true;
                             mVolumeUpKeyTime = event.getDownTime();
                             mVolumeUpKeyConsumedByScreenshotChord = false;
-                            mScreenshotChordVolumeUpKeyTriggered = true;
-                            cancelPendingPowerKeyAction();
+                            mVolumeUpKeyTriggered = false;
+                            cancelPendingScreenRecordChordAction();
                             interceptScreenshotLog();
                         }
                     } else {
-                        mScreenshotChordVolumeUpKeyTriggered = false;
-                        cancelPendingScreenshotChordAction();
+                        mVolumeUpKeyTriggered = false;
+                        cancelPendingScreenRecordChordAction();
                     }
                 }
                 if (down) {
@@ -5013,7 +5092,32 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 result &= ~ACTION_PASS_TO_USER;
                 isWakeKey = false; // wake-up will be handled separately
                 if (down) {
-                    interceptPowerKeyDown(event, interactive);
+                    if (interactive && !mPowerKeyTriggered
+                            && (event.getFlags() & KeyEvent.FLAG_FALLBACK) == 0) {
+                        mPowerKeyTriggered = true;
+                        mPowerKeyTime = event.getDownTime();
+                        interceptScreenshotChord();
+                        interceptScreenshotLog();
+                        interceptScreenRecordChord();
+                    }
+
+                    TelecomManager telecomManager = getTelecommService();
+                    boolean hungUp = false;
+                    if (telecomManager != null) {
+                        if (telecomManager.isRinging()) {
+                            // Pressing Power while there's a ringing incoming
+                            // call should silence the ringer.
+                            telecomManager.silenceRinger();
+                        } else if ((mIncallPowerBehavior
+                                & Settings.Secure.INCALL_POWER_BUTTON_BEHAVIOR_HANGUP) != 0
+                                && telecomManager.isInCall() && interactive) {
+                            // Otherwise, if "Power button ends call" is enabled,
+                            // the Power button will hang up any current active call.
+                            hungUp = telecomManager.endCall();
+                        }
+                    }
+                    interceptPowerKeyDown(!interactive || hungUp
+                            || mVolumeDownKeyTriggered || mVolumeUpKeyTriggered);
                 } else {
                     interceptPowerKeyUp(event, interactive, canceled);
                 }
