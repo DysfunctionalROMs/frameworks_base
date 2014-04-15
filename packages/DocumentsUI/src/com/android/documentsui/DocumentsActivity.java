@@ -141,6 +141,11 @@ public class DocumentsActivity extends BaseActivity {
     /* true if copy, false if cut */
     private boolean mClipboardIsCopy;
 
+    private StorageManager mStorageManager;
+
+    private final Object mRootsLock = new Object();
+    private HashMap<String, File> mIdToPath;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -151,6 +156,7 @@ public class DocumentsActivity extends BaseActivity {
 
         mIdToPath = Maps.newHashMap();
         updateVolumes();
+
         setResult(Activity.RESULT_CANCELED);
         setContentView(R.layout.activity);
 
@@ -325,8 +331,8 @@ public class DocumentsActivity extends BaseActivity {
         if (state.action == ACTION_OPEN || state.action == ACTION_GET_CONTENT) {
             state.allowMultiple = intent.getBooleanExtra(
                     Intent.EXTRA_ALLOW_MULTIPLE, false);
-            } else if (mState.action == ACTION_STANDALONE) {
-                mState.allowMultiple = true;
+        } else if (state.action == ACTION_STANDALONE) {
+            state.allowMultiple = true;
         }
 
         if (state.action == ACTION_MANAGE || state.action == ACTION_BROWSE) {
@@ -507,15 +513,6 @@ public class DocumentsActivity extends BaseActivity {
                 } else if (mState.action == ACTION_STANDALONE) {
                     mRootsToolbar.setTitle(R.string.title_standalone);
                 }
-			}
-			
-            if (mState.action == ACTION_OPEN || mState.action == ACTION_GET_CONTENT
-                    || mState.action == ACTION_OPEN_TREE) {
-                mRootsToolbar.setTitle(R.string.title_open);
-            } else if (mState.action == ACTION_CREATE) {
-                mRootsToolbar.setTitle(R.string.title_save);
-            } else if (mState.action == ACTION_STANDALONE) {
-                mRootsToolbar.setTitle(R.string.title_standalone);
             }
         }
 
@@ -551,7 +548,7 @@ public class DocumentsActivity extends BaseActivity {
 
                 mStackListener.mIgnoreNextNavigation = true;
                 mToolbarStack.setSelection(mStackAdapter.getCount() - 1);
-			}
+            }
         }
     }
 
