@@ -69,6 +69,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.RemoteException;
+import android.os.storage.StorageManager;
+import android.os.storage.StorageVolume;
 import android.provider.DocumentsContract;
 import android.provider.DocumentsContract.Root;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -978,7 +981,7 @@ public class DocumentsActivity extends BaseActivity {
                         resolver, cwd.derivedUri.getAuthority());
                 childUri = DocumentsContract.createDocument(
                         client, cwd.derivedUri, mMimeType, mDisplayName);
-            } catch (Exception e) {
+            } catch (RemoteException e) {
                 Log.w(TAG, "Failed to create document", e);
             } finally {
                 ContentProviderClient.releaseQuietly(client);
@@ -1058,7 +1061,11 @@ public class DocumentsActivity extends BaseActivity {
 
                     count++;
                     publishProgress((Integer) count);
-                } catch (Exception e) {
+                } catch (RemoteException e) {
+                    Log.w(TAG, "Failed to copy " + doc, e);
+                } catch (FileNotFoundException e) {
+                    Log.w(TAG, "Failed to copy " + doc, e);
+                }catch (IOException e) {
                     Log.w(TAG, "Failed to copy " + doc, e);
                 }
             }

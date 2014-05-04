@@ -31,6 +31,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.RemoteException;
 import android.os.SystemClock;
 import android.provider.DocumentsContract;
 import android.provider.DocumentsContract.Root;
@@ -267,7 +268,7 @@ public class RootsCache {
             } else {
                 Log.w(TAG, "Failed to load some roots from " + authority);
             }
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             Log.w(TAG, "Failed to load some roots from " + authority + ": " + e);
         } finally {
             if (cursor != null){
