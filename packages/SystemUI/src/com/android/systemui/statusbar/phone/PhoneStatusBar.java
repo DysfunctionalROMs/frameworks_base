@@ -408,6 +408,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     int mDisabled1 = 0;
     int mDisabled2 = 0;
     boolean mDisableHomeLongpress;
+    private boolean mRecreating = false;
 
     // tracking calls to View.setSystemUiVisibility()
     int mSystemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE;
@@ -1644,6 +1645,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 MetricsLogger.count(mContext, "note_fullscreen", 1);
             } catch (PendingIntent.CanceledException e) {
             }
+       } else if (!mRecreating) {
+            // usual case: status bar visible & not immersive
+		addAppCircleSidebar();
         }
         addNotificationViews(shadeEntry, ranking);
         // Recalculate the position of the sliding windows and the titles.
