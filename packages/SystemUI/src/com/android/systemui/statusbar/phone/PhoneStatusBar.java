@@ -378,6 +378,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     // for disabling the status bar
     int mDisabled = 0;
+    private boolean mRecreating = false;
 
     // tracking calls to View.setSystemUiVisibility()
     int mSystemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE;
@@ -1448,9 +1449,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 notification.getNotification().fullScreenIntent.send();
             } catch (PendingIntent.CanceledException e) {
             }
-        } else {
+       } else if (!mRecreating) {
             // usual case: status bar visible & not immersive
-
+		addAppCircleSidebar();
             // show the ticker if there isn't already a heads up
             if (mHeadsUpNotificationView.getEntry() == null) {
                 tick(notification, true);
