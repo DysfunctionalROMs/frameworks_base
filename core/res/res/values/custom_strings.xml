@@ -83,6 +83,11 @@
     <!-- kill app long press back -->
     <string name="app_killed_message">Application killed </string>
 
+    <!-- Performance profile modes -->
+    <string name="perf_profile_pwrsv">Power save</string>
+    <string name="perf_profile_bal">Balanced</string>
+    <string name="perf_profile_perf">Performance</string>
+
     <!-- Button to reboot the phone, within the Phone Options dialog -->
     <string name="reboot_system" product="tablet">Reboot tablet</string>
     <string name="reboot_system" product="default">Reboot phone</string>
