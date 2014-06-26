@@ -4059,6 +4059,12 @@ public final class Settings {
          */
         public static final String FORCE_EXPANDED_NOTIFICATIONS = "force_expanded_notifications";
 
+        /**
+         * Check the proximity sensor during wakeup
+         * @hide
+         */
+        public static final String PROXIMITY_ON_WAKE = "proximity_on_wake";
+
         /**		
          * Whether to use gesture anywhere feature.
          * @hide
