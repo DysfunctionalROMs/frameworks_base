@@ -20,4 +20,19 @@
          Fall back to config_webViewPackageName if not available. -->
     <string name="config_alternateWebViewPackageName" translatable="false">com.google.android.webview</string>
 
+    <!-- Proximity check on screen on -->
+    <java-symbol type="bool" name="config_proximityCheckOnWake" />
+
+    <!-- Proximity check timeout -->
+    <java-symbol type="integer" name="config_proximityCheckTimeout" />
+
+    <!-- Proximity check on screen on default -->
+    <java-symbol type="bool" name="config_proximityCheckOnWakeEnabledByDefault" />
+
+    <!-- Default value for proximity check on screen wake
+         NOTE ! - Enable for devices that have a fast response proximity sensor (ideally < 300ms)
+    -->
+    <bool name="config_proximityCheckOnWake">false</bool>
+    <integer name="config_proximityCheckTimeout">250</integer>
+    <bool name="config_proximityCheckOnWakeEnabledByDefault">false</bool>
 </resources>
