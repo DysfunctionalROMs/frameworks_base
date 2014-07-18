@@ -220,6 +220,12 @@ public class MediaRecorder
          * </p>
          */
         public static final int REMOTE_SUBMIX = 8;
+        
+        /** @hide */
+        public static final int FM_RX = 10;
+
+        /** @hide */
+        public static final int FM_RX_A2DP = 11;
 
         /** @hide */
         public static final int FM_RX = 10;
@@ -320,13 +326,12 @@ public class MediaRecorder
 
         /** VP8/VORBIS data in a WEBM container */
         public static final int WEBM = 9;
-
+       
         /** @hide QCP file format */
         public static final int QCP = 20;
 
         /** @hide WAVE media file format*/
         public static final int WAVE = 21;
-
     };
 
     /**
