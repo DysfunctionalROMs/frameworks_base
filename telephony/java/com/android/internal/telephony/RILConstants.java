@@ -79,7 +79,6 @@ public interface RILConstants {
     int LCE_NOT_SUPPORTED = 36;               /* Link Capacity Estimation (LCE) not supported */
     int INVALID_PARAMETER = 37;
 
-
     /* NETWORK_MODE_* See ril.h RIL_REQUEST_SET_PREFERRED_NETWORK_TYPE */
     int NETWORK_MODE_WCDMA_PREF     = 0; /* GSM/WCDMA (WCDMA preferred) */
     int NETWORK_MODE_GSM_ONLY       = 1; /* GSM only */
