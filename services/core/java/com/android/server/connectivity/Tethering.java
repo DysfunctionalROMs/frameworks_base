@@ -75,6 +75,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import static android.net.wifi.WifiManager.WIFI_AP_STATE_DISABLED;
+import static android.net.wifi.WifiManager.WIFI_AP_STATE_ENABLED;
+import static android.net.wifi.WifiManager.WIFI_AP_STATE_CHANGED_ACTION;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -694,9 +705,9 @@ public class Tethering extends BaseNetworkObserver {
                 } else {
                     return;
                 }
-            }
             notificationManager.cancelAsUser(null, mTetheredNotification.icon,
                     UserHandle.ALL);
+            }
         }
 
         Intent intent = new Intent();
