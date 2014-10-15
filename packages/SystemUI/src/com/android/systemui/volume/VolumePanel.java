@@ -470,6 +470,11 @@ public class VolumePanel extends Handler implements DemoMode {
         mPlayMasterStreamTones = masterVolumeOnly && masterVolumeKeySounds;
 
         registerReceiver();
+
+    }
+
+    public VolumePanel(Context context, ZenModeController zenController) {
+        this(context, null, zenController);
     }
 
     public VolumePanel(Context context, ZenModeController zenController) {
@@ -535,6 +540,10 @@ public class VolumePanel extends Handler implements DemoMode {
         if (mZenPanel != null) {
             mZenPanel.dump(fd, pw, args);
         }
+    }
+
+    public View getContentView() {
+        return mView;
     }
 
     public View getContentView() {
@@ -1253,6 +1262,7 @@ public class VolumePanel extends Handler implements DemoMode {
                 mAudioManager.forceVolumeControlStream(stream);
             }
             mDialog.show();
+
             if (mCallback != null) {
                 mCallback.onVisible(true);
             }
