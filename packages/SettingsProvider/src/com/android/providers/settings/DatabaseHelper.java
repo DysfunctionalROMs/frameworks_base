@@ -2398,6 +2398,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             loadStringSetting(stmt, Settings.System.DATE_FORMAT,
                     R.string.def_date_format);
+
+            loadIntegerSetting(stmt, Settings.System.ENABLE_PEOPLE_LOOKUP,
+                    R.integer.def_people_lookup);
+
         } finally {
             if (stmt != null) stmt.close();
         }

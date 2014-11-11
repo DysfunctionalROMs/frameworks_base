@@ -214,4 +214,7 @@
     <!-- Volume adjust sound -->
     <integer name="volume_key_adjust_sound">1</integer>
 
+    <!-- Default value of Settings.System.ENABLE_PEOPLE_LOOKUP -->
+    <integer name="def_people_lookup">1</integer>
+
 </resources>
