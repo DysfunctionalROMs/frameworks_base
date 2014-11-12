@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-/* Copyright 2014, SlimRoms project
+/*
+** Copyright 2009, The Android Open Source Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -15,17 +16,13 @@
 ** limitations under the License.
 */
 -->
-<resources>
 
-  <!-- Privacy Guard -->
-  <java-symbol type="drawable" name="stat_notify_privacy_guard" />
-  <java-symbol type="string" name="privacy_guard_notification" />
-  <java-symbol type="string" name="privacy_guard_notification_detail" />
-  <java-symbol type="string" name="privacy_guard_dialog_title" />
-  <java-symbol type="string" name="privacy_guard_dialog_summary" />
-  
-  <!-- kill app long press back -->
-  <java-symbol type="string" name="app_killed_message" />
-  <java-symbol type="integer" name="config_backKillTimeout" />
-
+<!-- These resources are around just to allow their values to be customized
+     for different hardware and product builds.  Do not translate. -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Do not translate. Defines the slots for the right-hand side icons.  That is to say, the
+         icons in the status bar that are not notifications. -->
+    
+    <!-- kill app long press back -->
+    <integer name="config_backKillTimeout">1500</integer>
 </resources>

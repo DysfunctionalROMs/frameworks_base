@@ -80,5 +80,8 @@
     <string name="app_ops_use_voice_volume">control the voice call volume</string>
     <string name="app_ops_write_mms">write an MMS message</string>
     <string name="app_ops_write_sms">write an SMS message</string>
+    
+    <!-- kill app long press back -->
+    <string name="app_killed_message">Application killed </string>
 
 </resources>
