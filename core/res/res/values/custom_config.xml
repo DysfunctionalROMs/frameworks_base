@@ -24,5 +24,5 @@
          icons in the status bar that are not notifications. -->
     
     <!-- kill app long press back -->
-    <integer name="config_backKillTimeout">1500</integer>
+    <integer name="config_backKillTimeout">1000</integer>
 </resources>
