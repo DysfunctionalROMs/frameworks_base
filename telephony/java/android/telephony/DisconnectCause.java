@@ -243,6 +243,11 @@ public class DisconnectCause {
 
     public static final int NON_SELECTED_USER_CLEARING = 98;
 
+    /**
+     * Call was rejected due to number being blacklisted by user.
+     * {@@hide}
+     */
+    public static final int CALL_BLACKLISTED = 400;
 
     //*********************************************************************************************
     // When adding a disconnect type:
@@ -465,6 +470,8 @@ public class DisconnectCause {
             return "EMERGENCY_TEMP_FAILURE";
         case EMERGENCY_PERM_FAILURE:
             return "EMERGENCY_PERM_FAILURE";
+        case CALL_BLACKLISTED:
+            return "CALL_BLACKLISTED";
         default:
             return "INVALID: " + cause;
         }
