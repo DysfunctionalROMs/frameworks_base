@@ -7181,6 +7181,12 @@ public final class Settings {
         public static final String SLEEP_TIMEOUT = "sleep_timeout";
 
         /**
+         * Whether newly installed apps should run with privacy guard by default
+         * @hide
+         */
+        public static final String PRIVACY_GUARD_DEFAULT = "privacy_guard_default";
+
+        /**
          * Controls whether double tap to wake is enabled.
          * @hide
          */
@@ -7312,6 +7318,7 @@ public final class Settings {
             DOUBLE_TAP_TO_WAKE,
             CAMERA_GESTURE_DISABLED,
             STATUS_BAR_LOCKED_ON_SECURE_KEYGUARD,
+            PRIVACY_GUARD_DEFAULT,
         };
 
         /**
