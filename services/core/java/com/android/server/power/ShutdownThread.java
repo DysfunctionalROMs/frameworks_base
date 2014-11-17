@@ -346,7 +346,6 @@ public final class ShutdownThread extends Thread {
         mAudioManager.requestAudioFocus(null,
                 AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
-        if (!checkAnimationFileExist()) {
         // throw up an indeterminate system dialog to indicate radio is
         // shutting down.
         ProgressDialog pd = new ProgressDialog(context);
