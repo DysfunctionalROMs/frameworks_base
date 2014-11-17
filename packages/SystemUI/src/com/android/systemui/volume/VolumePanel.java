@@ -1300,6 +1300,12 @@ public class VolumePanel extends Handler implements DemoMode {
     }
 
     protected void onPlaySound(int streamType, int flags) {
+        
+        // Volume adjust sound
+        if (Settings.System.getInt(mContext.getContentResolver(),
+             Settings.System.VOLUME_KEY_ADJUST_SOUND, 1) == 0) {
+             return;
+        }
 
         if (hasMessages(MSG_STOP_SOUNDS)) {
             removeMessages(MSG_STOP_SOUNDS);

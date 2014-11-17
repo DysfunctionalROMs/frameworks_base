@@ -2848,6 +2848,12 @@ public final class Settings {
          */
         public static final String STATUS_BAR_NATIVE_BATTERY_PERCENTAGE = "status_bar_native_battery_percentage";
 
+       /**
+        * Volume adjust sound
+        * @hide
+        */
+        public static final String VOLUME_KEY_ADJUST_SOUND = "volume_key_adjust_sound";
+
         /**
          * Whether to show reboot in power menu 
          * @hide
