@@ -2831,6 +2831,42 @@ public final class Settings {
         public static final String APP_CIRCLE_BAR_SHOW_TRIGGER = "app_circle_bar_show_trigger";
 
         /**
+         * Whether to show reboot in power menu 
+         * @hide
+         */
+        public static final String POWER_MENU_REBOOT = "power_menu_reboot";
+
+        /**
+         * Whether to show airplane mode in power menu 
+         * @hide
+         */
+        public static final String POWER_MENU_AIRPLANE = "power_menu_airplane";
+
+        /**
+         * Whether to show users in power menu 
+         * @hide
+         */
+        public static final String POWER_MENU_USERS = "power_menu_users";
+
+        /**
+         * Whether to show settings in power menu 
+         * @hide
+         */
+        public static final String POWER_MENU_SETTINGS = "power_menu_settings";
+
+        /**
+         * Whether to show lockdown in power menu 
+         * @hide
+         */
+        public static final String POWER_MENU_LOCKDOWN = "power_menu_lockdown";
+
+        /**
+         * Whether to show silent mode in power menu 
+         * @hide
+         */
+        public static final String POWER_MENU_SILENT = "power_menu_silent";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

@@ -220,7 +220,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         }
         mAirplaneModeOn = new ToggleAction(
                 R.drawable.ic_lock_airplane_mode,
-                R.drawable.ic_lock_airplane_mode_off,
+                R.drawable.ic_lock_airplane_mode_off_dark,
                 R.string.global_actions_toggle_airplane_mode,
                 R.string.global_actions_airplane_mode_on_status,
                 R.string.global_actions_airplane_mode_off_status) {
@@ -348,7 +348,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     }
 
     private Action getPowerAction() {
-        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_power_off,
+        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_power_off_dark,
                 R.string.global_action_power_off) {
 
             @Override
@@ -371,7 +371,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private final class RebootAction extends SinglePressAction implements LongPressAction {
         private RebootAction() {
-            super(com.android.internal.R.drawable.ic_lock_reboot,
+            super(com.android.internal.R.drawable.ic_lock_reboot_dark,
                 R.string.global_action_reboot);
         }
 
@@ -398,12 +398,12 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     }
 
     private Action getBugReportAction() {
-        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_bugreport,
+        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_bugreport_dark,
                 R.string.bugreport_title) {
 
             public void onPress() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
-                        mContext, com.android.internal.R.style.Theme_Material_Dialog_Alert_DarkKat);
+                        mContext, com.android.internal.R.style.Theme_Material_Dialog_Alert_Broken);
                 builder.setTitle(com.android.internal.R.string.bugreport_title);
                 builder.setMessage(com.android.internal.R.string.bugreport_message);
                 builder.setNegativeButton(com.android.internal.R.string.cancel, null);
@@ -477,7 +477,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     }
 
     private Action getLockdownAction() {
-        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_lock,
+        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_lock_dark,
                 R.string.global_action_lockdown) {
 
             @Override
@@ -1135,7 +1135,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         private boolean mCancelOnUp;
 
         public GlobalActionsDialog(Context context, AlertParams params) {
-            super(context, com.android.internal.R.style.Theme_Material_Dialog_DarkKat);
+            super(context, com.android.internal.R.style.Theme_Material_Dialog_Broken);
             mContext = context;
             mAlert = new AlertController(mContext, this, getWindow());
             mAdapter = (MyAdapter) params.mAdapter;

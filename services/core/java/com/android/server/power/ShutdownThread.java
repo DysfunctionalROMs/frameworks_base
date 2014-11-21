@@ -323,7 +323,7 @@ public final class ShutdownThread extends Thread {
         // throw up an indeterminate system dialog to indicate radio is
         // shutting down.
         ProgressDialog pd = new ProgressDialog(
-                        context, com.android.internal.R.style.Theme_Material_Dialog_Alert_DarkKat);
+                        context, com.android.internal.R.style.Theme_Material_Dialog_Alert_Broken);
         pd.setTitle(context.getText(mReboot
               ? com.android.internal.R.string.reboot_system
               : com.android.internal.R.string.power_off));
