@@ -2183,6 +2183,12 @@ public final class Settings {
          */
         public static final String DOZE_BRIGHTNESS = "doze_brightness";
 
+        /** Whether to allow one finger quick settings expansion on the right side of the statusbar.
+         *
+         * @hide
+         */
+        public static final String STATUS_BAR_QUICK_QS_PULLDOWN = "status_bar_quick_qs_pulldown";
+
         /**
          * Control whether the process CPU usage meter should be shown.
          *
@@ -3414,12 +3420,6 @@ public final class Settings {
          * @hide
          */
         public static final String APP_CIRCLE_BAR_SHOW_TRIGGER = "app_circle_bar_show_trigger";
-
-        /** Whether to allow one finger quick settings expansion on the right side of the statusbar.
-         *
-         * @hide
-         */
-        public static final String STATUS_BAR_QUICK_QS_PULLDOWN = "status_bar_quick_qs_pulldown";
 
         /**
          * Volume adjust sound
