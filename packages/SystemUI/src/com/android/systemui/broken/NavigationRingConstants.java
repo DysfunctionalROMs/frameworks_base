@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.systemui.cm;
+package com.android.systemui.broken;
 
 public class NavigationRingConstants {
     public static final String BROADCAST =                    "android.intent.action.NAVBAR_RING_EDIT";

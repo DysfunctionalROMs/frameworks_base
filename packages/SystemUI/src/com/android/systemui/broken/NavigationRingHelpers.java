@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.systemui.cm;
+package com.android.systemui.broken;
 
 import android.app.SearchManager;
 import android.content.ContentResolver;
@@ -32,7 +32,7 @@ import com.android.systemui.R;
 
 import java.net.URISyntaxException;
 
-import static com.android.systemui.cm.NavigationRingConstants.*;
+import static com.android.systemui.broken.NavigationRingConstants.*;
 
 public class NavigationRingHelpers {
     public static final int MAX_ACTIONS = 3;

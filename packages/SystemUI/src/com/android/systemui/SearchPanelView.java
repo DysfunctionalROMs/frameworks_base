@@ -47,9 +47,9 @@ import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import com.android.systemui.cm.ActionTarget;
-import com.android.systemui.cm.NavigationRingHelpers;
-import com.android.systemui.cm.ShortcutPickHelper;
+import com.android.systemui.broken.ActionTarget;
+import com.android.systemui.broken.NavigationRingHelpers;
+import com.android.systemui.broken.ShortcutPickHelper;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.CommandQueue;
 import com.android.systemui.statusbar.StatusBarPanel;
@@ -58,9 +58,9 @@ import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.android.systemui.cm.NavigationRingConstants.ACTION_ASSIST;
-import static com.android.systemui.cm.NavigationRingConstants.ACTION_NONE;
-import static com.android.systemui.cm.NavigationRingConstants.BROADCAST;
+import static com.android.systemui.broken.NavigationRingConstants.ACTION_ASSIST;
+import static com.android.systemui.broken.NavigationRingConstants.ACTION_NONE;
+import static com.android.systemui.broken.NavigationRingConstants.BROADCAST;
 
 public class SearchPanelView extends FrameLayout implements StatusBarPanel,
         View.OnClickListener, ShortcutPickHelper.OnPickListener {

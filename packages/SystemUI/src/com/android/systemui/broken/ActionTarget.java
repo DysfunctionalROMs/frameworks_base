@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.systemui.cm;
+package com.android.systemui.broken;
 
 import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
@@ -50,7 +50,7 @@ import android.view.WindowManagerGlobal;
 import android.widget.Toast;
 
 import com.android.internal.statusbar.IStatusBarService;
-import static com.android.systemui.cm.NavigationRingConstants.*;
+import static com.android.systemui.broken.NavigationRingConstants.*;
 import com.android.systemui.screenshot.TakeScreenshotService;
 
 import java.net.URISyntaxException;

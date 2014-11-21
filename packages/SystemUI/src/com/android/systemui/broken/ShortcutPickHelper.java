@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.systemui.cm;
+package com.android.systemui.broken;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.android.systemui.cm.NavigationRingConstants.*;
+import static com.android.systemui.broken.NavigationRingConstants.*;
 
 public class ShortcutPickHelper {
     private final Context mContext;

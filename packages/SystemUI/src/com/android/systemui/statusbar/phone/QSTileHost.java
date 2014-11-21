@@ -31,8 +31,8 @@ import android.telephony.TelephonyManager;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.android.internal.util.cm.QSConstants;
-import com.android.internal.util.cm.QSUtils;
+import com.android.internal.util.broken.QSConstants;
+import com.android.internal.util.broken.QSUtils;
 import com.android.systemui.R;
 import com.android.systemui.qs.QSTile;
 import com.android.systemui.qs.tiles.AirplaneModeTile;
