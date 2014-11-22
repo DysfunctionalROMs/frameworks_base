@@ -53,6 +53,8 @@
   <java-symbol type="color" name="global_actions_icon_color_normal" />
   <java-symbol type="color" name="global_actions_icon_color_selected" />
   <java-symbol type="color" name="global_actions_icon_color_enabled" />
+  <java-symbol name="ic_lock_power_screenshot" type="drawable" />
+  <java-symbol name="global_action_screenshot" type="string" />
 
   <!-- Doze invert -->
   <java-symbol type="bool" name="config_invert_colors_on_doze" />
