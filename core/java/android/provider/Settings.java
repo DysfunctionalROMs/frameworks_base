@@ -2843,6 +2843,18 @@ public final class Settings {
         public static final String POWER_MENU_AIRPLANE = "power_menu_airplane";
 
         /**
+         * Whether to show reboot in power menu 
+         * @hide
+         */
+        public static final String POWER_MENU_REBOOT = "power_menu_reboot";
+
+        /**
+         * Whether to show airplane mode in power menu 
+         * @hide
+         */
+        public static final String POWER_MENU_AIRPLANE = "power_menu_airplane";
+
+        /**
          * Whether to show users in power menu 
          * @hide
          */
@@ -2859,6 +2871,12 @@ public final class Settings {
          * @hide
          */
         public static final String POWER_MENU_LOCKDOWN = "power_menu_lockdown";
+
+        /**
+         * Whether to show silent mode in power menu 
+         * @hide
+         */
+        public static final String POWER_MENU_SILENT = "power_menu_silent";
 
         /**
          * Whether to show silent mode in power menu 

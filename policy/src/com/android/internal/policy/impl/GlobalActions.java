@@ -454,7 +454,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     }
 
     private Action getSettingsAction() {
-        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_settings,
+        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_settings_dark,
                 R.string.global_action_settings) {
 
             @Override
