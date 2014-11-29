@@ -4229,6 +4229,12 @@ public final class Settings {
                 "proximity_auto_speaker_incall_only";
 
         /**
+         * Volume music controls
+         * @hide
+         */
+        public static final String VOLUME_MUSIC_CONTROLS = "volume_music_controls";
+      
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

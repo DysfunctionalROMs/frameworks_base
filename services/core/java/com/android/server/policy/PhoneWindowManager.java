@@ -688,6 +688,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private long mVolumeUpKeyTime;
     private boolean mPowerKeyTriggered;
     private long mPowerKeyTime;
+    private boolean mVolumeMusicControls;
+    private boolean mIsLongPress;
 
     // use the same delay values as for screenshot
     private boolean mScreenrecordChordEnabled;
@@ -730,6 +732,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private static final int MSG_POWER_DELAYED_PRESS = 13;
     private static final int MSG_POWER_LONG_PRESS = 14;
     private static final int MSG_UPDATE_DREAMING_SLEEP_TOKEN = 15;
+    private static final int MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK = 16;
+
     boolean mWifiDisplayConnected = false;
     int mWifiDisplayCustomRotation = -1;
 
@@ -753,6 +757,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     break;
                 case MSG_DISPATCH_MEDIA_KEY_REPEAT_WITH_WAKE_LOCK:
                     dispatchMediaKeyRepeatWithWakeLock((KeyEvent)msg.obj);
+                    break;
+                case MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK:
+                    mIsLongPress = true;
+                    dispatchMediaKeyWithWakeLockToAudioService((KeyEvent)msg.obj);
+                    dispatchMediaKeyWithWakeLockToAudioService(
+                        KeyEvent.changeAction((KeyEvent)msg.obj, KeyEvent.ACTION_UP));
                     break;
                 case MSG_DISPATCH_SHOW_RECENTS:
                     showRecentApps(false);
@@ -2312,6 +2322,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mUserRotationAngles = Settings.System.getIntForUser(resolver,
                     Settings.System.ACCELEROMETER_ROTATION_ANGLES, -1,
                     UserHandle.USER_CURRENT);
+
+            mVolumeMusicControls = Settings.System.getIntForUser(resolver,
+                    Settings.System.VOLUME_MUSIC_CONTROLS, 1, UserHandle.USER_CURRENT) != 0;
 
             if (mSystemReady) {
                 int pointerLocation = Settings.System.getIntForUser(resolver,
@@ -5844,6 +5857,20 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         setHdmiPlugged(!mHdmiPlugged);
     }
 
+    /**
+     * @return Whether music is being played right now "locally" (e.g. on the device's speakers
+     *    or wired headphones) or "remotely" (e.g. on a device using the Cast protocol and
+     *    controlled by this device, or through remote submix).
+     */
+    boolean isMusicActive() {
+        final AudioManager am = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+        if (am == null) {
+            Log.w(TAG, "isMusicActive: couldn't get AudioManager reference");
+            return false;
+        }
+        return am.isMusicActive() || am.isMusicActiveRemotely();
+    }
+
     final Object mScreenshotLock = new Object();
     final Object mScreenrecordLock = new Object();
     ServiceConnection mScreenshotConnection = null;
@@ -6131,20 +6158,38 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                             break;
                         }
                     }
+                }
 
-                    if ((result & ACTION_PASS_TO_USER) == 0) {
-                        if (mUseTvRouting) {
-                            dispatchDirectAudioEvent(event);
-                        } else {
-                            // If we aren't passing to the user and no one else
-                            // handled it send it to the session manager to
-                            // figure out.
-                            MediaSessionLegacyHelper.getHelper(mContext)
-                                    .sendVolumeKeyEvent(event, true);
-                        }
+
+                if (isMusicActive() && (result & ACTION_PASS_TO_USER) == 0) {
+                    if (mVolumeMusicControls && down && (keyCode != KeyEvent.KEYCODE_VOLUME_MUTE)) {
+                        mIsLongPress = false;
+                        int newKeyCode = event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP ?
+                                KeyEvent.KEYCODE_MEDIA_NEXT : KeyEvent.KEYCODE_MEDIA_PREVIOUS;
+                        Message msg = mHandler.obtainMessage(MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK,
+                                new KeyEvent(event.getDownTime(), event.getEventTime(),
+                                    event.getAction(), newKeyCode, 0));
+                        msg.setAsynchronous(true);
+                        mHandler.sendMessageDelayed(msg, ViewConfiguration.getLongPressTimeout());
                         break;
+                    } else {
+                        if (mVolumeMusicControls && !down) {
+                            mHandler.removeMessages(MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK);
+                            if (mIsLongPress) {
+                                break;
+                            }
+                        }
+                        if (!isScreenOn() && !mVolumeRockerWake) {
+                            // If we aren't passing to the user and no one else
+                            // handled it send it to the session manager to figure
+                            // out.
+                            MediaSessionLegacyHelper.getHelper(mContext)
+                                    .sendVolumeKeyEvent(KeyEvent.changeAction(event,
+                                    KeyEvent.ACTION_DOWN), true);
+                        }
                     }
                 }
+
                 break;
             }
 
