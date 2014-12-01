@@ -21,6 +21,7 @@ import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -30,6 +31,9 @@ import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.AlarmClock;
+import android.provider.CalendarContract;
 import android.telephony.TelephonyManager;
 import android.net.Uri;
 import android.os.Handler;
@@ -156,8 +160,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         mSystemIconsSuperContainer.setOnLongClickListener(this);
         mDateGroup = findViewById(R.id.date_group);
         mDateGroup.setOnLongClickListener(this);
+        mDateGroup.setOnClickListener(this);
         mClock = findViewById(R.id.clock);
         mClock.setOnLongClickListener(this);
+        mClock.setOnClickListener(this);
         mTime = (TextView) findViewById(R.id.time_view);
         mAmPm = (TextView) findViewById(R.id.am_pm_view);
         mMultiUserSwitch = (MultiUserSwitch) findViewById(R.id.multi_user_switch);
@@ -568,6 +574,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             }
         } else if (v == mWeatherContainer) {
             startForecastActivity();
+        } else if (v == mClock) {
+            startClockActivity();
+        } else if (v == mDateGroup) {
+            startDateActivity();
         }
         mQSPanel.vibrateTile(20);
     }
@@ -635,6 +645,18 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setClassName("com.cyanogenmod.lockclock",
             "com.cyanogenmod.lockclock.preference.Preferences");
+    }
+    
+    private void startClockActivity() {
+        mActivityStarter.startActivity(new Intent(AlarmClock.ACTION_SHOW_ALARMS),
+                true /* dismissShade */);
+    }
+
+    private void startDateActivity() {
+        Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
+        builder.appendPath("time");
+        ContentUris.appendId(builder, System.currentTimeMillis());
+        Intent intent = new Intent(Intent.ACTION_VIEW).setData(builder.build());
         mActivityStarter.startActivity(intent, true /* dismissShade */);
     }
 
