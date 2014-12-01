@@ -3425,6 +3425,30 @@ public final class Settings {
         public static final String KEY_ASSIST_ACTION = "key_assist_action";
 
         /**
+         * Whether to show a battery status text
+         * @hide
+         */
+        public static final String STATUS_BAR_BATTERY_STATUS_SHOW_TEXT = "battery_status_show_text";
+
+        /**
+         * Whether to show the charging animation
+         * @hide
+         */
+        public static final String STATUS_BAR_BATTERY_STATUS_SHOW_CHARGING_ANIMATION = "battery_status_show_charging_animation";
+
+        /**
+         *Battery color
+         * @hide
+         */
+        public static final String STATUS_BAR_BATTERY_COLOR = "battery_status_battery_color";
+
+        /**
+         * Battery text color
+         * @hide
+         */
+        public static final String STATUS_BAR_BATTERY_TEXT_COLOR = "battery_status_text_color";
+
+        /**
          * Action to perform when the assistant (search) key is long-pressed. (Default is 4)
          * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
          * @hide
