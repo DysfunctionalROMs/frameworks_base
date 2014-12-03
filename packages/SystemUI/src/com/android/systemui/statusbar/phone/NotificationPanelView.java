@@ -735,6 +735,14 @@ public class NotificationPanelView extends PanelView implements
                 mOneFingerQuickSettingsInterceptMode > ONE_FINGER_QS_INTERCEPT_OFF
                 && event.getActionMasked() == MotionEvent.ACTION_DOWN
                 && shouldQuickSettingsIntercept(event.getX(), event.getY(), -1, false);
+
+        if (mQsSmartPullDown == 1 && !mStatusBar.hasActiveClearableNotifications()
+                || mQsSmartPullDown == 2 && !mStatusBar.hasActiveVisibleNotifications()
+                || (mQsSmartPullDown == 3 && (!mStatusBar.hasActiveVisibleNotifications()
+                        || !mStatusBar.hasActiveClearableNotifications()))) {
+            oneFingerQsOverride = true;
+        }
+
         if ((twoFingerQsEvent || oneFingerQsOverride)
                 && event.getY(event.getActionIndex()) < mStatusBarMinHeight
                 && !isQSEventBlocked) {
@@ -2092,7 +2100,8 @@ public class NotificationPanelView extends PanelView implements
                     Settings.System.QS_SMART_PULLDOWN),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.ENABLE_TASK_MANAGER), false, this, UserHandle.USER_ALL);
+                    Settings.System.ENABLE_TASK_MANAGER),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
