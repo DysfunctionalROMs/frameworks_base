@@ -54,6 +54,13 @@ public class IconMerger extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         // we need to constrain this to an integral multiple of our children
         int width = getMeasuredWidth();
+        if (mCenterClock) {
+            final int totalWidth = mContext.getResources().getDisplayMetrics().widthPixels;
+            final int usableWidth = (totalWidth - mClockAndDateWidth - 2 * mIconSize) / 2;
+            if (width > usableWidth) {
+                width = usableWidth;
+            }
+        }
         setMeasuredDimension(width - (width % mIconSize), getMeasuredHeight());
     }
 
@@ -90,5 +97,4 @@ public class IconMerger extends LinearLayout {
         mCenterClock = mode == Clock.STYLE_CLOCK_CENTER && enabled;
  //       mLeftClock = mode == Clock.STYLE_CLOCK_LEFT && enabled;
     }
-
 }

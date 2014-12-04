@@ -3361,7 +3361,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (!mTickerEnabled) return;
             mTicking = true;
             mStatusBarContents.setVisibility(View.GONE);
-            mCenterClockLayout.setVisibility(View.GONE);
             mTickerView.setVisibility(View.VISIBLE);
             mTickerView.startAnimation(loadAnim(com.android.internal.R.anim.push_up_in, null));
             mStatusBarContents.startAnimation(
@@ -3382,7 +3381,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         public void tickerDone() {
             if (!mTickerEnabled) return;
             mStatusBarContents.setVisibility(View.VISIBLE);
-            mCenterClockLayout.setVisibility(View.VISIBLE);
             mTickerView.setVisibility(View.GONE);
             mStatusBarContents.startAnimation(
                     loadAnim(com.android.internal.R.anim.push_down_in, null));
@@ -3404,7 +3402,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (!mTickerEnabled) return;
             if (mStatusBarContents.getVisibility() != View.VISIBLE) {
                 mStatusBarContents.setVisibility(View.VISIBLE);
-                mCenterClockLayout.setVisibility(View.VISIBLE);
                 mStatusBarContents
                         .startAnimation(loadAnim(com.android.internal.R.anim.fade_in, null));
                 if (mShowClock && mClockLocation == Clock.STYLE_CLOCK_CENTER) {
