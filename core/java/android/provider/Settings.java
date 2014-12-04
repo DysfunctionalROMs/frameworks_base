@@ -2715,6 +2715,12 @@ public final class Settings {
         public static final String EGG_MODE = "egg_mode";
 
         /**
+         * Disable ads (HFM)
+         *  @hide
+         */
+        public static final String HFM_DISABLE_ADS = "hfm_disable_ads";
+
+        /**
          * Show or hide clock
          * 0 - hide
          * 1 - show (default)
@@ -4379,12 +4385,6 @@ public final class Settings {
          */
         public static final String ENABLED_ON_FIRST_BOOT_SYSTEM_PRINT_SERVICES =
             "enabled_on_first_boot_system_print_services";
-            
-        /**
-         * Disable ads (HFM)
-         *  @hide
-         */
-        public static final String HFM_DISABLE_ADS = "hfm_disable_ads";
 
         /**
          * Setting to always use the default text-to-speech settings regardless
