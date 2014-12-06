@@ -184,6 +184,7 @@ public class StatusBarKeyguardViewManager {
             animateScrimControllerKeyguardFadingOut(0, 200);
             updateStates();
         }
+        mStatusBarWindowManager.onKeyguardChanged();
     }
 
     public void onScreenTurnedOff() {
