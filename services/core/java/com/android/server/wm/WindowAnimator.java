@@ -346,7 +346,7 @@ public class WindowAnimator {
                                 }
                             } else {
                                 mForceHiding = win.isDrawnLw() ? KEYGUARD_SHOWN : KEYGUARD_NOT_SHOWN;
-							}
+                            }
                         }
                     }
                     if (DEBUG_KEYGUARD || WindowManagerService.DEBUG_VISIBILITY) Slog.v(TAG,
@@ -708,6 +708,7 @@ public class WindowAnimator {
                 }
 
                 mAnimating |= mService.getDisplayContentLocked(displayId).animateDimLayers();
+                mAnimating |= mService.getDisplayContentLocked(displayId).animateBlurLayers();
 
                 //TODO (multidisplay): Magnification is supported only for the default display.
                 if (mService.mAccessibilityController != null

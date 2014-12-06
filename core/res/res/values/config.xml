@@ -2295,5 +2295,5 @@
          name and the power profile id, separated by a comma. -->
     <string-array name="config_auto_perf_activities" translatable="false">
     </string-array>
-    
+
 </resources>

@@ -287,7 +287,6 @@ public class VolumePanel extends Handler implements DemoMode {
 
     private boolean mBlurUiEnabled;
 
-
     private static class SafetyWarning extends SystemUIDialog
             implements DialogInterface.OnDismissListener, DialogInterface.OnClickListener {
         private final Context mContext;
@@ -438,6 +437,7 @@ public class VolumePanel extends Handler implements DemoMode {
                     | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                     | LayoutParams.FLAG_HARDWARE_ACCELERATED);
             mView = window.findViewById(R.id.content);
+
             Interaction.register(mView, new Interaction.Callback() {
                 @Override
                 public void onInteraction() {
@@ -472,6 +472,19 @@ public class VolumePanel extends Handler implements DemoMode {
 
         registerReceiver();
 
+        boolean blurEnabled = false && context.getResources().getBoolean(R.bool.config_ui_blur_enabled);
+        if (blurEnabled && mDialog != null && mDialog.getWindow() != null) {
+            Window window = mDialog.getWindow();
+            window.addPrivateFlags(WindowManager.LayoutParams.PRIVATE_FLAG_BLUR_WITH_MASKING);
+            window.setBlurMaskAlphaThreshold(0.48f);
+            View mainContainer = window.findViewById(com.android.systemui.R.id.volume_dialog_bg_container);
+            mainContainer.setBackgroundResource(
+                com.android.systemui.R.drawable.volume_dialog_bg_translucent);
+
+            mSliderPanel.setBackground(null);
+            window.findViewById(com.android.systemui.R.id.zen_mode_panel_bg_container)
+                .setBackground(null);
+        }
     }
 
     public VolumePanel(Context context, ZenModeController zenController) {
