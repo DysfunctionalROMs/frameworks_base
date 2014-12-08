@@ -78,31 +78,30 @@ public class ActionHelper {
                     config);
     }
 
-    // get and set the PowerMenu configs from provider and return propper arraylist objects
+    // get and set the lockcreen shortcut configs from provider and return propper arraylist objects
     // @ActionConfig
-    public static ArrayList<ActionConfig> getPowerMenuConfigWithDescription(
-            Context context, String values, String entries) {
+    public static ArrayList<ActionConfig> getLockscreenShortcutConfig(Context context) {
         String config = Settings.System.getStringForUser(
                     context.getContentResolver(),
-                    Settings.System.POWER_MENU_CONFIG,
+                    Settings.System.LOCKSCREEN_SHORTCUTS,
                     UserHandle.USER_CURRENT);
         if (config == null) {
-            config = ActionConstants.POWER_MENU_CONFIG_DEFAULT;
+            config = "";
         }
-        return ConfigSplitHelper.getActionConfigValues(context, config, values, entries, true);
+
+        return (ConfigSplitHelper.getActionConfigValues(context, config, null, null, true));
     }
 
-    public static void setPowerMenuConfig(Context context,
+    public static void setLockscreenShortcutConfig(Context context,
             ArrayList<ActionConfig> actionConfig, boolean reset) {
         String config;
         if (reset) {
-            config = ActionConstants.POWER_MENU_CONFIG_DEFAULT;
+            config = "";
         } else {
             config = ConfigSplitHelper.setActionConfig(actionConfig, true);
         }
         Settings.System.putString(context.getContentResolver(),
-                    Settings.System.POWER_MENU_CONFIG,
-                    config);
+                    Settings.System.LOCKSCREEN_SHORTCUTS, config);
     }
 
     // General methods to retrieve the correct icon for the respective action.
