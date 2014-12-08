@@ -21,6 +21,7 @@
 
 	<!-- The seperater between the shorcuts. -->
     <dimen name="shortcut_seperater_width">8dp</dimen>
+    
     <!-- Top margin for shortcuts. -->
     <dimen name="shortcut_margin_top">25dp</dimen>
 
