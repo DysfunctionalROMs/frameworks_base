@@ -465,20 +465,6 @@ public class StatusBarManagerService extends IStatusBarService.Stub {
     }
 
     /**
-     * Ask keyguard to invoke a custom intent after dismissing keyguard
-     * @hide
-     */
-    @Override
-    public void showCustomIntentAfterKeyguard(Intent intent) {
-        enforceStatusBarService();
-        if (mBar != null) {
-            try {
-                mBar.showCustomIntentAfterKeyguard(intent);
-            } catch (RemoteException ex) {}
-        }
-    }
-
-    /**
      * @hide
      */
     @Override
@@ -502,6 +488,20 @@ public class StatusBarManagerService extends IStatusBarService.Stub {
                 mBar.scheduleHeadsUpClose();
             } catch (RemoteException ex) {}
             }
+    }
+
+    /**
+     * Ask keyguard to invoke a custom intent after dismissing keyguard
+     * @hide
+     */
+    @Override
+    public void showCustomIntentAfterKeyguard(Intent intent) {
+        enforceStatusBarService();
+        if (mBar != null) {
+            try {
+                mBar.showCustomIntentAfterKeyguard(intent);
+            } catch (RemoteException ex) {}
+        }
     }
 
     private void enforceStatusBar() {
