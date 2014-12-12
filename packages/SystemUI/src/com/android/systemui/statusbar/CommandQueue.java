@@ -59,8 +59,9 @@ public class CommandQueue extends IStatusBar.Stub {
     private static final int MSG_NOTIFICATION_LIGHT_PULSE   = 17 << MSG_SHIFT;
     private static final int MSG_SHOW_SCREEN_PIN_REQUEST    = 18 << MSG_SHIFT;
     private static final int MSG_HIDE_HEADS_UP              = 19 << MSG_SHIFT;
-    private static final int MSG_SET_AUTOROTATE_STATUS      = 20 << MSG_SHIFT;
-    private static final int MSG_START_CUSTOM_INTENT_AFTER_KEYGUARD = 21 << MSG_SHIFT;
+    private static final int MSG_HIDE_HEADS_UP_CANDIDATE    = 20 << MSG_SHIFT;
+    private static final int MSG_SET_AUTOROTATE_STATUS      = 21 << MSG_SHIFT;
+    private static final int MSG_START_CUSTOM_INTENT_AFTER_KEYGUARD = 22 << MSG_SHIFT;
 
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
@@ -104,6 +105,7 @@ public class CommandQueue extends IStatusBar.Stub {
         public void notificationLightPulse(int argb, int onMillis, int offMillis);
         public void showScreenPinningRequest();
         public void scheduleHeadsUpClose();
+        public void hideHeadsUpCandidate(String packageName);
         public void setAutoRotate(boolean enabled);
         public void showCustomIntentAfterKeyguard(Intent intent);
     }
@@ -260,6 +262,14 @@ public class CommandQueue extends IStatusBar.Stub {
 		}
 	}
 
+	public void hideHeadsUpCandidate(String packageName) {
+        synchronized (mList) {
+            mHandler.removeMessages(MSG_HIDE_HEADS_UP_CANDIDATE);
+            mHandler.obtainMessage(MSG_HIDE_HEADS_UP_CANDIDATE,
+                0, 0, packageName).sendToTarget();
+        }
+    }
+
     public void setAutoRotate(boolean enabled) {
         synchronized (mList) {
             mHandler.removeMessages(MSG_SET_AUTOROTATE_STATUS);
@@ -358,6 +368,10 @@ public class CommandQueue extends IStatusBar.Stub {
                     break;
                 case MSG_HIDE_HEADS_UP:
                     mCallbacks.scheduleHeadsUpClose();
+                    break;
+                case MSG_HIDE_HEADS_UP_CANDIDATE:
+                    mCallbacks.hideHeadsUpCandidate((String) msg.obj);
+                    break;
                 case MSG_SET_AUTOROTATE_STATUS:
                     mCallbacks.setAutoRotate(msg.arg1 != 0);
                     break;
@@ -368,4 +382,3 @@ public class CommandQueue extends IStatusBar.Stub {
         }
     }
 }
-
