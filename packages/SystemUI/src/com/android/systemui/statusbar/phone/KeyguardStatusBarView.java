@@ -78,8 +78,8 @@ public class KeyguardStatusBarView extends RelativeLayout
     }
 
     private void loadShowBatteryTextSetting() {
-        mShowBatteryText = 0 != Settings.System.getInt(
-            getContext().getContentResolver(), Settings.System.STATUS_BAR_SHOW_BATTERY_TEXT, 0);
+        mShowBatteryText = 2 == Settings.System.getInt(getContext().getContentResolver(),
+                Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT, 0);
     }
 
     @Override
@@ -119,7 +119,8 @@ public class KeyguardStatusBarView extends RelativeLayout
         } else if (mMultiUserSwitch.getParent() == this && mKeyguardUserSwitcherShowing) {
             removeView(mMultiUserSwitch);
         }
-        mBatteryLevel.setVisibility((mBatteryCharging || mShowBatteryText) ? View.VISIBLE : View.GONE);
+        mBatteryLevel.setVisibility(
+                (mBatteryCharging || mShowBatteryText) ? View.VISIBLE : View.GONE);
     }
 
     private void updateSystemIconsLayoutParams() {
@@ -261,7 +262,7 @@ public class KeyguardStatusBarView extends RelativeLayout
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(
-           "status_bar_show_battery_text"), false, mObserver);
+                "status_bar_show_battery_percent"), false, mObserver);
     }
 
     @Override
