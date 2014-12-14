@@ -3354,6 +3354,7 @@ public final class Settings {
         public static final String STATUS_BAR_SHOW_BATTERY_PERCENT = "status_bar_show_battery_percent";
 
         /**
+<<<<<<< HEAD
          * Ad blocker
 	     * Disable ads (HFM)
 	     * @hide
@@ -3579,6 +3580,8 @@ public final class Settings {
         public static final String FORMAL_TEXT_INPUT = "formal_text_input";
 
         /**
+=======
+>>>>>>> 9536046... \Switch to new battery implementation
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -5839,6 +5842,7 @@ public final class Settings {
          */
         public static final String PROTECTED_COMPONENTS = "protected_components";
 
+<<<<<<< HEAD
         /**
          * List of QS tile names
          * @hide
@@ -5880,6 +5884,8 @@ public final class Settings {
                 "navigation_ring_targets_2",
         };
 
+=======
+>>>>>>> 9536046... \Switch to new battery implementation
         /**
          * This are the settings to be backed up.
          *
