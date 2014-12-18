@@ -23734,6 +23734,7 @@ package android.os {
   }
 
   public final class PowerManager {
+    method public java.lang.String getSeenWakeLocks();
     method public boolean isInteractive();
     method public boolean isPowerSaveMode();
     method public deprecated boolean isScreenOn();
