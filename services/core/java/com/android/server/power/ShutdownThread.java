@@ -176,6 +176,25 @@ public final class ShutdownThread extends Thread {
                 resourceId = com.android.internal.R.string.shutdown_confirm_question;
             } else {
                 resourceId = com.android.internal.R.string.shutdown_confirm;
+			}
+		}
+
+        boolean showRebootOption = false;
+
+        String[] actionsArray;
+        String actions = Settings.Global.getStringForUser(context.getContentResolver(),
+                Settings.Global.POWER_MENU_ACTIONS, UserHandle.USER_CURRENT);
+        if (actions == null) {
+            actionsArray = context.getResources().getStringArray(
+                    com.android.internal.R.array.config_globalActionsList);
+        } else {
+            actionsArray = actions.split("\\|");
+        }
+
+        for (int i = 0; i < actionsArray.length; i++) {
+            if (actionsArray[i].equals("reboot")) {
+                showRebootOption = true;
+                break;
             }
 
             Log.d(TAG, "longPressBehavior=" + longPressBehavior);
