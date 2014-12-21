@@ -2843,18 +2843,6 @@ public final class Settings {
         public static final String POWER_MENU_AIRPLANE = "power_menu_airplane";
 
         /**
-         * Whether to show reboot in power menu 
-         * @hide
-         */
-        public static final String POWER_MENU_REBOOT = "power_menu_reboot";
-
-        /**
-         * Whether to show airplane mode in power menu 
-         * @hide
-         */
-        public static final String POWER_MENU_AIRPLANE = "power_menu_airplane";
-
-        /**
          * Whether to show users in power menu 
          * @hide
          */
@@ -2879,10 +2867,10 @@ public final class Settings {
         public static final String POWER_MENU_SILENT = "power_menu_silent";
 
         /**
-         * Whether to show silent mode in power menu 
+         * Whether to include options in power menu for rebooting into recovery and bootloader
          * @hide
          */
-        public static final String POWER_MENU_SILENT = "power_menu_silent";
+        public static final String ADVANCED_REBOOT = "advanced_reboot";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -5000,12 +4988,6 @@ public final class Settings {
         public static final String SMS_DEFAULT_APPLICATION = "sms_default_application";
 
         /**
-         * Whether to include options in power menu for rebooting into recovery and bootloader
-         * @hide
-         */
-        public static final String ADVANCED_REBOOT = "advanced_reboot";
-
-        /**
          * Names of the packages that the current user has explicitly allowed to
          * see all of the user's notifications, separated by ':'.
          *
@@ -5163,8 +5145,7 @@ public final class Settings {
             MOUNT_UMS_NOTIFY_ENABLED,
             UI_NIGHT_MODE,
             SLEEP_TIMEOUT,
-            PRIVACY_GUARD_DEFAULT,
-            ADVANCED_REBOOT
+            PRIVACY_GUARD_DEFAULT
         };
 
         /**
