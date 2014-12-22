@@ -3429,7 +3429,7 @@ public final class Settings {
             }
         };
 
-        // DarkKat additions start
+        // Broken additions start
 
         /**
          * Whether to include advanced reboot options in power menu for 
@@ -3438,7 +3438,31 @@ public final class Settings {
          */
         public static final String POWER_MENU_SHOW_ADVANCED_REBOOT = "power_menu_show_advanced_reboot";
 
-        // DarkKat additions end
+        // Broken additions end
+
+         /**
+         * Navigation bar height when it is on protrait
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_HEIGHT = "navigation_bar_height";
+
+        /**
+         * Navigation bar height when it is on landscape
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_HEIGHT_LANDSCAPE = "navigation_bar_height_landscape";
+
+        /**
+         * Navigation bar height when it is on landscape at the right
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
+
+        /**
+         * Wether navigation bar is enabled or not
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show";
 
         /**
          * IMPORTANT: If you add a new public settings you also have to add it to
