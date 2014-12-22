@@ -62,4 +62,7 @@
     <!-- Wifi Hotspot disabled due to subscription change -->
     <string name="subscription_change_disabled_wifi_ap">Disabled WiFi hotspot due to SIM subscription change</string>
     
+    <!-- Slimseekbar -->
+    <string name="default_string">Default</string>
+    
 </resources>
