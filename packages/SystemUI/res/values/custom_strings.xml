@@ -54,4 +54,36 @@
     <!-- missing string for battery text -->
     <string name="battery_level_template"><xliff:g id="level" example="45">%d</xliff:g>%%</string>
 
+    <!-- Data Tile -->
+    <string name="quick_settings_mobile_data_label">Mobile data</string>
+    <string name="accessibility_quick_settings_data_on">Mobile data on</string>
+    <string name="accessibility_quick_settings_data_off">Mobile data off</string>
+
+    <!-- Custom Tiles -->
+    <string name="accessibility_quick_settings_location_battery_saving">Location reporting: battery saving mode.</string>
+    <string name="accessibility_quick_settings_location_gps_only">Location reporting: sensors only mode.</string>
+    <string name="accessibility_quick_settings_location_high_accuracy">Location reporting: high accuracy mode.</string>
+    <string name="quick_settings_location_battery_saving_label">Battery saving</string>
+    <string name="quick_settings_location_gps_only_label">GPS only</string>
+    <string name="quick_settings_location_high_accuracy_label">High accuracy</string>
+    <string name="quick_settings_location_detail_title">Location mode</string>
+
+    <!-- NFC qs tile -->
+    <string name="quick_settings_nfc_label">NFC</string>
+
+    <!-- Compass qs tile -->
+    <string name="quick_settings_compass_label">Compass</string>
+    <string name="quick_settings_compass_value" translatable="false"><xliff:g id="degrees">%1$.0f</xliff:g>\u00b0 <xliff:g id="direction">%2$s</xliff:g></string>
+    <string name="quick_settings_compass_init">Initializing\u2026</string>
+
+    <!-- Brightness tile -->
+    <string name="quick_settings_brightness">Brightness</string>
+
+    <!-- Battery saver -->
+    <string name="quick_settings_battery_saver">Battery saver</string>
+    <string name="quick_settings_battery_saver_off">Battery saver off</string>
+
+    <!-- expanded tile -->
+    <string name="quick_settings_expanded_desktop">Expanded</string>
+    <string name="quick_settings_expanded_desktop_off">Normal</string>
 </resources>

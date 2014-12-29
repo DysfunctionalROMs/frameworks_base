@@ -390,6 +390,7 @@ public class VolumePanel extends Handler implements DemoMode {
             arr.recycle();
         }
 
+        if (parent == null) {
             mDialog = new Dialog(context) {
                 @Override
                 public boolean onTouchEvent(MotionEvent event) {
@@ -400,49 +401,52 @@ public class VolumePanel extends Handler implements DemoMode {
                     }
                     return false;
                 }
-        };
+            };
 
-        final Window window = mDialog.getWindow();
-        window.requestFeature(Window.FEATURE_NO_TITLE);
-        mDialog.setCanceledOnTouchOutside(true);
-        mDialog.setContentView(com.android.systemui.R.layout.volume_dialog);
-        mDialog.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                mActiveStreamType = -1;
-                mAudioManager.forceVolumeControlStream(mActiveStreamType);
-                setZenPanelVisible(false);
-                mDemoIcon = 0;
-                mSecondaryIconTransition.cancel();
-            }
-        });
+            final Window window = mDialog.getWindow();
+            window.requestFeature(Window.FEATURE_NO_TITLE);
+            mDialog.setCanceledOnTouchOutside(true);
+            mDialog.setContentView(com.android.systemui.R.layout.volume_dialog);
+            mDialog.setOnDismissListener(new OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    mActiveStreamType = -1;
+                    mAudioManager.forceVolumeControlStream(mActiveStreamType);
+                    setZenPanelVisible(false);
+                }
+            });
 
-        mDialog.create();
+            mDialog.create();
 
-        final LayoutParams lp = window.getAttributes();
-        lp.token = null;
-        lp.y = res.getDimensionPixelOffset(com.android.systemui.R.dimen.volume_panel_top);
-        lp.type = LayoutParams.TYPE_STATUS_BAR_PANEL;
-        lp.format = PixelFormat.TRANSLUCENT;
-        lp.windowAnimations = com.android.systemui.R.style.VolumePanelAnimation;
-        lp.setTitle(TAG);
-        window.setAttributes(lp);
+            final LayoutParams lp = window.getAttributes();
+            lp.token = null;
+            lp.y = res.getDimensionPixelOffset(com.android.systemui.R.dimen.volume_panel_top);
+            lp.type = LayoutParams.TYPE_STATUS_BAR_PANEL;
+            lp.format = PixelFormat.TRANSLUCENT;
+            lp.windowAnimations = com.android.systemui.R.style.VolumePanelAnimation;
+            lp.setTitle(TAG);
+            window.setAttributes(lp);
 
-        updateWidth();
+            updateWidth();
 
-        window.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        window.addFlags(LayoutParams.FLAG_NOT_FOCUSABLE
-                | LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-                | LayoutParams.FLAG_HARDWARE_ACCELERATED);
-        mView = window.findViewById(R.id.content);
-        Interaction.register(mView, new Interaction.Callback() {
-            @Override
-            public void onInteraction() {
-                resetTimeout();
-            }
-        });
+            window.setBackgroundDrawable(new ColorDrawable(0x00000000));
+            window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            window.addFlags(LayoutParams.FLAG_NOT_FOCUSABLE
+                    | LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                    | LayoutParams.FLAG_HARDWARE_ACCELERATED);
+            mView = window.findViewById(R.id.content);
+            Interaction.register(mView, new Interaction.Callback() {
+                @Override
+                public void onInteraction() {
+                    resetTimeout();
+                }
+            });
+        } else {
+            mDialog = null;
+            mView = LayoutInflater.from(mContext).inflate(
+                    com.android.systemui.R.layout.volume_panel, parent, false);
+        }
 
         mPanel = (ViewGroup) mView.findViewById(com.android.systemui.R.id.visible_panel);
         mSliderPanel = (ViewGroup) mView.findViewById(com.android.systemui.R.id.slider_panel);
@@ -465,42 +469,6 @@ public class VolumePanel extends Handler implements DemoMode {
         mPlayMasterStreamTones = masterVolumeOnly && masterVolumeKeySounds;
 
         registerReceiver();
-
-        mBlurUiSettingObserver.onChange(true);
-        //mContext.getContentResolver().registerContentObserver(
-            //Settings.System.getUriFor(Settings.System.BLUR_EFFECT_VOLUMECONTROL), false,
-          //  mBlurUiSettingObserver);
-    }
-
-    private ContentObserver mBlurUiSettingObserver = new ContentObserver(new Handler()) {
-        @Override
-        public void onChange(boolean selfChange) {
-            //mBlurUiEnabled = 1 == Settings.System.getInt(
-            //        mContext.getContentResolver(), Settings.System.BLUR_EFFECT_VOLUMECONTROL, 0);
-            setupVolumePanelBlur(mBlurUiEnabled);
-        }
-    };
-
-    private void setupVolumePanelBlur(boolean blurEnabled) {
-        if (mDialog == null || mDialog.getWindow() == null) return;
-
-        Window window = mDialog.getWindow();
-        if (blurEnabled) {
-            //window.addPrivateFlags(WindowManager.LayoutParams.PRIVATE_FLAG_BLUR_WITH_MASKING);
-            //window.setBlurMaskAlphaThreshold(0.48f);
-        } else {
-            //window.clearPrivateFlags(WindowManager.LayoutParams.PRIVATE_FLAG_BLUR_WITH_MASKING);
-        }
-
-        //View mainContainer = window.findViewById(com.android.systemui.R.id.volume_dialog_bg_container);
-       // mainContainer.setBackgroundResource(blurEnabled ?
-        //        com.android.systemui.R.drawable.volume_dialog_bg_translucent :
-         //       com.android.systemui.R.drawable.qs_background_primary);
-
-        View v1 = mSliderPanel;
-        v1.setBackground(null);
-        //View v2 = window.findViewById(com.android.systemui.R.id.zen_mode_panel_bg_container);
-        //v2.setBackground(null);
     }
 
     public VolumePanel(Context context, ZenModeController zenController) {

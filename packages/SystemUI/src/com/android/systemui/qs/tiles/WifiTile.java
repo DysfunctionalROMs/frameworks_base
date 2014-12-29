@@ -16,7 +16,9 @@
 
 package com.android.systemui.qs.tiles;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.provider.Settings;
@@ -53,11 +55,6 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
     }
 
     @Override
-    public boolean supportsDualTargets() {
-        return true;
-    }
-
-    @Override
     protected SignalState newTileState() {
         return new SignalState();
     }
@@ -85,9 +82,13 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
 
     @Override
     protected void handleClick() {
-        if (!isRadioProhibited()) {
+        if (Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.QS_WIFI_DETAIL, 0, ActivityManager.getCurrentUser()) == 1) {
+            showDetail(true);
+        } else {
             mState.copyTo(mStateBeforeClick);
             mController.setWifiEnabled(!mState.enabled);
+            qsCollapsePanel();
         }
     }
 
@@ -102,6 +103,11 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
             mState.enabled = true;
         }
         showDetail(true);
+    }
+
+    @Override
+    protected void handleLongClick() {
+        mHost.startSettingsActivity(WIFI_SETTINGS);
     }
 
     @Override

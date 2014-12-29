@@ -63,7 +63,7 @@ import com.android.systemui.statusbar.policy.WeatherControllerImpl;
 /**
  * The view to manage the header area in the expanded status bar.
  */
-public class StatusBarHeaderView extends RelativeLayout implements View.OnClickListener,
+public class StatusBarHeaderView extends RelativeLayout implements View.OnClickListener, View.OnLongClickListener,
         BatteryController.BatteryStateChangeCallback, NextAlarmController.NextAlarmChangeCallback,
         WeatherController.Callback {
 
@@ -164,6 +164,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         if (getResources().getBoolean(R.bool.config_showTaskManagerSwitcher)) {
             mTaskManagerButton = findViewById(R.id.task_manager_button);
         }
+	    mSettingsButton.setOnLongClickListener(this);
         mQsDetailHeader = findViewById(R.id.qs_detail_header);
         mQsDetailHeader.setAlpha(0);
         mQsDetailHeaderTitle = (TextView) mQsDetailHeader.findViewById(android.R.id.title);
@@ -561,6 +562,20 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         } else if (v == mWeatherContainer) {
             startForecastActivity();
         }
+        mQSPanel.vibrateTile(20);
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (v == mSettingsButton) {
+	    mSettingsButton.setLongClickable(true);
+	    Intent intent = new Intent(Intent.ACTION_MAIN);
+	    intent.setClassName("com.android.settings",
+				"com.android.settings.Settings$QSTilesSettingsActivity");
+            mActivityStarter.startActivity(intent,
+                    true /* dismissShade */);
+        }
+        return false;
     }
 
     private void startSettingsActivity() {
