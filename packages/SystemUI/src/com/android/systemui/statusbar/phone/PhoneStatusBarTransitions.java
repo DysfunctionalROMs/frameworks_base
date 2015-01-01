@@ -33,7 +33,7 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
     private final PhoneStatusBarView mView;
     private final float mIconAlphaWhenOpaque;
 
-    private View mLeftSide, mStatusIcons, mSignalCluster, mBattery, mClock, mCenterClock, mLeftClock;
+    private View mLeftSide, mTraffic, mStatusIcons, mSignalCluster, mBattery, mClock, mCenterClock, mLeftClock;
     private Animator mCurrentAnimation;
 
     public PhoneStatusBarTransitions(PhoneStatusBarView view) {
@@ -45,6 +45,7 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
 
     public void init() {
         mLeftSide = mView.findViewById(R.id.notification_icon_area);
+        mTraffic = mView.findViewById(R.id.traffic);
         mStatusIcons = mView.findViewById(R.id.statusIcons);
         if (TelephonyManager.getDefault().isMultiSimEnabled()) {
             mSignalCluster = mView.findViewById(R.id.msim_signal_cluster);
@@ -96,6 +97,7 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
             AnimatorSet anims = new AnimatorSet();
             anims.playTogether(
                     animateTransitionTo(mLeftSide, newAlpha),
+                    animateTransitionTo(mTraffic, newAlpha),
                     animateTransitionTo(mStatusIcons, newAlpha),
                     animateTransitionTo(mSignalCluster, newAlpha),
                     animateTransitionTo(mBattery, newAlphaBC),
@@ -110,6 +112,7 @@ public final class PhoneStatusBarTransitions extends BarTransitions {
             mCurrentAnimation = anims;
         } else {
             mLeftSide.setAlpha(newAlpha);
+            mTraffic.setAlpha(newAlpha);
             mStatusIcons.setAlpha(newAlpha);
             mSignalCluster.setAlpha(newAlpha);
             mBattery.setAlpha(newAlphaBC);
