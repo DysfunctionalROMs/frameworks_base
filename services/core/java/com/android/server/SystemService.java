@@ -80,7 +80,7 @@ public abstract class SystemService {
      */
     public static final int PHASE_BOOT_COMPLETED = 1000;
 
-    protected final Context mContext;
+    private final Context mContext;
 
     /**
      * Initializes the system service.
