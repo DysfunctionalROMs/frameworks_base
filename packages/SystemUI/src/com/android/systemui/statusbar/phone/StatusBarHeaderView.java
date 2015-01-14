@@ -836,7 +836,9 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             final boolean showingDetail = detail != null;
             transition(mClock, !showingDetail);
             transition(mDateGroup, !showingDetail);
-            transition(mWeatherContainer, !showingDetail);
+            if (mShowWeather) {
+                transition(mWeatherContainer, !showingDetail);
+            }
             if (mAlarmShowing) {
                 transition(mAlarmStatus, !showingDetail);
             }
@@ -862,7 +864,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             } else {
                 mQsDetailHeader.setClickable(false);
             }
-            mWeatherContainer.setVisibility(mExpanded && mShowWeather ? View.VISIBLE : View.GONE);
         }
 
         private void transition(final View v, final boolean in) {
