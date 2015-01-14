@@ -1166,10 +1166,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         return ViewConfiguration.get(mContext).getDeviceGlobalActionKeyTimeout();
     }
 
-    private void cancelPendingScreenshotChordAction() {
-        mHandler.removeCallbacks(mScreenshotRunnable);
-    }
-
     private void interceptScreenRecordChord() {
         if (mScreenRecordChordEnabled
                 && mVolumeUpKeyTriggered && mPowerKeyTriggered && !mVolumeDownKeyTriggered) {
@@ -1191,6 +1187,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     ViewConfiguration.getGlobalActionKeyTimeout());
         }
         return ViewConfiguration.getGlobalActionKeyTimeout();
+    }
+
+    private void cancelPendingScreenshotChordAction() {
+        mHandler.removeCallbacks(mScreenshotRunnable);
     }
 
     private void cancelPendingScreenRecordChordAction() {
@@ -4940,12 +4940,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                             mScreenshotChordVolumeDownKeyTime = event.getDownTime();
                             mScreenshotChordVolumeDownKeyConsumed = false;
                             cancelPendingPowerKeyAction();
-                            interceptScreenshotLog();
+                            cancelPendingScreenRecordChordAction();
                             interceptScreenshotChord();
                         }
                     } else {
                         mScreenshotChordVolumeDownKeyTriggered = false;
                         cancelPendingScreenshotChordAction();
+                        cancelPendingScreenRecordChordAction();
                     }
                 } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
                     if (down) {
@@ -4954,12 +4955,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                             mVolumeUpKeyTriggered = true;
                             mVolumeUpKeyTime = event.getDownTime();
                             mVolumeUpKeyConsumedByScreenshotChord = false;
-                            mVolumeUpKeyTriggered = false;
-                            cancelPendingScreenRecordChordAction();
+                            cancelPendingPowerKeyAction();
+                            cancelPendingScreenshotChordAction();
                             interceptScreenshotLog();
                         }
                     } else {
                         mVolumeUpKeyTriggered = false;
+                        cancelPendingScreenshotChordAction();
                         cancelPendingScreenRecordChordAction();
                     }
                 }
@@ -5119,7 +5121,19 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     interceptPowerKeyDown(!interactive || hungUp
                             || mVolumeDownKeyTriggered || mVolumeUpKeyTriggered);
                 } else {
-                    interceptPowerKeyUp(event, interactive, canceled);
+                    mPowerKeyTriggered = false;
+                    cancelPendingScreenshotChordAction();
+                    cancelPendingScreenRecordChordAction();
+                    if (interceptPowerKeyUp(canceled || mPendingPowerKeyUpCanceled)) {
+                        if (mScreenOnEarly && !mScreenOnFully) {
+                            Slog.i(TAG, "Suppressed redundant power key press while "
+                                    + "already in the process of turning the screen on.");
+                        } else {
+                            powerShortPress(event.getEventTime());
+                        }
+                        isWakeKey = false;
+                    }
+                    mPendingPowerKeyUpCanceled = false;
                 }
                 break;
             }
