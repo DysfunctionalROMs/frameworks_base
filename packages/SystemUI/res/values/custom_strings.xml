@@ -83,6 +83,8 @@
     <!-- expanded tile -->
     <string name="quick_settings_expanded_desktop">Expanded</string>
     <string name="quick_settings_expanded_desktop_off">Normal</string>
+    <!-- Visualizer Tile -->
+    <string name="quick_settings_visualizer_label">AudioFX</string>
 
     <!-- Navigation ring shortcuts -->
     <string name="navigation_ring_title">Quick launch shortcuts</string>
