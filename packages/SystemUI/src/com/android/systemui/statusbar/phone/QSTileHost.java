@@ -59,6 +59,7 @@ import com.android.systemui.qs.tiles.RebootTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.NavBarTile;
 import com.android.systemui.qs.tiles.AppCircleBarTile;
+import com.android.systemui.qs.tiles.SyncTile;
 import com.android.systemui.qs.tiles.WifiTile;
 import com.android.systemui.settings.CurrentUserTracker;
 import com.android.systemui.statusbar.policy.BluetoothController;
@@ -325,6 +326,8 @@ public class QSTileHost implements QSTile.Host {
                 return new AppCircleBarTile(this);
             case QSConstants.TILE_MUSIC:
                 return new MusicTile(this);
+            case QSConstants.TILE_SYNC:
+                return new SyncTile(this);
             default:
                 throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
         }
