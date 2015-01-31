@@ -139,5 +139,6 @@
     <string name="quick_settings_sync_label">Sync</string>
     <string name="quick_settings_battery_saver_label">Battery saver</string>
     <string name="quick_settings_screen_off">Screen off</string>
+    <string name="quick_settings_screenshot">Screenshot</string>
 
 </resources>
