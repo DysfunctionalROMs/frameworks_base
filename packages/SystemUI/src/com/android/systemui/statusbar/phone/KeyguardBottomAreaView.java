@@ -412,7 +412,6 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
         }
         if (!visible) {
             return;
-        }
         // TODO: Real icon for facelock.
        /* int iconRes = mUnlockMethodCache.isFaceUnlockRunning()
                 ? com.android.internal.R.drawable.ic_account_circle
@@ -429,6 +428,8 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
             }
             mLockIcon.setImageDrawable(icon);
         }*/
+            mLockIcon.updateColorSettings();
+        }
         boolean trustManaged = mUnlockMethodCache.isTrustManaged();
         mTrustDrawable.setTrustManaged(trustManaged);
         updateLockIconClickability();
@@ -520,6 +521,17 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
                 .setInterpolator(mLinearOutSlowInInterpolator)
                 .setStartDelay(delay)
                 .setDuration(DOZE_ANIMATION_ELEMENT_DURATION);
+    }
+
+    public void updateTextColor(int color) {
+        mIndicationText.setTextColor(color);
+
+    }
+
+    public void updateIconColor(int color) {
+        mCameraImageView.updateColorSettings(color);
+        mPhoneImageView.updateColorSettings(color);
+        mLockIcon.updateColorSettings(color);
     }
 
     private final BroadcastReceiver mDevicePolicyReceiver = new BroadcastReceiver() {
