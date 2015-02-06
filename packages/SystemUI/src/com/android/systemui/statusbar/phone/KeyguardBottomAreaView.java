@@ -412,6 +412,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
         }
         if (!visible) {
             return;
+		}
         // TODO: Real icon for facelock.
        /* int iconRes = mUnlockMethodCache.isFaceUnlockRunning()
                 ? com.android.internal.R.drawable.ic_account_circle
@@ -427,15 +428,12 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
                 icon = new IntrinsicSizeDrawable(icon, iconWidth, iconHeight);
             }
             mLockIcon.setImageDrawable(icon);
-        }*/
-            mLockIcon.updateColorSettings();
-        }
+        }*/            
         boolean trustManaged = mUnlockMethodCache.isTrustManaged();
         mTrustDrawable.setTrustManaged(trustManaged);
         updateLockIconClickability();
-    }
-
-
+        mLockIcon.updateColorSettings();
+	}
 
     public KeyguardAffordanceView getPhoneView() {
         return mPhoneImageView;
