@@ -228,4 +228,8 @@ public class KeyguardStatusBarView extends RelativeLayout
     public boolean hasOverlappingRendering() {
         return false;
     }
+
+    public void setBatteryLevelTextColor() {
+        mBatteryLevel.setTextColor(false);
+    }
 }
