@@ -44,14 +44,10 @@ public class QSConstants {
     public static final String TILE_APPCIRCLEBAR = "toggleAppCircleBar";
     public static final String TILE_MUSIC = "music";
     public static final String TILE_AMBIENT_DISPLAY = "ambient_display";
-<<<<<<< HEAD:core/java/com/android/internal/util/cm/QSConstants.java
     public static final String TILE_VISUALIZER = "visualizer";
     public static final String TILE_SCREEN_TIMEOUT = "screen_timeout";
     public static final String TILE_LED = "led";
-=======
-    public static final String TILE_SCREENSHOT = "screenshot";
     public static final String TILE_LIVE_DISPLAY = "live_display";
->>>>>>> a05bcc6... livedisplay: Implement active display adjustment:core/java/com/android/internal/util/slim/QSConstants.java
 
     // Order matters
     protected static final ArrayList<String> TILES_DEFAULT = new ArrayList<String>();

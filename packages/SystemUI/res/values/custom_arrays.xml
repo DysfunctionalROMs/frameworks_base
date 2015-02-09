@@ -36,6 +36,7 @@
         <item>0</item><item>20</item>
         <item>369</item><item>157</item>
         <item>369</item><item>0</item>
+    </array>
 
     <!-- LiveDisplay drawables -->
     <string-array name="live_display_drawables" translatable="false">
