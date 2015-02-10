@@ -3555,6 +3555,12 @@ public final class Settings {
          * String.
          */
         public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
+        
+        /**
+		 * Status bar greeting
+		 * @hide
+		 */
+		public static final String STATUS_BAR_GREETING = "status_bar_greeting";
 
         /**
          * Carrier Label Custom Color
