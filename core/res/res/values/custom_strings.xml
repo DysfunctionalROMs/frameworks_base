@@ -192,4 +192,9 @@
     <!-- [CHAR LIMIT=NONE] Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permdesc_changePhoneBlacklist">Allows an app to change the phone numbers that are blocked for incoming calls or messages.</string>
 
+    <!-- Notify use that they are in Lock-to-app (for devices without navbar) -->
+    <string name="lock_to_app_toast_no_navbar">To unpin this screen, touch and hold Menu button.</string>
+    <!-- Lock-to-app dialog description (for devices without navbar) -->
+    <string name="lock_to_app_description_no_navbar">Screen pinning locks the display in a single view.\n\nTo unpin, touch and hold Menu button.</string>
+
 </resources>

@@ -222,5 +222,8 @@
 
   <!-- Proximity check timeout -->
   <java-symbol type="integer" name="config_proximityCheckTimeout" />
+
+  <java-symbol type="string" name="lock_to_app_toast_no_navbar" />
+  <java-symbol type="string" name="lock_to_app_description_no_navbar" />
   
 </resources>
