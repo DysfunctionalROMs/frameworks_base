@@ -4690,6 +4690,7 @@ public class WindowManagerService extends IWindowManager.Stub
             }
 
             final long origId = Binder.clearCallingIdentity();
+            wtoken.inPendingTransaction = false;
             setTokenVisibilityLocked(wtoken, null, visible, AppTransition.TRANSIT_UNSET,
                     true, wtoken.voiceInteraction);
             wtoken.updateReportedVisibilityLocked();
