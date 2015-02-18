@@ -49,6 +49,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.internal.widget.LockPatternUtils;
+import com.android.internal.util.broken.LockscreenShortcutsHelper;
 import com.android.keyguard.KeyguardStatusView;
 import com.android.systemui.R;
 import com.android.systemui.qs.QSContainer;
@@ -1386,7 +1387,8 @@ public class NotificationPanelView extends PanelView implements
         final float w = getMeasuredWidth();
         float region = (w * (1.f/3.f)); // TODO overlay region fraction?
 
-        boolean showQsOverride = false;
+        boolean showQsOverride = isLayoutRtl() ? (x < region) : (w - region < x);
+        showQsOverride = showQsOverride && mStatusBarState == StatusBarState.SHADE;
 
         if (mOneFingerQuickSettingsInterceptMode == ONE_FINGER_QS_INTERCEPT_END) {
             showQsOverride = isLayoutRtl() ? (x < region) : (w - region < x);
@@ -1795,8 +1797,11 @@ public class NotificationPanelView extends PanelView implements
         mLaunchAnimationEndRunnable = null;
         if (start) {
             mKeyguardBottomArea.launchPhone();
-        } else {
+        } else if (!mKeyguardBottomArea.isTargetCustom(
+                LockscreenShortcutsHelper.Shortcuts.RIGHT_SHORTCUT)) {
             mSecureCameraLaunchManager.startSecureCameraLaunch();
+        } else {
+            mKeyguardBottomArea.launchCamera();
         }
         mStatusBar.startLaunchTransitionTimeout();
         mBlockTouches = true;
@@ -1831,9 +1836,9 @@ public class NotificationPanelView extends PanelView implements
         });
         boolean start = getLayoutDirection() == LAYOUT_DIRECTION_RTL ? right : !right;
         if (start) {
-            mStatusBar.onPhoneHintStarted();
+            mStatusBar.onPhoneHintStarted(mKeyguardBottomArea.getLeftHint());
         } else {
-            mStatusBar.onCameraHintStarted();
+            mStatusBar.onCameraHintStarted(mKeyguardBottomArea.getRightHint());
         }
     }
 
