@@ -55,4 +55,9 @@
     <!-- Boolean to enable Stylus gestures -->
     <bool name="config_stylusGestures">false</bool>
 
+    <!-- Default values for display color temperature -->
+    <integer name="config_dayColorTemperature">6500</integer>
+    <integer name="config_nightColorTemperature">4500</integer>
+    <integer name="config_outdoorAmbientLux">9000</integer>
+
 </resources>

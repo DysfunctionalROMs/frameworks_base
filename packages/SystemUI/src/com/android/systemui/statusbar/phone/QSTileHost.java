@@ -51,6 +51,7 @@ import com.android.systemui.qs.tiles.ExpandedDesktopTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
 import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.IntentTile;
+import com.android.systemui.qs.tiles.LiveDisplayTile;
 import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.NotificationsTile;
 import com.android.systemui.qs.tiles.NfcTile;
@@ -331,6 +332,8 @@ public class QSTileHost implements QSTile.Host {
                 return new ScreenTimeoutTile(this);
             case QSConstants.TILE_LED:
                 return new LedTile(this);
+            case QSConstants.TILE_LIVE_DISPLAY:
+                return new LiveDisplayTile(this);
             default:
                 throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
         }
