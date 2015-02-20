@@ -102,4 +102,8 @@
     <string name="select_application">Select application</string>
     <string name="lockscreen_target_empty">Empty</string>
 
+    <!-- NavBar tile -->
+    <string name="quick_settings_navbar_on">NavBar On</string>
+    <string name="quick_settings_navbar_off">NavBar Off</string>
+
 </resources>
