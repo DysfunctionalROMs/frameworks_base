@@ -49,6 +49,7 @@ import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.NfcTile;
+import com.android.systemui.qs.tiles.RebootTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.ScreenOffTile;
 import com.android.systemui.qs.tiles.ScreenshotTile;
@@ -300,6 +301,8 @@ public class QSTileHost implements QSTile.Host {
                 return new ScreenTimeoutTile(this);
             case QSConstants.TILE_SYNC:
                 return new SyncTile(this);
+            case QSConstants.TILE_REBOOT:
+                return new RebootTile(this);
             case QSConstants.TILE_BRIGHTNESS:
                 return new BrightnessTile(this);
             case QSConstants.TILE_BATTERY_SAVER:
