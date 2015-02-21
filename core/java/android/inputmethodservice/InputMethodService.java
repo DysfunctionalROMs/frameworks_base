@@ -25,9 +25,11 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.database.ContentObserver;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.os.SystemClock;
@@ -68,7 +70,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import com.android.internal.util.fusion.AnimationHelper;
+import com.android.internal.util.broken.AwesomeAnimationHelper;
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 
@@ -309,11 +311,15 @@ public class InputMethodService extends AbstractInputMethodService {
     int mStatusIcon;
     int mBackDisposition;
 
+    Handler mHandler;
+
     private Window mWindowIme;
     private int mAnimationDuration;
     private int mAnimationEnterIndex;
     private int mAnimationExitIndex;
     private int mInterpolatorIndex;
+    private boolean mExitOnly;
+    private boolean mReverseExit;
 
     private SettingsObserver mSettingsObserver;
 
@@ -1642,11 +1648,11 @@ public class InputMethodService extends AbstractInputMethodService {
     }
 
     private Animation retrieveAnimation(boolean enter){
-        int[] animArray = AnimationHelper.getAnimations(enter ? mAnimationEnterIndex : mAnimationExitIndex);
+        int[] animArray = AwesomeAnimationHelper.getAnimations(enter ? mAnimationEnterIndex : mAnimationExitIndex, mExitOnly, mReverseExit);
         int animInt = enter ? animArray[1] : animArray[0];
         if (animInt == 0) return null;
         Animation anim = AnimationUtils.loadAnimation(this, animInt);
-        Interpolator intplr= AnimationHelper.getInterpolator(this, mInterpolatorIndex);
+        Interpolator intplr= AwesomeAnimationHelper.getInterpolator(this, mInterpolatorIndex);
         if (intplr != null) anim.setInterpolator(intplr);
         if (mAnimationDuration > 0) {
             anim.setDuration(mAnimationDuration);
