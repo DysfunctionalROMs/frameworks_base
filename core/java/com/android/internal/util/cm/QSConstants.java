@@ -38,6 +38,7 @@ public class QSConstants {
     public static final String TILE_VOLUME = "volume_panel";
     public static final String TILE_SCREEN_TIMEOUT = "screen_timeout";
     public static final String TILE_SYNC = "sync";
+    public static final String TILE_REBOOT = "reboot";
     public static final String TILE_BRIGHTNESS = "brightness";
     public static final String TILE_BATTERY_SAVER = "battery_saver";
     public static final String TILE_SCREEN_OFF = "screen_off";
@@ -71,6 +72,7 @@ public class QSConstants {
         TILES_AVAILABLE.add(TILE_COMPASS);
         TILES_AVAILABLE.add(TILE_SCREEN_TIMEOUT);
         TILES_AVAILABLE.add(TILE_SYNC);
+        TILES_AVAILABLE.add(TILE_REBOOT);
         TILES_AVAILABLE.add(TILE_BRIGHTNESS);
         TILES_AVAILABLE.add(TILE_BATTERY_SAVER);
         TILES_AVAILABLE.add(TILE_SCREEN_OFF);
