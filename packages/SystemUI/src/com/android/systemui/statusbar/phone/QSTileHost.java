@@ -54,6 +54,7 @@ import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.NotificationsTile;
 import com.android.systemui.qs.tiles.NfcTile;
 import com.android.systemui.qs.tiles.RoamingTile;
+import com.android.systemui.qs.tiles.RebootTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.NavBarTile;
 import com.android.systemui.qs.tiles.AppCircleBarTile;
@@ -309,6 +310,8 @@ public class QSTileHost implements QSTile.Host {
                 return new CompassTile(this);
             case QSConstants.TILE_NFC:
                 return new NfcTile(this);
+            case QSConstants.TILE_REBOOT:
+                return new RebootTile(this);
             case QSConstants.TILE_BRIGHTNESS:
                 return new BrightnessTile(this);
             case QSConstants.TILE_BATTERY_SAVER:
