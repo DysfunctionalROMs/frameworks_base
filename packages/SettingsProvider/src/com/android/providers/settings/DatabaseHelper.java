@@ -2419,9 +2419,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         R.string.def_time_format);
             }
 
-            loadIntegerSetting(stmt, Settings.Secure.DEV_FORCE_SHOW_NAVBAR,
-                    R.integer.def_force_disable_navkeys);
-
             if (!TextUtils.isEmpty(mContext.getResources().getString(R.string.def_date_format))) {
                 loadStringSetting(stmt, Settings.System.DATE_FORMAT,
                         R.string.def_date_format);
@@ -2509,6 +2506,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             loadIntegerSetting(stmt, Settings.Secure.LONG_PRESS_TIMEOUT,
                     R.integer.def_long_press_timeout_millis);
 
+            loadIntegerSetting(stmt, Settings.Secure.DEV_FORCE_SHOW_NAVBAR,
+                    R.integer.def_force_disable_navkeys);
+
             loadBooleanSetting(stmt, Settings.Secure.TOUCH_EXPLORATION_ENABLED,
                     R.bool.def_touch_exploration_enabled);
 
@@ -2566,6 +2566,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             loadIntegerSetting(stmt, Settings.Secure.SLEEP_TIMEOUT,
                     R.integer.def_sleep_timeout);
+
+            loadIntegerSetting(stmt, Settings.Secure.DEV_FORCE_SHOW_NAVBAR,
+                    R.integer.def_force_disable_navkeys);
 
             if (!TextUtils.isEmpty(mContext.getResources().getString(R.string.def_input_method))) {
                 loadStringSetting(stmt, Settings.Secure.DEFAULT_INPUT_METHOD,
