@@ -2867,7 +2867,14 @@ public final class Settings {
         public static final String POWER_MENU_SILENT = "power_menu_silent";
 
         /**
+         * Swap volume buttons when the screen is rotated
+         * @hide
+         */
+        public static final String SWAP_VOLUME_BUTTONS_ON_ROTATION = "swap_volume_buttons_on_rotation";
+
+        /**
          * Whether to include options in power menu for rebooting into recovery and bootloader
+         *
          * @hide
          */
         public static final String ADVANCED_REBOOT = "advanced_reboot";
