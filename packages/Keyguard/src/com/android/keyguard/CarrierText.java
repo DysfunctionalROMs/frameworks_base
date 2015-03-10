@@ -135,43 +135,13 @@ public class CarrierText extends TextView {
                 displayText = concatenate(displayText, carrierTextForSimState, " | ");
             }
         }
-        if (allSimsMissing) {
-            if (N != 0) {
-                // Shows "No SIM card | Emergency calls only" on devices that are voice-capable.
-                // This depends on mPlmn containing the text "Emergency calls only" when the radio
-                // has some connectivity. Otherwise, it should be null or empty and just show
-                // "No SIM card"
-                // Grab the first subscripton, because they all should contain the emergency text,
-                // described above.
-                displayText =  makeCarrierStringOnEmergencyCapable(
-                        getContext().getText(R.string.keyguard_missing_sim_message_short),
-                        mKeyguardUpdateMonitor.getTelephonyPlmn(subs.get(0).getSubscriptionId()));
-            } else {
-                // We don't have a SubscriptionInfo to get the emergency calls only from.
-                // Grab it from the old sticky broadcast if possible instead. We can use it
-                // here because no subscriptions are active, so we don't have
-                // to worry about MSIM clashing.
-                CharSequence text =
-                        getContext().getText(com.android.internal.R.string.emergency_calls_only);
-                Intent i = getContext().registerReceiver(null,
-                        new IntentFilter(TelephonyIntents.SPN_STRINGS_UPDATED_ACTION));
-                if (i != null) {
-                    String spn = "";
-                    String plmn = "";
-                    if (i.getBooleanExtra(TelephonyIntents.EXTRA_SHOW_SPN, false)) {
-                        spn = i.getStringExtra(TelephonyIntents.EXTRA_SPN);
-                    }
-                    if (i.getBooleanExtra(TelephonyIntents.EXTRA_SHOW_PLMN, false)) {
-                        plmn = i.getStringExtra(TelephonyIntents.EXTRA_PLMN);
-                    }
-                    if (DEBUG) Log.d(TAG, "Getting plmn/spn sticky brdcst " + plmn + "/" + spn);
-                    text = concatenate(plmn, spn);
-                }
-                displayText =  makeCarrierStringOnEmergencyCapable(
-                        getContext().getText(R.string.keyguard_missing_sim_message_short), text);
+        updateCarrierView.setText(text != null ? text.toString() : null);
+
+        for (int i = 0; i < mNumPhones-1; i++) {
+            if (mOperatorSeparator[i] != null) {
+                mOperatorSeparator[i].setText("|");
             }
         }
-        setText(displayText);
     }
 
     @Override
@@ -183,6 +153,17 @@ public class CarrierText extends TextView {
 
         final boolean screenOn = KeyguardUpdateMonitor.getInstance(mContext).isScreenOn();
         setSelected(screenOn); // Allow marquee to work.
+
+        for (int i = 0; i < mNumPhones; i++) {
+            mOperatorName[i] = (TextView) findViewById(operatorNameId[i]);
+            mOperatorName[i].setVisibility(View.VISIBLE);
+            mOperatorName[i].setSelected(true);
+            if (i < mNumPhones-1) {
+                mOperatorSeparator[i] = (TextView) findViewById(operatorSepId[i]);
+                mOperatorSeparator[i].setVisibility(View.VISIBLE);
+            }
+        }
+        mAirplaneModeText = (TextView) findViewById(R.id.airplane_mode);
     }
 
     @Override
