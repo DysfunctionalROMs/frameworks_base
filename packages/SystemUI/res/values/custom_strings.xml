@@ -51,4 +51,7 @@
     <string name="accessibility_dpad_right">Cursor right</string>
     <string name="accessibility_power">Power</string>
 
+    <!-- missing string for battery text -->
+    <string name="battery_level_template"><xliff:g id="level" example="45">%d</xliff:g>%%</string>
+
 </resources>
