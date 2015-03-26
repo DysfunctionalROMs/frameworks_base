@@ -81,9 +81,10 @@ public class StatusBarIconController implements Tunable {
     private BatteryLevelTextView mBatteryLevelTextView;
     private BatteryMeterView mBatteryMeterView;
     private TextView mClock;
-    // Center clock
+    // Left or center clock
     private LinearLayout mCenterClockLayout;
-    private TextView mCclock;
+    private TextView mCenterClock;
+    private TextView mLeftClock;
     private boolean mShowClock;
     private int mClockLocation;
 
@@ -132,8 +133,9 @@ public class StatusBarIconController implements Tunable {
                 (BatteryLevelTextView) statusBar.findViewById(R.id.battery_level_text);
         mBatteryMeterView = (BatteryMeterView) statusBar.findViewById(R.id.battery);
         mClock = (TextView) statusBar.findViewById(R.id.clock);
-        mCenterClockLayout = (LinearLayout)statusBar.findViewById(R.id.center_clock_layout);
-        mClock = (TextView) statusBar.findViewById(R.id.center_clock);
+        mCenterClock = (TextView) statusBar.findViewById(R.id.center_clock);
+        mLeftClock = (TextView) statusBar.findViewById(R.id.left_clock);
+        mCenterClockLayout = (LinearLayout)statusBar.findViewById(R.id.center_clock_layout); 
         mLinearOutSlowIn = AnimationUtils.loadInterpolator(mContext,
                 android.R.interpolator.linear_out_slow_in);
         mFastOutSlowIn = AnimationUtils.loadInterpolator(mContext,
@@ -289,8 +291,11 @@ public class StatusBarIconController implements Tunable {
         if (clockLocation == 0 && mClock != null) {
             mClock.setVisibility(visible ? (showClock ? View.VISIBLE : View.GONE) : View.GONE);
         }
-        if (clockLocation == 1 && mCclock != null) {
-            mCclock.setVisibility(visible ? (showClock ? View.VISIBLE : View.GONE) : View.GONE);
+        if (clockLocation == 1 && mCenterClock != null) {
+            mCenterClock.setVisibility(visible ? (showClock ? View.VISIBLE : View.GONE) : View.GONE);
+        }
+        if (clockLocation == 2 && mLeftClock != null) {
+            mLeftClock.setVisibility(visible ? (showClock ? View.VISIBLE : View.GONE) : View.GONE);
         }
     }
 
