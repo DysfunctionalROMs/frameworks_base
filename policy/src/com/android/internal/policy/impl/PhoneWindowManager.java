@@ -1166,7 +1166,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mHandler.removeCallbacks(mScreenshotRunnable);
     }
 
-    private final Runnable mPowerLongPress = new Runnable() {
+    private final Runnable mEndCallLongPress = new Runnable() {
         @Override
         public void run() {
             mEndCallKeyHandled = true;
@@ -4873,15 +4873,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     if (down) {
                         if (interactive && !mScreenshotChordVolumeUpKeyTriggered
                                 && (event.getFlags() & KeyEvent.FLAG_FALLBACK) == 0) {
-                            mVolumeUpKeyTriggered = true;
-                            mVolumeUpKeyTime = event.getDownTime();
-                            mVolumeUpKeyConsumedByScreenshotChord = false;
+                            mScreenshotChordVolumeUpKeyTriggered = true;
                             cancelPendingPowerKeyAction();
                             cancelPendingScreenshotChordAction();
-                            interceptScreenshotLog();
                         }
                     } else {
-                        mVolumeUpKeyTriggered = false;
+                        mScreenshotChordVolumeUpKeyTriggered = false;
                         cancelPendingScreenshotChordAction();
                     }
                 }
@@ -5014,44 +5011,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 result &= ~ACTION_PASS_TO_USER;
                 isWakeKey = false; // wake-up will be handled separately
                 if (down) {
-                    if (interactive && !mPowerKeyTriggered
-                            && (event.getFlags() & KeyEvent.FLAG_FALLBACK) == 0) {
-                        mPowerKeyTriggered = true;
-                        mPowerKeyTime = event.getDownTime();
-                        interceptScreenshotChord();
-                        interceptScreenshotLog();
-                    }
-
-                    TelecomManager telecomManager = getTelecommService();
-                    boolean hungUp = false;
-                    if (telecomManager != null) {
-                        if (telecomManager.isRinging()) {
-                            // Pressing Power while there's a ringing incoming
-                            // call should silence the ringer.
-                            telecomManager.silenceRinger();
-                        } else if ((mIncallPowerBehavior
-                                & Settings.Secure.INCALL_POWER_BUTTON_BEHAVIOR_HANGUP) != 0
-                                && telecomManager.isInCall() && interactive) {
-                            // Otherwise, if "Power button ends call" is enabled,
-                            // the Power button will hang up any current active call.
-                            hungUp = telecomManager.endCall();
-                        }
-                    }
-                    interceptPowerKeyDown(!interactive || hungUp
-                            || mVolumeDownKeyTriggered || mVolumeUpKeyTriggered);
+                    interceptPowerKeyDown(event, interactive);
                 } else {
-                    mPowerKeyTriggered = false;
-                    cancelPendingScreenshotChordAction();
-                    if (interceptPowerKeyUp(canceled || mPendingPowerKeyUpCanceled)) {
-                        if (mScreenOnEarly && !mScreenOnFully) {
-                            Slog.i(TAG, "Suppressed redundant power key press while "
-                                    + "already in the process of turning the screen on.");
-                        } else {
-                            powerShortPress(event.getEventTime());
-                        }
-                        isWakeKey = false;
-                    }
-                    mPendingPowerKeyUpCanceled = false;
+                    interceptPowerKeyUp(event, interactive, canceled);
                 }
                 break;
             }
