@@ -387,7 +387,7 @@ public class AudioSystem
                                              DEVICE_IN_LOOPBACK |
 											 DEVICE_IN_PROXY |
                                              DEVICE_IN_FM_RX |
-                                             DEVICE_IN_FM_RX_A2DP 
+                                             DEVICE_IN_FM_RX_A2DP |
                                              DEVICE_IN_DEFAULT);
     public static final int DEVICE_IN_ALL_SCO = DEVICE_IN_BLUETOOTH_SCO_HEADSET;
     public static final int DEVICE_IN_ALL_USB = (DEVICE_IN_USB_ACCESSORY |
@@ -422,7 +422,7 @@ public class AudioSystem
     public static final String DEVICE_OUT_FM_NAME = "fm_transmitter";
     public static final String DEVICE_OUT_AUX_LINE_NAME = "aux_line";
     public static final String DEVICE_OUT_FM_TX_NAME = "fm_tx";
-    public static final String DEVICE_OUT_PROXY_NAME = "proxy"
+    public static final String DEVICE_OUT_PROXY_NAME = "proxy";
     public static final String DEVICE_OUT_SPEAKER_SAFE_NAME = "speaker_safe";
     public static final String DEVICE_OUT_FM_TX_NAME = "fm_tx";
     public static final String DEVICE_OUT_PROXY_NAME = "proxy";
