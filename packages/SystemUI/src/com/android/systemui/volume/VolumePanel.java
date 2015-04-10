@@ -482,7 +482,7 @@ public class VolumePanel extends Handler implements DemoMode {
                 com.android.systemui.R.drawable.volume_dialog_bg_translucent);
 
             mSliderPanel.setBackground(null);
-            window.findViewById(com.android.systemui.R.id.zen_mode_panel_bg_container)
+            window.findViewById(com.android.systemui.R.id.zen_buttons_container)
                 .setBackground(null);
         }
     }
