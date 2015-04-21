@@ -5889,7 +5889,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mBootMsgDialog.show();
                 }
                 mBootMsgDialog.setMessage("It could be worse...\n\n" + msg
-                + "\n\nIt could be CM...");
+                + "\n\nWe could be CM...");
             }
         });
     }
