@@ -5896,8 +5896,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mBootMsgDialog.setCancelable(false);
                     mBootMsgDialog.show();
                 }
-                mBootMsgDialog.setMessage("It could be worse...\n\n" + msg
-                + "\n\nWe could be CM...");
+                mBootMsgDialog.setMessage("The system is\n\n" + msg
+                + "\n\nwhile preparing for boot...");
             }
         });
     }
