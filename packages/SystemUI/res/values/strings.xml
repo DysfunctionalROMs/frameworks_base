@@ -430,10 +430,6 @@
     <string name="accessibility_quick_settings_airplane_changed_off">Airplane mode turned off.</string>
     <!-- Announcement made when the airplane mode changes to on (not shown on the screen). [CHAR LIMIT=NONE] -->
     <string name="accessibility_quick_settings_airplane_changed_on">Airplane mode turned on.</string>
-    <!-- Content description of the mobile data tile in quick settings when off (not shown on the screen). [CHAR LIMIT=NONE] -->
-    <string name="accessibility_quick_settings_data_off">Mobile data off.</string>
-    <!-- Content description of the mobile data tile in quick settings when on (not shown on the screen). [CHAR LIMIT=NONE] -->
-    <string name="accessibility_quick_settings_data_on">Mobile data on.</string>
     <!-- Content description of the roaming tile in quick settings when off (not shown on the screen). [CHAR LIMIT=NONE] -->
     <string name="accessibility_quick_settings_roaming_off">Roaming off.</string>
     <!-- Content description of the roaming tile in quick settings when on (not shown on the screen). [CHAR LIMIT=NONE] -->
@@ -562,8 +558,6 @@
 
     <!-- QuickSettings: Airplane mode [CHAR LIMIT=NONE] -->
     <string name="quick_settings_airplane_mode_label">Airplane mode</string>
-    <!-- QuickSettings: Mobile data [CHAR LIMIT=NONE] -->
-    <string name="quick_settings_mobile_data_label">Mobile data</string>
     <!-- QuickSettings: Roaming [CHAR LIMIT=NONE] -->
     <string name="quick_settings_roaming_label">Roaming</string>
     <!-- QuickSettings: Battery Charging [CHAR LIMIT=NONE] -->
