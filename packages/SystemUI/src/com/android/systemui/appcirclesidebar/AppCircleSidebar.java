@@ -25,7 +25,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.*;
 
-import com.android.systemui.terminus.TriggerOverlayView;
+import com.android.systemui.broken.TriggerOverlayView;
 import com.android.systemui.R;
 
 import java.util.ArrayList;

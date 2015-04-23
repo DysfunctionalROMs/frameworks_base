@@ -747,7 +747,7 @@
     <string name="permdesc_subscribedFeedsRead" msgid="5557058907906144505">"Leidžiama programai gauti išsamios informacijos apie šiuo metu sinchronizuojamus sklaidos kanalus."</string>
     <string name="permlab_subscribedFeedsWrite" msgid="9015246325408209296">"rašyti prenumeruojamus kanalus"</string>
     <string name="permdesc_subscribedFeedsWrite" msgid="6928930188826089413">"Leidžiama programai keisti šiuo metu sinchronizuojamus sklaidos kanalus. Kenkėjiškos programos gali pakeisti sinchronizuojamus sklaidos kanalus."</string>
-    <string name="permlab_readDictionary" msgid="4107101525746035718">"skaityti terminus, kuriuos pridėjote į žodyną"</string>
+    <string name="permlab_readDictionary" msgid="4107101525746035718">"skaityti broken, kuriuos pridėjote į žodyną"</string>
     <string name="permdesc_readDictionary" msgid="659614600338904243">"Leidžiama programai skaityti visus žodžius, vardus ir frazes, kuriuos naudotojas išsaugojo naudotojo žodyne."</string>
     <string name="permlab_writeDictionary" msgid="2183110402314441106">"pridėti žodžių prie naudotojo apibrėžto žodyno"</string>
     <string name="permdesc_writeDictionary" msgid="8185385716255065291">"Leidžiama programai rašyti naujus žodžius į naudotojo žodyną."</string>
