@@ -81,8 +81,6 @@ public class KeyButtonView extends ImageView {
 
     private boolean mPerformedLongClick;
 
-    private boolean mPerformedLongClick;
-
     private boolean mShouldTintIcons = true;
 
     private final Runnable mCheckLongPress = new Runnable() {

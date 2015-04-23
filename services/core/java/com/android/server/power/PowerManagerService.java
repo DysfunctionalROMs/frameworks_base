@@ -447,9 +447,6 @@ public final class PowerManagerService extends SystemService
     //track the blocked uids.
     private final ArrayList<Integer> mBlockedUids = new ArrayList<Integer>();
 
-    //track the blocked uids.
-    private final ArrayList<Integer> mBlockedUids = new ArrayList<Integer>();
-
     private native void nativeInit();
 
     private static native void nativeAcquireSuspendBlocker(String name);
@@ -951,21 +948,6 @@ public final class PowerManagerService extends SystemService
                 wakeLock.updateWorkSource(ws);
             }
         }
-    }
-
-    private boolean checkWorkSourceObjectId(int uid, WakeLock wl) {
-        try {
-            for (int index = 0; index < wl.mWorkSource.size(); index++) {
-                if (uid == wl.mWorkSource.get(index)) {
-                    if (DEBUG_SPEW) Slog.v(TAG, "WS uid matched");
-                    return true;
-                }
-            }
-        }
-        catch (Exception e) {
-            return false;
-        }
-        return false;
     }
 
     private int findWakeLockIndexLocked(IBinder lock) {

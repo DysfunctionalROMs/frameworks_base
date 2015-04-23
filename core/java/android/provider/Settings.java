@@ -2724,6 +2724,13 @@ public final class Settings {
         public static final String LOCK_TO_APP_ENABLED = "lock_to_app_enabled";
 
         /**
+         * Enable looking up of phone numbers of people
+         *
+         * @hide
+         */
+        public static final String ENABLE_PEOPLE_LOOKUP = "enable_people_lookup";
+
+        /**
          * I am the lolrus.
          * <p>
          * Nonzero values indicate that the user has a bukkit.
@@ -2731,12 +2738,6 @@ public final class Settings {
          * @hide
          */
         public static final String EGG_MODE = "egg_mode";
-
-        /**
-         * Disable ads (HFM)
-         *  @hide
-         */
-        public static final String HFM_DISABLE_ADS = "hfm_disable_ads";
 
         /**
          * Show or hide clock
@@ -2975,10 +2976,10 @@ public final class Settings {
 
         /**
          * Ad blocker
-	 * Disable ads (HFM)
-	 * @hide
-	 */
-	public static final String HFM_DISABLE_ADS = "hfm_disable_ads";
+	     * Disable ads (HFM)
+	     * @hide
+	     */
+	    public static final String HFM_DISABLE_ADS = "hfm_disable_ads";
 
         /**
          * show clear all recents button
@@ -5306,7 +5307,7 @@ public final class Settings {
             MOUNT_UMS_NOTIFY_ENABLED,
             UI_NIGHT_MODE,
             SLEEP_TIMEOUT,
-            PRIVACY_GUARD_DEFAULT
+            PRIVACY_GUARD_DEFAULT,
             STATUS_BAR_LOCKED_ON_SECURE_KEYGUARD,
             LOCKSCREEN_QUICK_UNLOCK_CONTROL
         };

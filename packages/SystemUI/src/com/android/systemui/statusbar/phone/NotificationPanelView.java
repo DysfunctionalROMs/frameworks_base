@@ -157,6 +157,7 @@ public class NotificationPanelView extends PanelView implements
 
     private boolean mBlockTouches;
     private int mNotificationScrimWaitDistance;
+    private boolean mQsExpandImmediate;
     private boolean mTwoFingerQsExpand;
     private boolean mTwoFingerQsExpandPossible;
 
