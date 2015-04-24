@@ -33,6 +33,7 @@ import android.graphics.drawable.Drawable;
 import android.telephony.TelephonyManager;
 import android.net.Uri;
 import android.os.Handler;
+import android.provider.AlarmClock;
 import android.provider.CalendarContract.Events;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;

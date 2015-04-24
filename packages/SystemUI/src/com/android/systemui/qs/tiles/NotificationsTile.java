@@ -34,19 +34,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
-<<<<<<< HEAD
-=======
-import android.provider.Settings;
->>>>>>> 0ec9e2d... Customizeable QS Tiles (1/2) Squashed
 import android.provider.Settings.Global;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
-<<<<<<< HEAD
-=======
-import android.os.Vibrator;
->>>>>>> 0ec9e2d... Customizeable QS Tiles (1/2) Squashed
 
 import com.android.systemui.R;
 import com.android.systemui.qs.QSTile;
@@ -57,43 +49,15 @@ import com.android.systemui.volume.ZenModePanel;
 
 /** Quick settings tile: Notifications **/
 public class NotificationsTile extends QSTile<NotificationsTile.NotificationsState> {
-<<<<<<< HEAD
     private final ZenModeController mZenController;
     private final AudioManager mAudioManager;
 
     private boolean mListening;
 
-=======
-    private static final Intent SOUND_SETTINGS = new Intent(Settings.ACTION_SOUND_SETTINGS);
-    private final ZenModeController mZenController;
-    private final AudioManager mAudioManager;
-    private final Vibrator mVibrator;
-
-    private boolean mListening;
-
-    private static final int[] RINGERS = new int[] {
-        AudioManager.RINGER_MODE_NORMAL,
-        AudioManager.RINGER_MODE_VIBRATE,
-        AudioManager.RINGER_MODE_SILENT,
-        AudioManager.RINGER_MODE_SILENT
-    };
-    private static final int[] ZENS = new int[] {
-        Global.ZEN_MODE_OFF,
-        Global.ZEN_MODE_OFF,
-        Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS,
-        Global.ZEN_MODE_NO_INTERRUPTIONS
-    };
-    private int mRingerIndex;
-
->>>>>>> 0ec9e2d... Customizeable QS Tiles (1/2) Squashed
     public NotificationsTile(Host host) {
         super(host);
         mZenController = host.getZenModeController();
         mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-<<<<<<< HEAD
-=======
-        mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
->>>>>>> 0ec9e2d... Customizeable QS Tiles (1/2) Squashed
     }
 
     @Override
@@ -122,36 +86,6 @@ public class NotificationsTile extends QSTile<NotificationsTile.NotificationsSta
 
     @Override
     protected void handleClick() {
-<<<<<<< HEAD
-=======
-        mRingerIndex++;
-        if (mRingerIndex >= RINGERS.length) {
-            mRingerIndex = 0;
-        }
-        int ringerMode = RINGERS[mRingerIndex];
-        int zenMode = ZENS[mRingerIndex];
-
-        // If we are setting a vibrating state, vibrate to indicate it
-        if (ringerMode == AudioManager.RINGER_MODE_VIBRATE && mVibrator != null) {
-            boolean hasVibrator = mVibrator.hasVibrator();
-            if (hasVibrator) {
-                mVibrator.vibrate(200);
-            }
-        }
-
-        mAudioManager.setRingerMode(ringerMode);
-        mZenController.setZen(zenMode);
-    }
-
-    @Override
-    protected void handleLongClick() {
-        super.handleLongClick();
-        showDetail(true);
-    }
-
-    @Override
-    protected void handleSecondaryClick() {
->>>>>>> 0ec9e2d... Customizeable QS Tiles (1/2) Squashed
         showDetail(true);
     }
 
@@ -160,7 +94,6 @@ public class NotificationsTile extends QSTile<NotificationsTile.NotificationsSta
         state.visible = true;
         state.zen = mZenController.getZen();
         state.ringerMode = mAudioManager.getRingerMode();
-<<<<<<< HEAD
         state.iconId = getNotificationIconId(state.zen, state.ringerMode);
         state.label = mContext.getString(R.string.quick_settings_notifications_label);
     }
@@ -177,20 +110,6 @@ public class NotificationsTile extends QSTile<NotificationsTile.NotificationsSta
             retValue = R.drawable.ic_qs_ringer_silent;
         }
         return retValue;
-=======
-        state.label = mContext.getString(R.string.quick_settings_notifications_label);
-        if (state.zen == Global.ZEN_MODE_NO_INTERRUPTIONS) {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_zen_on);
-        } else if (state.zen == Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS){
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_zen_important);
-        } else if (state.ringerMode == AudioManager.RINGER_MODE_NORMAL) {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_ringer_audible);
-        } else if (state.ringerMode == AudioManager.RINGER_MODE_VIBRATE) {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_ringer_vibrate);
-        } else if (state.ringerMode == AudioManager.RINGER_MODE_SILENT) {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_ringer_silent);
-        }
->>>>>>> 0ec9e2d... Customizeable QS Tiles (1/2) Squashed
     }
 
     private final ZenModeController.Callback mCallback = new ZenModeController.Callback() {
