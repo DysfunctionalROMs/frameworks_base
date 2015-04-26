@@ -34,6 +34,7 @@ import com.android.internal.util.cm.QSUtils;
 import com.android.systemui.R;
 import com.android.systemui.qs.QSTile;
 import com.android.systemui.qs.tiles.AirplaneModeTile;
+import com.android.systemui.qs.tiles.AmbientDisplayTile;
 import com.android.systemui.qs.tiles.BatterySaverTile;
 import com.android.systemui.qs.tiles.BluetoothTile;
 import com.android.systemui.qs.tiles.BrightnessTile;
@@ -305,6 +306,8 @@ public class QSTileHost implements QSTile.Host {
                 return new ScreenOffTile(this);
             case QSConstants.TILE_VOLUME:
                 return new VolumeTile(this);
+            case QSConstants.TILE_AMBIENT_DISPLAY:
+                return new AmbientDisplayTile(this);
             default:
                 throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
         }
