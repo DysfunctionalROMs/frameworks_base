@@ -477,10 +477,6 @@ public class VolumePanel extends Handler implements DemoMode {
         this(context, null, zenController);
     }
 
-    public VolumePanel(Context context, ZenModeController zenController) {
-        this(context, null, zenController);
-    }
-
     public void onConfigurationChanged(Configuration newConfig) {
         updateWidth();
         if (mZenPanel != null) {
@@ -540,10 +536,6 @@ public class VolumePanel extends Handler implements DemoMode {
         if (mZenPanel != null) {
             mZenPanel.dump(fd, pw, args);
         }
-    }
-
-    public View getContentView() {
-        return mView;
     }
 
     public View getContentView() {
