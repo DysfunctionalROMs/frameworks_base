@@ -3066,43 +3066,6 @@ public final class Settings {
         public static final String NAVIGATION_BAR_HEIGHT = "navigation_bar_height";
 
         /**
-         * Show when WiFi or data mobile is sending/receiving data
-         * @hide
-         */
-        public static final String STATUS_BAR_SHOW_NETWORK_ACTIVITY = "status_bar_show_network_activity";
-
-        /**
-         * Color of the network icons on statusbar
-         * @hide
-         */
-        public static final String STATUS_BAR_NETWORK_ICONS_NORMAL_COLOR = "status_bar_network_icons_normal_color";
-
-        /**
-         * Color of the network icons on statusbar while fully connected
-         * @hide
-         */
-        public static final String STATUS_BAR_NETWORK_ICONS_FULLY_COLOR = "status_bar_network_icons_fully_color";
-
-        /**
-         * Color of the activity indicator on statusbar
-         * @hide
-         */
-        public static final String STATUS_BAR_NETWORK_ACTIVITY_ICONS_NORMAL_COLOR = "status_bar_network_activity_fully_color";
-
-        /**
-         * Color of the activity indicator on statusbar while fully connected
-         * @hide
-         */
-        public static final String STATUS_BAR_NETWORK_ACTIVITY_ICONS_FULLY_COLOR = "status_bar_network_activity_normal_color";
-
-        /**
-         * Color of the airplane mode icon on statusbar
-         * @hide
-         */
-        public static final String STATUS_BAR_AIRPLANE_MODE_ICON_COLOR = "status_bar_airplane_mode_icon_color";
-
-
-        /**
          * Navigation bar button color
          * @hide
          */
