@@ -127,23 +127,12 @@ public class DeviceUtils {
     }
 
     private static boolean isSupportedFeature(Context context, String action) {
-<<<<<<< HEAD
         if (action.equals(ActionConstants.ACTION_TORCH)
                         && !deviceSupportsTorch(context)
                 || action.equals(ActionConstants.ACTION_VIB)
                         && !deviceSupportsVibrator(context)
                 || action.equals(ActionConstants.ACTION_VIB_SILENT)
                         && !deviceSupportsVibrator(context)) {
-=======
-        if (action.equals(SlimActionConstants.ACTION_TORCH)
-                        && !deviceSupportsTorch(context)
-                || action.equals(SlimActionConstants.ACTION_VIB)
-                        && !deviceSupportsVibrator(context)
-                || action.equals(SlimActionConstants.ACTION_VIB_SILENT)
-                        && !deviceSupportsVibrator(context)
-                || action.equals(SlimActionConstants.ACTION_SMART_PULLDOWN)
-                        && isTablet(context)) {
->>>>>>> 96453b4... Frameworks: Add several Slim helper classes and constants back
             return false;
         }
         return true;
