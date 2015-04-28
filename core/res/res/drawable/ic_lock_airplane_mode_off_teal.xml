@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
+ * Copyright (C) 2014 BrokenOs
+ *
  * Copyright 2013, The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +20,6 @@
 -->
 
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-    android:src="@drawable/ic_audio_notification_am_alpha"
+    android:src="@drawable/ic_lock_airplane_mode_off_am_alpha"
     android:autoMirrored="true"
-    android:fillColor="?android:attr/colorControlNormal"
     android:tint="@*android:color/material_deep_teal_500" />
