@@ -51,9 +51,6 @@
     <string name="accessibility_dpad_right">Cursor right</string>
     <string name="accessibility_power">Power</string>
 
-    <!-- missing string for battery text -->
-    <string name="battery_level_template"><xliff:g id="level" example="45">%d</xliff:g>%%</string>
-
     <!-- Data Tile -->
     <string name="quick_settings_mobile_data_label">Mobile data</string>
     <string name="accessibility_quick_settings_data_on">Mobile data on</string>
@@ -104,4 +101,5 @@
     <string name="navring_choose_action_title">Choose action</string>
     <string name="select_application">Select application</string>
     <string name="lockscreen_target_empty">Empty</string>
+
 </resources>
