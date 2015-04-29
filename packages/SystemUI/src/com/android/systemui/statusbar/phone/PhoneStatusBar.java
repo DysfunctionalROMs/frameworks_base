@@ -72,6 +72,7 @@ import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.MediaSessionManager;
 import android.media.session.PlaybackState;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -412,10 +413,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
-            //resolver.registerContentObserver(Settings.System.getUriFor(
-            //        Settings.System.STATUS_BAR_BATTERY_STYLE), false, this);
-            //resolver.registerContentObserver(Settings.System.getUriFor(
-            //        Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT), false, this);
             update();
         }
 

@@ -448,7 +448,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     @Override
     public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
         mBatteryLevel.setText(getResources().getString(R.string.battery_level_template, level));
-        mBatteryCharging = charging;
     }
 
     @Override
@@ -991,21 +990,4 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             updateVisibilities();
         }
     }
-
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        getContext().getContentResolver().registerContentObserver(Settings.System.getUriFor(
-                "status_bar_show_battery_percent"), false, mObserver);
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-
-        if (mBatteryController != null) {
-            mBatteryController.removeStateChangedCallback(this);
-        }
-    }
-
 }
