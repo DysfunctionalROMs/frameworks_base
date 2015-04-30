@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.telephony.PhoneStateListener;
 import android.telephony.ServiceState;
@@ -196,9 +197,9 @@ public class NetworkControllerImpl extends BroadcastReceiver
     private int mCurrentUserId;
 
     public interface SignalCluster {
-        void setWifiIndicators(boolean visible, int strengthIcon,
+        void setWifiIndicators(boolean visible, int strengthIcon, int inetCondition,
 		int activityIcon, String contentDescription);
-        void setMobileDataIndicators(boolean visible, int strengthIcon,
+        void setMobileDataIndicators(boolean visible, int strengthIcon, int inetCondition,
 	        int activityIcon, int typeIcon, String contentDescription,
 		String typeContentDescription, boolean roaming,
                 boolean isTypeIconWide, int noSimIcon);
@@ -458,6 +459,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
                 // only show wifi in the cluster if connected or if wifi-only
                 mWifiEnabled && (mWifiConnected || !mHasMobileDataFeature || mAppopsStrictEnabled),
                 mWifiIconId,
+                mInetCondition,
                 mWifiActivityIconId,
                 mContentDescriptionWifi);
 
@@ -466,6 +468,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
             cluster.setMobileDataIndicators(
                     true,
                     mAlwaysShowCdmaRssi ? mPhoneSignalIconId : mWimaxIconId,
+                    mInetCondition,
                     mMobileActivityIconId,
                     mDataTypeIconId,
                     mContentDescriptionWimax,
@@ -478,6 +481,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
             cluster.setMobileDataIndicators(
                     mHasMobileDataFeature,
                     mShowPhoneRSSIForData ? mPhoneSignalIconId : mDataSignalIconId,
+                    mInetCondition,
                     mMobileActivityIconId,
                     mDataTypeIconId,
                     mContentDescriptionPhoneSignal,
@@ -509,13 +513,53 @@ public class NetworkControllerImpl extends BroadcastReceiver
         boolean wifiOut = wifiEnabled && mWifiSsid != null
                 && (mWifiActivity == WifiManager.DATA_ACTIVITY_INOUT
                 || mWifiActivity == WifiManager.DATA_ACTIVITY_OUT);
+        boolean showNetworkActivity = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.STATUS_BAR_SHOW_NETWORK_ACTIVITY,
+                    0, UserHandle.USER_CURRENT) == 0 ? false : true;
         cb.onWifiSignalChanged(mWifiEnabled, mWifiConnected, mQSWifiIconId, wifiIn, wifiOut,
                 mContentDescriptionWifi, wifiDesc);
+            if (showNetworkActivity) {
+                switch (mWifiActivity) {
+                    case WifiManager.DATA_ACTIVITY_IN:
+                        mWifiActivityIconId = R.drawable.stat_sys_signal_in;
+                        break;
+                    case WifiManager.DATA_ACTIVITY_OUT:
+                        mWifiActivityIconId = R.drawable.stat_sys_signal_out;
+                        break;
+                    case WifiManager.DATA_ACTIVITY_INOUT:
+                        mWifiActivityIconId = R.drawable.stat_sys_signal_inout;
+                        break;
+                    case WifiManager.DATA_ACTIVITY_NONE:
+                        mWifiActivityIconId = R.drawable.stat_sys_signal_none;
+                        break;
+                }
+            } else {
+                mWifiActivityIconId = 0;
+        }
 
         boolean mobileIn = mDataConnected && (mDataActivity == TelephonyManager.DATA_ACTIVITY_INOUT
                 || mDataActivity == TelephonyManager.DATA_ACTIVITY_IN);
         boolean mobileOut = mDataConnected && (mDataActivity == TelephonyManager.DATA_ACTIVITY_INOUT
                 || mDataActivity == TelephonyManager.DATA_ACTIVITY_OUT);
+            if (showNetworkActivity) {
+                switch (mDataActivity) {
+                    case TelephonyManager.DATA_ACTIVITY_IN:
+                        mMobileActivityIconId = R.drawable.stat_sys_signal_in;
+                        break;
+                    case TelephonyManager.DATA_ACTIVITY_OUT:
+                        mMobileActivityIconId = R.drawable.stat_sys_signal_out;
+                        break;
+                    case TelephonyManager.DATA_ACTIVITY_INOUT:
+                        mMobileActivityIconId = R.drawable.stat_sys_signal_inout;
+                        break;
+                    default:
+                        mMobileActivityIconId = R.drawable.stat_sys_signal_none;
+                        break;
+                }
+            } else {
+                mMobileActivityIconId = 0;
+        }
+       
         if (isEmergencyOnly()) {
             cb.onMobileDataSignalChanged(false, mQSPhoneSignalIconId,
                     mContentDescriptionPhoneSignal, mQSDataTypeIconId, mobileIn, mobileOut,
@@ -1888,6 +1932,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
                     cluster.setWifiIndicators(
                             show,
                             iconId,
+                            mInetCondition,
                             mDemoWifiActivityId,
                             "Demo");
                 }
@@ -1931,6 +1976,7 @@ public class NetworkControllerImpl extends BroadcastReceiver
                     cluster.setMobileDataIndicators(
                             show,
                             iconId,
+                            mInetCondition,
                             mDemoMobileActivityId,
                             mDemoDataTypeIconId,
                             "Demo",

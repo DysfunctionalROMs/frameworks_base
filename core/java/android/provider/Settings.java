@@ -3674,6 +3674,42 @@ public final class Settings {
         public static final String FORMAL_TEXT_INPUT = "formal_text_input";
 
         /**
+         * Show when WiFi or data mobile is sending/receiving data
+         * @hide
+         */
+        public static final String STATUS_BAR_SHOW_NETWORK_ACTIVITY = "status_bar_show_network_activity";
+
+        /**
+         * Color of the network icons on statusbar
+         * @hide
+         */
+        public static final String STATUS_BAR_NETWORK_ICONS_NORMAL_COLOR = "status_bar_network_icons_normal_color";
+
+        /**
+         * Color of the network icons on statusbar while fully connected
+         * @hide
+         */
+        public static final String STATUS_BAR_NETWORK_ICONS_FULLY_COLOR = "status_bar_network_icons_fully_color";
+
+        /**
+         * Color of the activity indicator on statusbar
+         * @hide
+         */
+        public static final String STATUS_BAR_NETWORK_ACTIVITY_ICONS_NORMAL_COLOR = "status_bar_network_activity_fully_color";
+
+        /**
+         * Color of the activity indicator on statusbar while fully connected
+         * @hide
+         */
+        public static final String STATUS_BAR_NETWORK_ACTIVITY_ICONS_FULLY_COLOR = "status_bar_network_activity_normal_color";
+
+        /**
+         * Color of the airplane mode icon on statusbar
+         * @hide
+         */
+        public static final String STATUS_BAR_AIRPLANE_MODE_ICON_COLOR = "status_bar_airplane_mode_icon_color";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
