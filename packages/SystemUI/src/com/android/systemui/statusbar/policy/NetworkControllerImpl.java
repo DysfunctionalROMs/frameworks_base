@@ -513,53 +513,12 @@ public class NetworkControllerImpl extends BroadcastReceiver
         boolean wifiOut = wifiEnabled && mWifiSsid != null
                 && (mWifiActivity == WifiManager.DATA_ACTIVITY_INOUT
                 || mWifiActivity == WifiManager.DATA_ACTIVITY_OUT);
-        boolean showNetworkActivity = Settings.System.getIntForUser(mContext.getContentResolver(),
-                    Settings.System.STATUS_BAR_SHOW_NETWORK_ACTIVITY,
-                    0, UserHandle.USER_CURRENT) == 0 ? false : true;
         cb.onWifiSignalChanged(mWifiEnabled, mWifiConnected, mQSWifiIconId, wifiIn, wifiOut,
                 mContentDescriptionWifi, wifiDesc);
-            if (showNetworkActivity) {
-                switch (mWifiActivity) {
-                    case WifiManager.DATA_ACTIVITY_IN:
-                        mWifiActivityIconId = R.drawable.stat_sys_signal_in;
-                        break;
-                    case WifiManager.DATA_ACTIVITY_OUT:
-                        mWifiActivityIconId = R.drawable.stat_sys_signal_out;
-                        break;
-                    case WifiManager.DATA_ACTIVITY_INOUT:
-                        mWifiActivityIconId = R.drawable.stat_sys_signal_inout;
-                        break;
-                    case WifiManager.DATA_ACTIVITY_NONE:
-                        mWifiActivityIconId = R.drawable.stat_sys_signal_none;
-                        break;
-                }
-            } else {
-                mWifiActivityIconId = 0;
-        }
-
         boolean mobileIn = mDataConnected && (mDataActivity == TelephonyManager.DATA_ACTIVITY_INOUT
                 || mDataActivity == TelephonyManager.DATA_ACTIVITY_IN);
         boolean mobileOut = mDataConnected && (mDataActivity == TelephonyManager.DATA_ACTIVITY_INOUT
-                || mDataActivity == TelephonyManager.DATA_ACTIVITY_OUT);
-            if (showNetworkActivity) {
-                switch (mDataActivity) {
-                    case TelephonyManager.DATA_ACTIVITY_IN:
-                        mMobileActivityIconId = R.drawable.stat_sys_signal_in;
-                        break;
-                    case TelephonyManager.DATA_ACTIVITY_OUT:
-                        mMobileActivityIconId = R.drawable.stat_sys_signal_out;
-                        break;
-                    case TelephonyManager.DATA_ACTIVITY_INOUT:
-                        mMobileActivityIconId = R.drawable.stat_sys_signal_inout;
-                        break;
-                    default:
-                        mMobileActivityIconId = R.drawable.stat_sys_signal_none;
-                        break;
-                }
-            } else {
-                mMobileActivityIconId = 0;
-        }
-       
+                || mDataActivity == TelephonyManager.DATA_ACTIVITY_OUT);      
         if (isEmergencyOnly()) {
             cb.onMobileDataSignalChanged(false, mQSPhoneSignalIconId,
                     mContentDescriptionPhoneSignal, mQSDataTypeIconId, mobileIn, mobileOut,
