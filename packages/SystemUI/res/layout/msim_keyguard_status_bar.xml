@@ -52,15 +52,16 @@
             >
             <include layout="@layout/msim_system_icons" />
         </FrameLayout>
-        <TextView android:id="@+id/battery_level"
+         <com.android.systemui.BatteryLevelTextView android:id="@+id/battery_level_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/header_battery_margin_keyguard"
             android:paddingEnd="@dimen/battery_level_padding_end"
-            android:textColor="#ffffff"
+            android:textColor="@color/kg_battery_level_text"
             android:visibility="gone"
-            android:textSize="12sp"/>
+            android:textSize="@dimen/battery_level_text_size"
+            android:importantForAccessibility="noHideDescendants"/>
     </LinearLayout>
 
     <com.android.keyguard.CarrierText
@@ -72,7 +73,8 @@
         android:gravity="center_vertical"
         android:ellipsize="marquee"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#ffffff"
+        android:textColor="@color/kg_carrier_text"
         android:singleLine="true" />
+
 
 </com.android.systemui.statusbar.phone.KeyguardStatusBarView>
