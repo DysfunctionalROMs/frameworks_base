@@ -159,6 +159,15 @@
     <!-- Reboot tile -->
     <string name="quick_settings_reboot_label">Reboot</string>
     <string name="quick_settings_reboot_recovery_label">Recovery</string>
+    
+    <!-- PA Pie controls -->
+    <string name="pie_date_format">ccc, dd MMM yyyy</string>
+    <string name="pie_hour_format_12">hh:mm</string>
+    <string name="pie_hour_format_24">HH:mm</string>
+    <string name="pie_am_pm">a</string>
+
+    <!-- Kill app toast -->
+    <string name="app_killed_message">App Killed</string>
 
     <!-- Kill app toast -->
     <string name="app_killed_message">App Killed</string>
