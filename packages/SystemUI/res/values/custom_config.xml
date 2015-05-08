@@ -18,22 +18,15 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     
-    <!-- PA Pie controls -->
-    <string name="pie_date_format">ccc, dd MMM yyyy</string>
-    <string name="pie_hour_format_12">hh:mm</string>
-    <string name="pie_hour_format_24">HH:mm</string>
-    <string name="pie_am_pm">a</string>
+    <!-- Enable PA Pie relocation to either stick to a physical side or default to the right side -->
+    <bool name="config_relocatePieOnRotation">true</bool>
+ 
+    <!-- Enable force PA Pie centered -->
+    <bool name="config_forcePieCentered">true</bool>
 
-    <!-- Kill app toast -->
-    <string name="app_killed_message">App Killed</string>
-    
-    <string name="app_killed_message">App Killed</string>
-
-    <!-- Screenshot -->
-    <string name="shortcut_screenshot">Screenshot</string>
-    
-    <!-- Battery Saver Dimss -->
-    <string name="battery_saver_dismiss_title">Dismiss</string>
-    <string name="battery_saver_notification_action_text_short">Turn off</string>
+    <!-- Sensivity of pie gestures controlls.
+         Must be minimum 1 and maximum 10 (See @EdgeServiceConstants.java).
+         Default for pie is high sensivity -->
+    <integer name="pie_gesture_sensivity">10</integer>
     
 </resources>
