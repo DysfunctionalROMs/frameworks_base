@@ -3136,6 +3136,9 @@ public class Intent implements Parcelable, Cloneable {
      */
     public static final int EXTRA_THERMAL_STATE_EXCEEDED = 2;
 
+    /** {@hide} */
+    public static final String ACTION_DOZE_PULSE_STARTING =
+            "android.intent.action.DOZE_PULSE_STARTING";
 
     // ---------------------------------------------------------------------
     // ---------------------------------------------------------------------
