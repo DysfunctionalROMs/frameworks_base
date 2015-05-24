@@ -189,8 +189,6 @@ public class NotificationPanelView extends PanelView implements
 
     private float mKeyguardStatusBarAnimateAlpha = 1f;
     private int mOldLayoutDirection;
-    private Handler mHandler = new Handler();
-    private SettingsObserver mSettingsObserver;
     private boolean mOneFingerQuickSettingsIntercept;
 
     private Handler mHandler = new Handler();
