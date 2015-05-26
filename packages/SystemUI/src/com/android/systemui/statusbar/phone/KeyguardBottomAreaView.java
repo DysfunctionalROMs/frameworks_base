@@ -198,15 +198,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
         mLockIcon.setOnLongClickListener(this);
         mCameraImageView.setOnClickListener(this);
         mPhoneImageView.setOnClickListener(this);
-
-            int bars = res.getInteger(R.integer.kg_visualizer_divisions);
-            mVisualizer.addRenderer(new LockscreenBarEqRenderer(bars, paint,
-                    res.getInteger(R.integer.kg_visualizer_db_fuzz),
-                    res.getInteger(R.integer.kg_visualizer_db_fuzz_factor)));
-
-        }
-
-        initAccessibility();
+        initAccessibility();    
     }
 
     private void initAccessibility() {
