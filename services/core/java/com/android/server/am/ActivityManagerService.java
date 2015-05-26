@@ -170,6 +170,7 @@ import android.os.FactoryTest;
 import android.os.FileObserver;
 import android.os.FileUtils;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.IPermissionController;
 import android.os.IProcessInfoService;
@@ -1147,12 +1148,6 @@ public final class ActivityManagerService extends ActivityManagerNative
             = new ArrayList<ProcessChangeItem>();
 
     /**
-     * Runtime CPU use collection thread.  This object's lock is used to
-     * perform synchronization with the thread (notifying it to run).
-     */
-    final Thread mProcessCpuThread;
-
-    /**
      * Used to collect per-process CPU use for ANRs, battery stats, etc.
      * Must acquire this object's lock when accessing it.
      * NOTE: this lock will be held while doing long operations (trawling
@@ -1293,6 +1288,7 @@ public final class ActivityManagerService extends ActivityManagerNative
     final ServiceThread mHandlerThread;
     final MainHandler mHandler;
     final UiHandler mUiHandler;
+    final CpuTrackerHandler mCpuTrackerHandler;
 
     static KillProcessBackground mKillProcessHandler;
 
@@ -2202,6 +2198,9 @@ public final class ActivityManagerService extends ActivityManagerNative
         mHandlerThread.start();
         mHandler = new MainHandler(mHandlerThread.getLooper());
         mUiHandler = new UiHandler();
+        HandlerThread cpuTrackerThread = new HandlerThread("CpuTracker");
+        cpuTrackerThread.start();
+        mCpuTrackerHandler = new CpuTrackerHandler(cpuTrackerThread.getLooper());
 
         mKillProcessHandler = new KillProcessBackground(BackgroundThread.getHandler().getLooper());
 
@@ -2219,7 +2218,7 @@ public final class ActivityManagerService extends ActivityManagerNative
         File dataDir = Environment.getDataDirectory();
         File systemDir = new File(dataDir, "system");
         systemDir.mkdirs();
-        mBatteryStatsService = new BatteryStatsService(systemDir, mHandler);
+        mBatteryStatsService = new BatteryStatsService(systemDir, mCpuTrackerHandler);
         mBatteryStatsService.getActiveStatistics().readLocked();
         mBatteryStatsService.getActiveStatistics().writeAsyncLocked();
         mOnBattery = DEBUG_POWER ? true
@@ -2253,36 +2252,6 @@ public final class ActivityManagerService extends ActivityManagerNative
         mStackSupervisor = new ActivityStackSupervisor(this);
         mTaskPersister = new TaskPersister(systemDir, mStackSupervisor);
 
-        mProcessCpuThread = new Thread("CpuTracker") {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        try {
-                            synchronized(this) {
-                                final long now = SystemClock.uptimeMillis();
-                                long nextCpuDelay = (mLastCpuTime.get()+MONITOR_CPU_MAX_TIME)-now;
-                                long nextWriteDelay = (mLastWriteTime+BATTERY_STATS_TIME)-now;
-                                //Slog.i(TAG, "Cpu delay=" + nextCpuDelay
-                                //        + ", write delay=" + nextWriteDelay);
-                                if (nextWriteDelay < nextCpuDelay) {
-                                    nextCpuDelay = nextWriteDelay;
-                                }
-                                if (nextCpuDelay > 0) {
-                                    mProcessCpuMutexFree.set(true);
-                                    this.wait(nextCpuDelay);
-                                }
-                            }
-                        } catch (InterruptedException e) {
-                        }
-                        updateCpuStatsNow();
-                    } catch (Exception e) {
-                        Slog.e(TAG, "Unexpected exception collecting process stats", e);
-                    }
-                }
-            }
-        };
-
         Watchdog.getInstance().addMonitor(this);
         Watchdog.getInstance().addThread(mHandler);
     }
@@ -2297,7 +2266,7 @@ public final class ActivityManagerService extends ActivityManagerNative
 
     private void start() {
         Process.removeAllProcessGroups();
-        mProcessCpuThread.start();
+        mCpuTrackerHandler.schedule();
 
         mBatteryStatsService.publish(mContext);
         mAppOpsService.publish(mContext);
@@ -2358,9 +2327,7 @@ public final class ActivityManagerService extends ActivityManagerNative
             return;
         }
         if (mProcessCpuMutexFree.compareAndSet(true, false)) {
-            synchronized (mProcessCpuThread) {
-                mProcessCpuThread.notify();
-            }
+            mCpuTrackerHandler.updateNow();
         }
     }
 
@@ -18856,7 +18823,7 @@ public final class ActivityManagerService extends ActivityManagerNative
         }
     }
 
-    private postKillProc(final ProcessRecord app, final String reason, final boolean noisy) {
+    private void postKillProc(final ProcessRecord app, final String reason, final boolean noisy) {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
