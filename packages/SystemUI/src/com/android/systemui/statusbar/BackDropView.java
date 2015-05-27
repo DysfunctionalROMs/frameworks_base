@@ -39,7 +39,7 @@ import android.widget.FrameLayout;
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
 import com.android.systemui.R;
-import com.android.systemui.cm.UserContentObserver;
+import com.android.systemui.broken.UserContentObserver;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.pheelicks.visualizer.AudioData;
 import com.pheelicks.visualizer.FFTData;
