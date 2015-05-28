@@ -614,7 +614,6 @@ public final class ShutdownThread extends Thread {
      * @param reason reason for reboot
      */
     public static void rebootOrShutdown(final Context context, boolean reboot, String reason) {
-        deviceRebootOrShutdown(reboot, reason);
         if (reboot) {
             Log.i(TAG, "Rebooting, reason: " + reason);
             PowerManagerService.lowLevelReboot(reason);
