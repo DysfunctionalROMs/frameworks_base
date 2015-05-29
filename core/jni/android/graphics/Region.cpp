@@ -213,8 +213,12 @@ static jlong Region_createFromParcel(JNIEnv* env, jobject clazz, jobject parcel)
     android::Parcel* p = android::parcelForJavaObject(env, parcel);
 
     SkRegion* region = new SkRegion;
-    size_t size = p->readInt32();
-    region->readFromMemory(p->readInplace(size), size);
+    size_t actualSize = region->readFromMemory(regionData, size);
+
+    if (size != actualSize) {
+        delete region;
+        return NULL;
+    }
 
     return reinterpret_cast<jlong>(region);
 }
