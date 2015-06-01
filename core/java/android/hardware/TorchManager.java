@@ -164,6 +164,19 @@ public class TorchManager {
         }
     };
 
+    public void toggleTorch() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mService.toggleTorch();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public void setTorchEnabled(final boolean newState) {
         mHandler.post(new Runnable() {
             @Override
