@@ -798,11 +798,11 @@ public class AudioManager {
                  */
                 int direction = keyCode == KeyEvent.KEYCODE_VOLUME_UP ? ADJUST_RAISE
                         : ADJUST_LOWER;
-                final WindowManager windowService = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+                final WindowManager windowService = (WindowManager) mApplicationContext.getSystemService(Context.WINDOW_SERVICE);
                 if (windowService != null) {
                     final int rotation = windowService.getDefaultDisplay().getRotation();
-                    final Configuration config = mContext.getResources().getConfiguration();
-                    final boolean swapKeys = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    final Configuration config = mApplicationContext.getResources().getConfiguration();
+                    final boolean swapKeys = Settings.System.getIntForUser(mApplicationContext.getContentResolver(),
                             Settings.System.SWAP_VOLUME_BUTTONS_ON_ROTATION, 0, Process.myUserHandle().getIdentifier()) == 1;
 
                     if (swapKeys
