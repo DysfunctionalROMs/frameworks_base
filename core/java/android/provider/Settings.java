@@ -1266,6 +1266,7 @@ public final class Settings {
             for (String s : Secure.NAVIGATION_RING_TARGETS) {
                 MOVED_TO_SECURE.add(s);
             }
+            MOVED_TO_SECURE.add(Secure.DEV_FORCE_SHOW_NAVBAR);
         }
 
         private static final HashSet<String> MOVED_TO_GLOBAL;
@@ -2685,6 +2686,14 @@ public final class Settings {
         public static final String TIME_12_24 = "time_12_24";
 
         /**
+         * Developer options - Navigation Bar show switch
+         * @deprecated Use {@link android.provider.Settings.Secure#DEV_FORCE_SHOW_NAVBAR} instead
+         * @hide
+         */
+        @Deprecated
+        public static final String DEV_FORCE_SHOW_NAVBAR = Secure.DEV_FORCE_SHOW_NAVBAR;
+
+        /**
          * Toast Animations
          * @hide
          */
@@ -2719,12 +2728,6 @@ public final class Settings {
          * @hide
          */
         public static final String ANIMATION_IME_INTERPOLATOR = "animation_ime_interpolator";
-
-       /**
-        * Developer options - Navigation Bar show switch
-        * @hide
-        */
-        public static final String DEV_FORCE_SHOW_NAVBAR = "dev_force_show_navbar";
 
         /**
          * Date format string
@@ -6714,6 +6717,12 @@ public final class Settings {
          * @hide
          */
         public static final String LIVE_DISPLAY_COLOR_MATRIX = "live_display_color_matrix";
+
+        /**
+         * Developer options - Navigation Bar show switch
+         * @hide
+         */
+        public static final String DEV_FORCE_SHOW_NAVBAR = "dev_force_show_navbar";
 
         /**
          * Performance profile

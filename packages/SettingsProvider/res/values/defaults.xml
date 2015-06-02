@@ -221,7 +221,7 @@
     <!-- Default value of Settings.System.ENABLE_PEOPLE_LOOKUP -->
     <integer name="def_people_lookup">1</integer>
 
-    <!-- Defaults for Settings.System.DEV_FORCE_SHOW_NAVBAR. -->
+    <!-- Defaults for Settings.Secure.DEV_FORCE_SHOW_NAVBAR. -->
     <integer name="def_force_disable_navkeys">0</integer>
 
     <!-- Default for Settings.Global.TETHER_DUN_REQUIRED -->

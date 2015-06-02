@@ -59,19 +59,19 @@ public class LockTaskNotify {
     }
 
     public void handleShowToast(boolean isLocked) {
-        String text = mContext.getString(isLocked
-                ? R.string.lock_to_app_toast_locked : R.string.lock_to_app_toast);
-        if (!isLocked) {
-            if (mAccessibilityManager.isEnabled()) {
-                text = mContext.getString(R.string.lock_to_app_toast_accessible);
-            }
-            if (mPolicy.hasNavigationBar() || mDevForceNavbar)
-                text = mContext.getString(R.string.lock_to_app_toast_no_navbar);
+        final int textResId;
+        if (isLocked) {
+            textResId = R.string.lock_to_app_toast_locked;
+        } else if (mAccessibilityManager.isEnabled()) {
+            textResId = R.string.lock_to_app_toast_accessible;
+        } else {
+            textResId = (mPolicy.hasNavigationBar() || mDevForceNavbar)
+                    ? R.string.lock_to_app_toast : R.string.lock_to_app_toast_no_navbar;
         }
         if (mLastToast != null) {
             mLastToast.cancel();
         }
-        mLastToast = makeAllUserToastAndShow(text);
+        mLastToast = makeAllUserToastAndShow(mContext.getString(textResId));
     }
 
     public void show(boolean starting) {
@@ -111,16 +111,16 @@ public class LockTaskNotify {
         void observe() {
             // Observe all users' changes
             final ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                            Settings.System.DEV_FORCE_SHOW_NAVBAR), false, this,
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                            Settings.Secure.DEV_FORCE_SHOW_NAVBAR), false, this,
                     UserHandle.USER_ALL);
             onChange(true);
         }
 
         @Override public void onChange(boolean selfChange) {
             final ContentResolver resolver = mContext.getContentResolver();
-            mDevForceNavbar = Settings.System.getIntForUser(resolver,
-                    Settings.System.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
+            mDevForceNavbar = Settings.Secure.getIntForUser(resolver,
+                    Settings.Secure.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
         }
     }
 }
