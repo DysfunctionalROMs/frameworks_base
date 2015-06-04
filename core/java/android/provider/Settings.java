@@ -3564,7 +3564,13 @@ public final class Settings {
         public static final String NAVIGATION_BAR_CONFIG = "navigation_bar_config";
 
         /**
-         * Wether the navbar menu button is on the left/right/both
+         * Whether to show the IME arrows in the status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_IME_ARROWS = "status_bar_ime_arrows";
+
+        /**
+          Whether the navbar menu button is on the left/right/both
          * @hide
          */
         public static final String MENU_LOCATION = "menu_location";
@@ -3712,12 +3718,6 @@ public final class Settings {
          * @hide
          */
         public static final String MENU_VISIBILITY = "menu_visibility";
-
-        /**
-         * Whether to show the IME arrows in the status bar
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_IME_ARROWS = "navigation_bar_ime_arrows";
         
         /**
          * whether to enable torch on lockscreen

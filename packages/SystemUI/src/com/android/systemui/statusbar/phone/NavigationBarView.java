@@ -29,6 +29,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
@@ -162,6 +163,8 @@ public class NavigationBarView extends LinearLayout {
 
     private GestureDetector mDoubleTapGesture;
 
+    private SettingsObserver mSettingsObserver;
+
     private class NavTransitionListener implements TransitionListener {
         private boolean mBackTransitioning;
         private boolean mHomeAppearing;
@@ -267,16 +270,24 @@ public class NavigationBarView extends LinearLayout {
                 return true;
             }
         });
+        mSettingsObserver = new SettingsObserver(new Handler());
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        mSettingsObserver.observe();
         ViewRootImpl root = getViewRootImpl();
         if (root != null) {
             root.setDrawDuringWindowsAnimating(true);
         }
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mSettingsObserver.unobserve();
+    }       
 
     public BarTransitions getBarTransitions() {
         return mBarTransitions;
@@ -1103,7 +1114,7 @@ public class NavigationBarView extends LinearLayout {
                 UserHandle.USER_CURRENT);
 
         mImeArrowVisibility = (Settings.System.getIntForUser(resolver,
-                Settings.System.NAVIGATION_BAR_IME_ARROWS, HIDE_IME_ARROW,
+                Settings.System.STATUS_BAR_IME_ARROWS, HIDE_IME_ARROW,
                 UserHandle.USER_CURRENT) == SHOW_IME_ARROW);
 
         setNavigationIconHints(mNavigationIconHints, true);
@@ -1154,9 +1165,37 @@ public class NavigationBarView extends LinearLayout {
         if (color && mNavBarButtonColorMode != 3) {
             iconBack.setTint(mNavBarButtonColor);
             iconBackLand.setTint(mNavBarButtonColor);
-        }
+		}
         mBackIcon = iconBack;
         mBackLandIcon = iconBackLand;
+	}
+
+    private class SettingsObserver extends ContentObserver {
+
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            mContext.getContentResolver().registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.STATUS_BAR_IME_ARROWS),
+                    false, this);
+
+            onChange(false);
+        }
+
+        void unobserve() {
+            mContext.getContentResolver().unregisterContentObserver(this);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            mImeArrowVisibility =
+                    (Settings.System.getIntForUser(mContext.getContentResolver(),
+                            Settings.System.STATUS_BAR_IME_ARROWS, HIDE_IME_ARROW,
+                            UserHandle.USER_CURRENT) == SHOW_IME_ARROW);
+            setNavigationIconHints(mNavigationIconHints, true);
+        }
     }
 
     public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
