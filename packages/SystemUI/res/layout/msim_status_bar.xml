@@ -49,6 +49,16 @@
         android:paddingEnd="6dip"
         android:orientation="horizontal"
         >
+    <TextView
+	android:id="@+id/broken_custom_label"
+	android:layout_width="wrap_content"
+	android:layout_height="match_parent"
+	android:gravity="center"
+	android:paddingStart="7dp"
+	android:visibility="gone"
+	android:text="@string/broken"
+	android:textAppearance="@style/TextAppearance.StatusBar.Clock"
+	/>
 
         <com.android.systemui.statusbar.AlphaOptimizedFrameLayout
             android:id="@+id/notification_icon_area"
@@ -165,4 +175,10 @@
         android:layout_height="match_parent"
         />
 
+    <com.android.systemui.statusbar.policy.BatteryBarController
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        systemui:viewLocation="1" />
 </com.android.systemui.statusbar.phone.PhoneStatusBarView>
+
