@@ -395,4 +395,17 @@ public class Clock extends TextView implements DemoMode {
             setText(getSmallTime());
         }
     }
+
+    public void setPhoneStatusBar(PhoneStatusBar statusBar) {
+        mStatusBar = statusBar;
+    }
+
+    @Override
+    protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld){
+        super.onSizeChanged(xNew, yNew, xOld, yOld);
+        mClockAndDateWidth = xNew;
+        if (mStatusBar != null) {
+            mStatusBar.setClockAndDateStatus(mClockAndDateWidth, mClockStyle, mShowClock);
+        }
+    }
 }

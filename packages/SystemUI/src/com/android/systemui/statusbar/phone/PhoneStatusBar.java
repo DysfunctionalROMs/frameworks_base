@@ -967,9 +967,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mBatteryLevel = (BatteryLevelTextView) mStatusBarView.findViewById(R.id.battery_level_text);
         mCenterClockLayout = (LinearLayout)mStatusBarView.findViewById(R.id.center_clock_layout);
         Clock cclock = (Clock) mStatusBarView.findViewById(R.id.center_clock);
+        if (cclock != null) {
+            cclock.setPhoneStatusBar(this);
+        }
         mLeftClockLayout = (LinearLayout)mStatusBarView.findViewById(R.id.left_clock_layout);
         Clock lclock = (Clock) mStatusBarView.findViewById(R.id.left_clock);
-
+        if (lclock != null) {
+            lclock.setPhoneStatusBar(this);
+        }
         mStackScroller = (NotificationStackScrollLayout) mStatusBarWindow.findViewById(
                 R.id.notification_stack_scroller);
         mStackScroller.setLongPressListener(getNotificationLongClicker());
@@ -2420,6 +2425,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 if (mShowClock && mClockLocation == Clock.STYLE_CLOCK_CENTER) {
                     animateStatusBarShow(mCenterClockLayout, animate);
                 }
+                animateStatusBarShow(mSystemIconArea, animate);
                 if (mShowClock && mClockLocation == Clock.STYLE_CLOCK_LEFT) {
                     animateStatusBarShow(mLeftClockLayout, animate);
                 }
