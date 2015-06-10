@@ -59,7 +59,7 @@
             android:layout_height="@dimen/task_manager_item_height"
             android:maxLines="1"
             android:gravity="center_vertical"
-            android:textColor="#ffffffff"
+            android:textColor="?android:attr/colorControlNormal" 
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/task_icon" />
 
