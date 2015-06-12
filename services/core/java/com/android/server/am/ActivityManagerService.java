@@ -18856,6 +18856,15 @@ public final class ActivityManagerService extends ActivityManagerNative
         }
     }
 
+    private void postKillProc(final ProcessRecord app, final String reason, final boolean noisy) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                app.kill(reason, noisy);
+            }
+        });
+    }
+
     final void trimApplications() {
         synchronized (this) {
             int i;
