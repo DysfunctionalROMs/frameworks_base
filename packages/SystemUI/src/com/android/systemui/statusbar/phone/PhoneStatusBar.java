@@ -1222,7 +1222,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         // Task manager
         mTaskManagerPanel =
-                (LinearLayout) mStatusBarWindowContent.findViewById(R.id.task_manager_panel);
+                (LinearLayout) mStatusBarWindow.findViewById(R.id.task_manager_panel);
         mTaskManager = new TaskManager(mContext, mTaskManagerPanel);
         mTaskManager.setActivityStarter(this);
         mTaskManagerButton = (ImageButton) mHeader.findViewById(R.id.task_manager_button);
