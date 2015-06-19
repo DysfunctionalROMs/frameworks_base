@@ -302,8 +302,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 }
             } else if (GLOBAL_ACTION_KEY_SCREENRECORD.equals(actionKey)) {
         		if (Settings.System.getInt(mContext.getContentResolver(),
-                        Settings.System.POWER_MENU_SCREENRECORD_ENABLED, 0) != 0) {
-                 mItems.add(getScreenrecordAction());
+                        Settings.System.POWER_MENU_SCREENRECORD_ENABLED, 0) == 1) {
+                    mItems.add(getScreenrecordAction());
         		}
             } else if (GLOBAL_ACTION_KEY_SCREENSHOT.equals(actionKey)) {
                    mItems.add(getScreenshotAction());
@@ -459,7 +459,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     }
 
     private Action getScreenrecordAction() {
-        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_screen_record,
+        return new SinglePressAction(com.android.internal.R.drawable.ic_lock_screen_record_teal,
                  R.string.global_action_screen_record) {
 
             public void onPress() {
