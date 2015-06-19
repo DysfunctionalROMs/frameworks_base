@@ -27,6 +27,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.IActivityManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -117,6 +118,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private static final String GLOBAL_ACTION_KEY_USERS = "users";
     private static final String GLOBAL_ACTION_KEY_SETTINGS = "settings";
     private static final String GLOBAL_ACTION_KEY_LOCKDOWN = "lockdown";
+    private static final String GLOBAL_ACTION_KEY_SOFT_REBOOT = "soft_reboot";
 
     private final Context mContext;
     private final WindowManagerFuncs mWindowManagerFuncs;
@@ -297,7 +299,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 mItems.add(new PowerAction());
             } else if (GLOBAL_ACTION_KEY_REBOOT.equals(actionKey)) {
                 if (Settings.System.getInt(mContext.getContentResolver(),
-                        Settings.System.POWER_MENU_REBOOT, 1) == 1) {
+                        Settings.System.POWER_MENU_REBOOT, 0) == 1) {
                     mItems.add(new RebootAction());
                 }
             } else if (GLOBAL_ACTION_KEY_SCREENRECORD.equals(actionKey)) {
@@ -306,10 +308,13 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                     mItems.add(getScreenrecordAction());
         		}
             } else if (GLOBAL_ACTION_KEY_SCREENSHOT.equals(actionKey)) {
-                   mItems.add(getScreenshotAction());
+				if (Settings.System.getInt(mContext.getContentResolver(),
+                        Settings.System.POWER_MENU_SCREENSHOT, 0) == 1) {
+                    mItems.add(getScreenshotAction());
+				}
             } else if (GLOBAL_ACTION_KEY_AIRPLANE.equals(actionKey)) {
                 if (Settings.System.getInt(mContext.getContentResolver(),
-                        Settings.System.POWER_MENU_AIRPLANE, 1) == 1) {
+                        Settings.System.POWER_MENU_AIRPLANE, 0) == 1) {
                     mItems.add(mAirplaneModeOn);
                 }
             } else if (GLOBAL_ACTION_KEY_BUGREPORT.equals(actionKey)) {
@@ -334,9 +339,14 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 }
             } else if (GLOBAL_ACTION_KEY_SILENT.equals(actionKey)) {
                 if (mShowSilentToggle && Settings.System.getInt(mContext.getContentResolver(),
-                        Settings.System.POWER_MENU_SILENT, 1) == 1) {
+                        Settings.System.POWER_MENU_SILENT, 0) == 1) {
                     mItems.add(mSilentModeAction);
                 }
+            } else if (GLOBAL_ACTION_KEY_SOFT_REBOOT.equals(actionKey)) {
+				if (Settings.System.getInt(mContext.getContentResolver(),
+                        Settings.System.POWER_MENU_SOFT_REBOOT, 0) == 1) {
+                    mItems.add(new SoftRebootAction());
+				}
             } else {
                 Log.e(TAG, "Invalid global action key " + actionKey);
             }
@@ -480,6 +490,40 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         };
     }
 
+   private final class SoftRebootAction extends SinglePressAction {
+        private SoftRebootAction() {
+            super(com.android.internal.R.drawable.ic_lock_power_reboot,
+                    R.string.global_action_soft_reboot);
+        }
+
+        @Override
+        public boolean showDuringKeyguard() {
+            return true;
+        }
+
+        @Override
+        public boolean showBeforeProvisioning() {
+            return true;
+        }
+
+        @Override
+        public void onPress() {
+			doSoftReboot();
+		}
+    }
+    
+   private static void doSoftReboot() {
+         try {
+             final IActivityManager am =
+                   ActivityManagerNative.asInterface(ServiceManager.checkService("activity"));
+             if (am != null) {
+                 am.restart();
+             }
+         } catch (RemoteException e) {
+             Log.e(TAG, "failure trying to perform soft reboot", e);
+         }
+     }
+    
     private Action getBugReportAction() {
         return new SinglePressAction(com.android.internal.R.drawable.ic_lock_bugreport,
                 R.string.bugreport_title) {
@@ -1294,7 +1338,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     }
 
     private void startQuickBoot() {
-
         Intent intent = new Intent("org.codeaurora.action.QUICKBOOT");
         intent.putExtra("mode", 0);
         try {

@@ -17,6 +17,7 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	
 <!-- Privacy Guard -->
     <string name="permlab_changePrivacyGuardState">enable or disable Privacy Guard</string>
     <string name="permdesc_changePrivacyGuardState">Allows the app to change whether another app runs with Privacy Guard. When an app is running with Privacy Guard, it will not have access to personal data such as contacts, call logs, or messages.</string>
@@ -98,25 +99,24 @@
     <string name="reboot_fastboot">Fastboot</string>
     <!-- Button to reboot the phone into download, within the Reboot Options dialog -->
     <string name="reboot_download">Download</string>
-
     <!-- Reboot Progress Dialog. This is shown if the user chooses to reboot the phone. -->
     <string name="reboot_progress">Rebooting\u2026</string>
     <!-- Reboot Confirmation Dialog.  When the user chooses to reboot the phone, there will be a confirmation dialog.  This is the message. -->
     <string name="reboot_confirm">Your device will reboot.</string>
-
     <!-- label for item that reboots the phone in phone options dialog -->
     <string name="global_action_reboot">Reboot</string>
     <!-- label for item that screenshots in phone options dialog -->
     <string name="global_action_screenshot">Screenshot</string>
+    <!-- Button to reboot the phone, within the Reboot Options dialog -->
+    <string name="global_action_soft_reboot">Soft Reboot</string>
+    <!-- label for screen record item in phone options dialog -->
+    <string name="global_action_screen_record">Screen record</string>
 
     <!-- Title of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permlab_recordScreen">Record content being displayed</string>
 
     <!-- Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permdesc_recordScreen">Allows the app to record the users screen</string>
-
-    <!-- label for screen record item in phone options dialog -->
-    <string name="global_action_screen_record">Screen record</string>
 
     <!-- Animation Strings -->
     <string name="animation_fade">Fade</string>

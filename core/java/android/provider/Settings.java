@@ -3618,12 +3618,6 @@ public final class Settings {
         public static final String STATUS_BAR_NOTIF_COUNT_TEXT_COLOR = "status_bar_notif_count_text_color";
 
         /**
-         * Whether power menu screen record is enabled
-         * @hide
-         */
-        public static final String POWER_MENU_SCREENRECORD_ENABLED = "power_menu_screenrecord_enabled";
-
-        /**
          * Whether to include audio when recording a video
          * @hide
          */
@@ -3661,10 +3655,28 @@ public final class Settings {
         public static final String POWER_MENU_USERS = "power_menu_users";
 
         /**
+         * Whether power menu screen record is enabled
+         * @hide
+         */
+        public static final String POWER_MENU_SCREENRECORD_ENABLED = "power_menu_screenrecord_enabled";
+
+        /**
+         * Whether power menu screenshot is enabled
+         * @hide
+         */
+        public static final String POWER_MENU_SCREENSHOT = "power_menu_screenshot";
+
+        /**
          * Whether to show settings in power menu 
          * @hide
          */
         public static final String POWER_MENU_SETTINGS = "power_menu_settings";
+
+        /**
+         * Whether power menu soft reboot is enabled
+         * @hide
+         */
+        public static final String POWER_MENU_SOFT_REBOOT = "power_menu_soft_reboot";
 
         /**
          * Whether to show lockdown in power menu 
