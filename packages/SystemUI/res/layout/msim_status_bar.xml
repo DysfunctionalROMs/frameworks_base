@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="6dip"
-        android:paddingEnd="6dip"
+        android:paddingEnd="8dip"
         android:orientation="horizontal"
         >
     <TextView
@@ -93,6 +93,16 @@
                         android:visibility="gone"
                         android:singleLine="true"
                     />
+                    
+					<com.android.systemui.statusbar.widget.CarrierLabel
+                    android:id="@+id/status_bar_carrier_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textAppearance="@style/TextAppearance.StatusBar.CarrierLabel"
+                    android:visibility="gone"
+                    android:singleLine="true"
+                />
 
                 </com.android.keyguard.AlphaOptimizedLinearLayout>
 
