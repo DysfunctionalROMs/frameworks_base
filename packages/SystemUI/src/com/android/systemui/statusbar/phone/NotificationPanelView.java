@@ -748,13 +748,10 @@ public class NotificationPanelView extends PanelView implements
                 && !isQSEventBlocked) {
             mQsExpandImmediate = true;
             requestPanelHeightUpdate();
-        }
-        
-        if (mQsSmartPullDown == 1 && !mStatusBar.hasActiveClearableNotifications()
-                || mQsSmartPullDown == 2 && !mStatusBar.hasActiveVisibleNotifications()
-                || (mQsSmartPullDown == 3 && !mStatusBar.hasActiveVisibleNotifications()
-                        && !mStatusBar.hasActiveClearableNotifications())) {
-            oneFingerQsOverride = true;
+
+            // Normally, we start listening when the panel is expanded, but here we need to start
+            // earlier so the state is already up to date when dragging down.
+            setListening(true);
         }
         super.onTouchEvent(event);
         return true;
@@ -2135,7 +2132,8 @@ public class NotificationPanelView extends PanelView implements
                     resolver, Settings.System.QS_SMART_PULLDOWN, 0,
                     UserHandle.USER_CURRENT);
             mShowTaskManager = Settings.System.getIntForUser(resolver,
-                    Settings.System.ENABLE_TASK_MANAGER, 0, UserHandle.USER_CURRENT) == 1;
+                    Settings.System.ENABLE_TASK_MANAGER, 0,
+                    UserHandle.USER_CURRENT) == 1;
         }
     }
 }

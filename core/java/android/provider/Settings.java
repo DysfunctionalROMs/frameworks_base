@@ -2136,13 +2136,6 @@ public final class Settings {
         public static final String LOCKSCREEN_SHORTCUTS = "lockscreen_shortcuts";
 
         /**
-         * Quick Settings Smart Pulldown
-         *
-         * @hide
-         */
-        public static final String QS_SMART_PULLDOWN = "qs_smart_pulldown";
-
-        /**
          * Whether shorcuts open with normal or longpress
          * @hide
          */
