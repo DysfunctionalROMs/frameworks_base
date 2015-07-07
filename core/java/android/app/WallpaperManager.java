@@ -308,7 +308,37 @@ public class WallpaperManager {
             }
             return null;
         }
-        
+
+        private Bitmap getCurrentKeyguardWallpaperLocked(Context context) {
+            if (mService == null) {
+                Log.w(TAG, "WallpaperService not running");
+                return null;
+            }
+            try {
+                Bundle params = new Bundle();
+                ParcelFileDescriptor fd = mService.getKeyguardWallpaper(this, params);
+                if (fd != null) {
+                    try {
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        Bitmap bm = BitmapFactory.decodeFileDescriptor(
+                                fd.getFileDescriptor(), null, options);
+                        return bm;
+                    } catch (OutOfMemoryError e) {
+                        Log.w(TAG, "Can't decode file", e);
+                    } finally {
+                        try {
+                            fd.close();
+                        } catch (IOException e) {
+                            // Ignore
+                        }
+                    }
+                }
+            } catch (RemoteException e) {
+                // Ignore
+            }
+            return null;
+        }
+
         private Bitmap getDefaultWallpaperLocked(Context context) {
             InputStream is = openDefaultWallpaper(context);
             if (is != null) {
