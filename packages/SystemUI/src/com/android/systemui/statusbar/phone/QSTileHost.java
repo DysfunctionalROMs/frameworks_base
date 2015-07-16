@@ -58,6 +58,7 @@ import com.android.systemui.qs.tiles.LteTile;
 import com.android.systemui.qs.tiles.NfcTile;
 import com.android.systemui.qs.tiles.RoamingTile;
 import com.android.systemui.qs.tiles.MusicTile;
+import com.android.systemui.qs.tiles.PerfProfileTile;
 import com.android.systemui.qs.tiles.RebootTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.NavBarTile;
@@ -308,6 +309,8 @@ public class QSTileHost implements QSTile.Host {
                 return new DataTile(this);
             case QSConstants.TILE_COMPASS:
                 return new CompassTile(this);
+            case QSConstants.TILE_PERFORMANCE:
+                return new PerfProfileTile(this);
             case QSConstants.TILE_NFC:
                 return new NfcTile(this);
             case QSConstants.TILE_REBOOT:

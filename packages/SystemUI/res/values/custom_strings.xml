@@ -82,6 +82,23 @@
     <string name="quick_settings_battery_saver">Battery saver</string>
     <string name="quick_settings_battery_saver_off">Battery saver off</string>
 
+	<!-- Performance Profiles -->
+    <string name="quick_settings_performance_profiles">Performance</string>
+
+    <!-- Content description of the battery mode tile in quick settings when on, power save mode (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_pwrsv">Battery mode: power save mode.</string>
+    <!-- Content description of the battery mode tile in quick settings when on, balanced mode (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_bal">Battery mode: balanced mode.</string>
+    <!-- Content description of the battery mode tile in quick settings when on, performance mode (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_perf">Battery mode: performance mode.</string>
+
+    <!-- Announcement made when the battery mode tile changes to power save (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_changed_pwrsv">Profile changed to power save mode.</string>
+    <!-- Announcement made when the battery mode tile changes to balanced (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_changed_bal">Profile changed to balanced mode.</string>
+    <!-- Announcement made when the battery mode tile changes to performance (not shown on the screen). [CHAR LIMIT=NONE] -->
+    <string name="accessibility_quick_settings_perf_profile_changed_perf">Profile changed to performance mode.</string>
+
     <!-- expanded tile -->
     <string name="quick_settings_expanded_desktop">Expanded</string>
     <string name="quick_settings_expanded_desktop_off">Normal</string>

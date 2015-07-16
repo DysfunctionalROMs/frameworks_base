@@ -106,6 +106,12 @@ public class QSUtils {
         return BluetoothAdapter.getDefaultAdapter() != null;
     }
 
+    public static boolean deviceSupportsPerformanceProfiles(Context context) {
+        String name = context.getResources().getString(
+                com.android.internal.R.string.config_perf_profile_prop);
+        return !TextUtils.isEmpty(name);
+    }
+
     public static boolean deviceSupportsNfc(Context context) {
         return NfcAdapter.getDefaultAdapter(context) != null;
     }
