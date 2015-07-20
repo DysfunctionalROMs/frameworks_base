@@ -32,6 +32,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -226,6 +227,7 @@ public class WallpaperManager {
         private IWallpaperManager mService;
         private Bitmap mWallpaper;
         private Bitmap mDefaultWallpaper;
+        private Bitmap mKeyguardWallpaper;
         
         private static final int MSG_CLEAR_WALLPAPER = 1;
         
@@ -243,6 +245,12 @@ public class WallpaperManager {
             synchronized (this) {
                 mWallpaper = null;
                 mDefaultWallpaper = null;
+            }
+        }
+
+        public void onKeyguardWallpaperChanged() {
+            synchronized (this) {
+                mKeyguardWallpaper = null;
             }
         }
 
@@ -272,10 +280,33 @@ public class WallpaperManager {
             }
         }
 
+        /**
+         * @hide
+         */
+        public Bitmap peekKeyguardWallpaperBitmap(Context context) {
+            synchronized (this) {
+                if (mKeyguardWallpaper != null) {
+                    return mKeyguardWallpaper;
+                }
+                try {
+                    mKeyguardWallpaper = getCurrentKeyguardWallpaperLocked(context);
+                } catch (OutOfMemoryError e) {
+                    Log.w(TAG, "No memory load current keyguard wallpaper", e);
+                }
+                return mKeyguardWallpaper;
+            }
+        }
+
         public void forgetLoadedWallpaper() {
             synchronized (this) {
                 mWallpaper = null;
                 mDefaultWallpaper = null;
+            }
+        }
+
+        public void forgetLoadedKeyguardWallpaper() {
+            synchronized (this) {
+                mKeyguardWallpaper = null;
             }
         }
 
@@ -356,6 +387,18 @@ public class WallpaperManager {
                 }
             }
             return null;
+        }
+
+        /** @hide */
+        public void clearKeyguardWallpaper() {
+            synchronized (this) {
+                try {
+                    mService.clearKeyguardWallpaper();
+                } catch (RemoteException e) {
+                    // ignore
+                }
+                mKeyguardWallpaper = null;
+            }
         }
     }
     
@@ -610,6 +653,15 @@ public class WallpaperManager {
      */
     public Drawable getFastDrawable() {
         Bitmap bm = sGlobals.peekWallpaperBitmap(mContext, true);
+        if (bm != null) {
+            return new FastBitmapDrawable(bm);
+        }
+        return null;
+    }
+
+    /** @hide */
+    public Drawable getFastKeyguardDrawable() {
+        Bitmap bm = sGlobals.peekKeyguardWallpaperBitmap(mContext);
         if (bm != null) {
             return new FastBitmapDrawable(bm);
         }
