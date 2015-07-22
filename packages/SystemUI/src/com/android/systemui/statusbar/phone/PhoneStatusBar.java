@@ -63,6 +63,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.Xfermode;
@@ -390,6 +391,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     // Broken logo
     private boolean mBrokenLogo;
+    private int mBrokenLogoColor;
     private ImageView brokenLogo;
 
     // position
@@ -503,6 +505,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_BROKEN_LOGO),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BROKEN_LOGO_COLOR),
+                    false, this, UserHandle.USER_ALL);
             update();
 	    }
 
@@ -576,7 +581,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mBrokenLogo = Settings.System.getIntForUser(
                     resolver, Settings.System.STATUS_BAR_BROKEN_LOGO,
                     0, UserHandle.USER_CURRENT) == 1;
-            showBrokenLogo(mBrokenLogo);
+            mBrokenLogoColor = Settings.System.getIntForUser(
+                    resolver, Settings.System.STATUS_BAR_BROKEN_LOGO_COLOR, 0xFFFFFFFF,
+                    UserHandle.USER_CURRENT);
+            showBrokenLogo(mBrokenLogo, mBrokenLogoColor);
             mGreeting = Settings.System.getStringForUser(resolver,
 					Settings.System.STATUS_BAR_GREETING,
 					UserHandle.USER_CURRENT);
@@ -3770,10 +3778,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
     };
 
-    public void showBrokenLogo(boolean show) {
+    public void showBrokenLogo(boolean show, int color) {
         if (mStatusBarView == null) return;
         ContentResolver resolver = mContext.getContentResolver();
         brokenLogo = (ImageView) mStatusBarView.findViewById(R.id.broken_logo);
+        brokenLogo.setColorFilter(color, Mode.SRC_IN);
         if (brokenLogo != null) {
             brokenLogo.setVisibility(show ? (mBrokenLogo ? View.VISIBLE : View.GONE) : View.GONE);
         }
