@@ -52,4 +52,7 @@
     <!-- Used by selector -->
     <color name="card_pressed">#7e3c3c3c</color>
     
+    <!-- Status bar temperature color -->
+    <color name="status_bar_temp_text_color">#FFFFFFFF</color>
+    
 </resources>
