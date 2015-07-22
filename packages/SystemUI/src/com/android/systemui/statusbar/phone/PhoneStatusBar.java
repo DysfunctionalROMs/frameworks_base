@@ -45,6 +45,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -334,6 +335,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     // Broken logo
     private boolean mBrokenLogo;
+    private int mBrokenLogoColor;
     private ImageView brokenLogo;
 
     boolean mExpandedVisible;
@@ -406,98 +408,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.SCREEN_BRIGHTNESS_MODE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_BROKEN_LOGO), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BROKEN_LOGO_COLOR), false, this);
             update();
         }
         
         void unobserve() {
-
-	    @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            super.onChange(selfChange, uri);
-
-            if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.LOCK_SCREEN_TEXT_COLOR))
-                || uri.equals(Settings.System.getUriFor(
-                    Settings.System.LOCK_SCREEN_ICON_COLOR))) {
-                setKeyguardTextAndIconColors();
-            } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_BATTERY_STATUS_TEXT_COLOR))) {
-                updateBatteryLevelTextColor();
-            } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.HEADS_UP_SNOOZE_TIME))) {
-                final int snoozeTime = Settings.System.getIntForUser(
-                        mContext.getContentResolver(),
-                        Settings.System.HEADS_UP_SNOOZE_TIME,
-                        mContext.getResources().getInteger(
-                        R.integer.heads_up_snooze_time),
-                        UserHandle.USER_CURRENT);
-                setHeadsUpSnoozeTime(snoozeTime);
-                if (mHeadsUpNotificationView != null) {
-                    mHeadsUpNotificationView.setSnoozeVisibility(snoozeTime != 0);
-                }
-            } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.HEADS_UP_NOTIFCATION_DECAY))) {
-                mHeadsUpNotificationDecay = Settings.System.getIntForUser(
-                        mContext.getContentResolver(),
-                        Settings.System.HEADS_UP_NOTIFCATION_DECAY,
-                        mContext.getResources().getInteger(
-                        R.integer.heads_up_notification_decay),
-                        UserHandle.USER_CURRENT);
-                resetHeadsUpDecayTimer();
-            } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.HEADS_UP_GLOBAL_SWITCH))) {
-                final int headsUpGlobalSwitch = Settings.System.getIntForUser(
-                        mContext.getContentResolver(),
-                        Settings.System.HEADS_UP_GLOBAL_SWITCH,
-                        1,
-                        UserHandle.USER_CURRENT);
-                setHeadsUpGlobalSwitch(headsUpGlobalSwitch);
-            } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.USE_SLIM_RECENTS))) {
-                updateRecents();
-            } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.RECENT_CARD_BG_COLOR))
-                    || uri.equals(Settings.System.getUriFor(
-                    Settings.System.RECENT_CARD_TEXT_COLOR))) {
-                rebuildRecentsScreen();
-            }
-            update();
-        }
-
-        public void update() {
-            ContentResolver resolver = mContext.getContentResolver();
-            mShowStatusBarCarrier = Settings.System.getIntForUser(resolver,
-                Settings.System.STATUS_BAR_CARRIER, 0, mCurrentUserId) == 1;
-            showStatusBarCarrierLabel(mShowStatusBarCarrier);
-            boolean autoBrightness = Settings.System.getIntForUser(
-                    resolver, Settings.System.SCREEN_BRIGHTNESS_MODE,
-                    0, UserHandle.USER_CURRENT) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
-            mBrightnessControl = !autoBrightness && Settings.System.getIntForUser(
-                    resolver, Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL,
-                    0, UserHandle.USER_CURRENT) == 1;
-            mShowTaskManager = Settings.System.getIntForUser(
-                    resolver, Settings.System.ENABLE_TASK_MANAGER,
-                    0, UserHandle.USER_CURRENT) == 1;
-            mBrokenLogo = Settings.System.getIntForUser(
-                    resolver, Settings.System.STATUS_BAR_BROKEN_LOGO,
-                    0, UserHandle.USER_CURRENT) == 1;
-            showBrokenLogo(mBrokenLogo);
-            mGreeting = Settings.System.getStringForUser(resolver,
-					Settings.System.STATUS_BAR_GREETING,
-					UserHandle.USER_CURRENT);
-			if (mGreeting != null && !TextUtils.isEmpty(mGreeting)) {
-				mBrokenLabel.setText(mGreeting);
-			}
-		}
-    }
-
-    class DevForceNavbarObserver extends ContentObserver {
-        DevForceNavbarObserver(Handler handler) {
-            super(handler);
-        }
-
-        void observe() {
->>>>>>> 6fe5261... Broken logo in the statusbar [1/2]
             ContentResolver resolver = mContext.getContentResolver();
             resolver.unregisterContentObserver(this);
         }
@@ -516,6 +432,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mAutomaticBrightness = mode != Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
             mBrightnessControl = Settings.System.getInt(
                     resolver, Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL, 0) == 1;
+            mBrokenLogo = Settings.System.getIntForUser(
+                    resolver, Settings.System.STATUS_BAR_BROKEN_LOGO,
+                    0, UserHandle.USER_CURRENT) == 1;
+            mBrokenLogoColor = Settings.System.getIntForUser(
+                    resolver, Settings.System.STATUS_BAR_BROKEN_LOGO_COLOR, 0xFFFFFFFF,
+                    UserHandle.USER_CURRENT);
+            showBrokenLogo(mBrokenLogo, mBrokenLogoColor);
 		}
     }
     
@@ -3245,10 +3168,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
     };
 
-    public void showBrokenLogo(boolean show) {
+    public void showBrokenLogo(boolean show, int color) {
         if (mStatusBarView == null) return;
         ContentResolver resolver = mContext.getContentResolver();
         brokenLogo = (ImageView) mStatusBarView.findViewById(R.id.broken_logo);
+        brokenLogo.setColorFilter(color, Mode.SRC_IN);
         if (brokenLogo != null) {
             brokenLogo.setVisibility(show ? (mBrokenLogo ? View.VISIBLE : View.GONE) : View.GONE);
         }
