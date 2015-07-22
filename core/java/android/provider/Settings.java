@@ -2249,6 +2249,12 @@ public final class Settings {
         public static final String BUTTON_BACKLIGHT_TIMEOUT = "button_backlight_timeout";
 
         /**
+         * Statusbar DU logo
+         * @hide
+         */
+        public static final String STATUS_BAR_BROKEN_LOGO = "status_bar_broken_logo";
+
+        /**
          * Control whether the process CPU usage meter should be shown.
          *
          * @deprecated Use {@link Global#SHOW_PROCESSES} instead

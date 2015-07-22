@@ -388,6 +388,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     // Status bar carrier
     private boolean mShowStatusBarCarrier;
 
+    // Broken logo
+    private boolean mBrokenLogo;
+    private ImageView brokenLogo;
+
     // position
     int[] mPositionTmp = new int[2];
     boolean mExpandedVisible;
@@ -496,6 +500,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.HEADS_UP_GLOBAL_SWITCH),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BROKEN_LOGO),
+                    false, this, UserHandle.USER_ALL);
             update();
 	    }
 
@@ -566,6 +573,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mShowTaskManager = Settings.System.getIntForUser(
                     resolver, Settings.System.ENABLE_TASK_MANAGER,
                     0, UserHandle.USER_CURRENT) == 1;
+            mBrokenLogo = Settings.System.getIntForUser(
+                    resolver, Settings.System.STATUS_BAR_BROKEN_LOGO,
+                    0, UserHandle.USER_CURRENT) == 1;
+            showBrokenLogo(mBrokenLogo);
             mGreeting = Settings.System.getStringForUser(resolver,
 					Settings.System.STATUS_BAR_GREETING,
 					UserHandle.USER_CURRENT);
@@ -3758,6 +3769,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
         }
     };
+
+    public void showBrokenLogo(boolean show) {
+        if (mStatusBarView == null) return;
+        ContentResolver resolver = mContext.getContentResolver();
+        brokenLogo = (ImageView) mStatusBarView.findViewById(R.id.broken_logo);
+        if (brokenLogo != null) {
+            brokenLogo.setVisibility(show ? (mBrokenLogo ? View.VISIBLE : View.GONE) : View.GONE);
+        }
+    }
 
     public void showStatusBarCarrierLabel(boolean show) {
         if (mStatusBarView == null) return;
