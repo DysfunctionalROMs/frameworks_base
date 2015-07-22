@@ -54,4 +54,7 @@
     <!-- Side padding for the Quick Settings panel -->
     <dimen name="qs_panel_side_padding">@dimen/notification_side_padding</dimen>
 
+    <!-- The font size for the temperature text -->
+    <dimen name="status_bar_temp_text_size">14sp</dimen>
+
 </resources>

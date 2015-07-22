@@ -3334,6 +3334,15 @@ public final class Settings {
         public static final String LOCK_SCREEN_WEATHER_CONDITION_ICON = "lock_screen_weather_condition_icon";
 
         /**
+         * Status bar weather temperature
+         * 0: Hide the temperature
+         * 1: Display the temperature with scale
+         * 2: Display the temperature without scale
+         * @hide
+         */
+        public static final String STATUS_BAR_SHOW_WEATHER_TEMP = "status_bar_show_weather_temp";
+
+        /**
          * Whether to colorize all weather condition icons on the lock screen
          * @hide
          */
