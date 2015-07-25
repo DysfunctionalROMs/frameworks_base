@@ -4767,6 +4767,12 @@ public final class Settings {
          */
         public static final String KEYGUARD_STATUSBAR_CLOCK_DATE_FORMAT = "keyguard_statusbar_clock_date_format";
 
+       /**
+         * Whether the notification light will be allowed when in zen mode during downtime
+         * @hide
+         */
+        public static final String ALLOW_LIGHTS = "allow_lights";
+
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
@@ -4829,7 +4835,8 @@ public final class Settings {
             PHONE_BLACKLIST_REGEX_ENABLED,
             INCREASING_RING,
             INCREASING_RING_START_VOLUME,
-            INCREASING_RING_RAMP_UP_TIME
+            INCREASING_RING_RAMP_UP_TIME,
+            ALLOW_LIGHTS
         };
 
         /**
