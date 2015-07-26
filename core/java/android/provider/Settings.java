@@ -3343,6 +3343,12 @@ public final class Settings {
         public static final String STATUS_BAR_SHOW_WEATHER_TEMP = "status_bar_show_weather_temp";
 
         /**
+         * Statusbar weather color setting
+         * @hide
+         */
+        public static final String STATUS_BAR_WEATHER_COLOR = "status_bar_weather_color";
+
+        /**
          * Whether to colorize all weather condition icons on the lock screen
          * @hide
          */
