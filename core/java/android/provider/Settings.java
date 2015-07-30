@@ -3833,13 +3833,6 @@ public final class Settings {
         public static final String STATUS_BAR_SHOW_BATTERY_PERCENT = "status_bar_show_battery_percent";
 
         /**
-         * Ad blocker
-	     * Disable ads (HFM)
-	     * @hide
-	     */
-	    public static final String HFM_DISABLE_ADS = "hfm_disable_ads";
-
-        /**
          * show clear all recents button
          *  @hide
          */
