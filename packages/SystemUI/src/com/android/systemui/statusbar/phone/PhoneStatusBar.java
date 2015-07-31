@@ -368,7 +368,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private Bitmap mKeyguardWallpaper;
 
     int mKeyguardMaxNotificationCount;
-    
+
     // Broken logo
     private boolean mBrokenLogo;
     private ImageView brokenLogo;
@@ -426,7 +426,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     private int mNavigationIconHints = 0;
     private HandlerThread mHandlerThread;
-    
+
     Runnable mLongPressBrightnessChange = new Runnable() {
         @Override
         public void run() {
@@ -435,12 +435,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mLinger = BRIGHTNESS_CONTROL_LINGER_THRESHOLD + 1;
         }
     };
-    
+
     private int mBlurRadius;
     private Bitmap mBlurredImage = null;
 
     private DUPackageMonitor mPackageMonitor;
-    
+
     class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);
@@ -503,7 +503,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.ACCELEROMETER_ROTATION),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.BATTERY_SAVER_MODE_COLOR), 
+                    Settings.System.BATTERY_SAVER_MODE_COLOR),
 					false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_ALPHA),
@@ -531,7 +531,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CUSTOM_HEADER_SHADOW),
-                    false, this, UserHandle.USER_ALL);	
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -605,7 +605,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
         }
     }
-    
+
     public void update() {
             ContentResolver resolver = mContext.getContentResolver();
             int mode = Settings.System.getIntForUser(mContext.getContentResolver(),
@@ -616,7 +616,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             mBrightnessControl = Settings.System.getInt(
                     resolver, Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL, 0) == 1;
-            
+
             float overlayalpha = Settings.System.getFloatForUser(mContext.getContentResolver(),
                 Settings.System.LOCKSCREEN_ALPHA, 0.45f, UserHandle.USER_CURRENT);
             if (mScrimController != null) {
@@ -628,15 +628,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (mScrimController != null) {
                 mScrimController.setSecurityOverlayAlpha(securityoverlayalpha);
             }
- 
+
             mBrokenLogo = Settings.System.getIntForUser(
                     resolver, Settings.System.STATUS_BAR_BROKEN_LOGO,
                     0, UserHandle.USER_CURRENT) == 1;
             showBrokenLogo(mBrokenLogo);
-            
+
             mBlurRadius = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.LOCKSCREEN_BLUR_RADIUS, 14);
-            
+
             final int oldWeatherState = mWeatherTempState;
             mWeatherTempState = Settings.System.getIntForUser(
                     resolver, Settings.System.STATUS_BAR_SHOW_WEATHER_TEMP, 0,
@@ -946,7 +946,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         // in session state
 
         addNavigationBar();
-        
+
         SettingsObserver observer = new SettingsObserver(mHandler);
         observer.observe();
 
@@ -1023,7 +1023,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         mPackageMonitor = new DUPackageMonitor();
         mPackageMonitor.register(mContext, mHandler);
-        
+
         PanelHolder holder = (PanelHolder) mStatusBarWindow.findViewById(R.id.panel_holder);
         mStatusBarView.setPanelHolder(holder);
 
@@ -1049,7 +1049,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     R.id.header_debug_info);
             mNotificationPanelDebugText.setVisibility(View.VISIBLE);
         }
-        
+
         addAppCircleSidebar();
 
         if (mNavigationBarView == null) {
@@ -2930,7 +2930,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
         checkBarModes();
     }
-    
+
     @Override // CommandQueue
     public void showCustomIntentAfterKeyguard(Intent intent) {
         startActivityDismissingKeyguard(intent, false, false);
@@ -3565,7 +3565,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
         }
     };
-    
+
     public void showBrokenLogo(boolean show) {
         if (mStatusBarView == null) return;
         ContentResolver resolver = mContext.getContentResolver();
@@ -3859,6 +3859,19 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     private void handleStartActivityDismissingKeyguard(Intent intent, boolean onlyProvisioned) {
+        startActivityDismissingKeyguard(intent, onlyProvisioned, true /* dismissShade */);
+    }
+
+    public void postStartSettingsActivity(final Intent intent, int delay) {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                handleStartSettingsActivity(intent, true /*onlyProvisioned*/);
+            }
+        }, delay);
+    }
+
+    private void handleStartSettingsActivity(Intent intent, boolean onlyProvisioned) {
         startActivityDismissingKeyguard(intent, onlyProvisioned, true /* dismissShade */);
     }
 

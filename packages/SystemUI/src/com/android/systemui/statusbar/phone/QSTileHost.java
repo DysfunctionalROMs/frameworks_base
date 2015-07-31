@@ -61,6 +61,7 @@ import com.android.systemui.qs.tiles.SyncTile;
 import com.android.systemui.qs.tiles.UsbTetherTile;
 import com.android.systemui.qs.tiles.VolumeTile;
 import com.android.systemui.qs.tiles.WifiTile;
+import com.android.systemui.qs.tiles.KernelAdiutorTile;
 import com.android.systemui.settings.CurrentUserTracker;
 import com.android.systemui.statusbar.policy.BluetoothController;
 import com.android.systemui.statusbar.policy.CastController;
@@ -260,6 +261,11 @@ public class QSTileHost implements QSTile.Host {
         return mSecurity;
     }
 
+    @Override
+    public void startSettingsActivity(final Intent intent) {
+        mStatusBar.postStartSettingsActivity(intent, 0);
+    }
+
     private void recreateTiles() {
         if (DEBUG) Log.d(TAG, "Recreating tiles");
         final List<String> tileSpecs = loadTileSpecs();
@@ -338,7 +344,7 @@ public class QSTileHost implements QSTile.Host {
                 return new ScreenshotTile(this);
             case QSConstants.TILE_ADB_NETWORK:
                 return new AdbOverNetworkTile(this);
-        	case QSConstants.TILE_USB_TETHER: 
+        	case QSConstants.TILE_USB_TETHER:
 				return new UsbTetherTile(this);
 		    case QSConstants.TILE_MUSIC:
                 return new MusicTile(this);
@@ -346,6 +352,8 @@ public class QSTileHost implements QSTile.Host {
                 return new LteTile(this);
             case QSConstants.TILE_SCREEN_RECORD:
                 return new ScreenrecordTile(this);
+            case QSConstants.TILE_KERNEL_ADIUTOR:
+                return new KernelAdiutorTile(this);
             default:
                 throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
         }
