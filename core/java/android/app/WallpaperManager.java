@@ -710,6 +710,13 @@ public class WallpaperManager {
     }
 
     /**
+     * @hide
+     */
+    public void forgetLoadedKeyguardWallpaper() {
+        sGlobals.forgetLoadedKeyguardWallpaper();
+    }
+
+    /**
      * If the current wallpaper is a live wallpaper component, return the
      * information about that wallpaper.  Otherwise, if it is a static image,
      * simply return null.

@@ -1107,12 +1107,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         mHandlerThread.start();
 
         // Other icons
-        if (mLocationController == null) {
-            mLocationController = new LocationControllerImpl(mContext); // will post a notification
-        }
-        if (mBatteryController == null) {
-            mBatteryController = new BatteryController(mContext, mHandler);
-            mBatteryController.addStateChangedCallback(new BatteryStateChangeCallback() {
+        mLocationController = new LocationControllerImpl(mContext); // will post a notification
+        mBatteryController = new BatteryController(mContext);
+        mBatteryController.addStateChangedCallback(new BatteryStateChangeCallback() {
                 @Override
                 public void onPowerSaveChanged() {
                     boolean isPowerSave = mBatteryController.isPowerSave();
@@ -1128,14 +1125,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 @Override
                 public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
                 // noop
-                
-                }
-                @Override
-               public void onBatteryStyleChanged(int style, int percentMode) {
-                // noop
-                }
-            });
-        }
+            }
+        });
         mHotspotController = new HotspotControllerImpl(mContext);
         mBluetoothController = new BluetoothControllerImpl(mContext, mHandlerThread.getLooper());
         mSecurityController = new SecurityControllerImpl(mContext);
@@ -2328,10 +2319,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         final boolean hasBackdrop = backdropBitmap != null;
         mKeyguardShowingMedia = hasBackdrop;
-        if (mStatusBarWindowManager != null) {
-            mStatusBarWindowManager.setShowingMedia(mKeyguardShowingMedia);
-        }
-
         if ((hasBackdrop || DEBUG_MEDIA_FAKE_ARTWORK) && keyguardVisible) {
             // time to show some art!
             if (mBackdrop.getVisibility() != View.VISIBLE) {
@@ -4556,9 +4543,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     @Override
     public void onActivated(ActivatableNotificationView view) {
         setVisualizerAnimating(true);
-        EventLogTags.writeSysuiLockscreenGesture(
-                EventLogConstants.SYSUI_LOCKSCREEN_GESTURE_TAP_NOTIFICATION_ACTIVATE,
-                0 /* lengthDp - N/A */, 0 /* velocityDp - N/A */);
         mKeyguardIndicationController.showTransientIndication(R.string.notification_tap_again);
         ActivatableNotificationView previousView = mStackScroller.getActivatedChild();
         if (previousView != null) {
