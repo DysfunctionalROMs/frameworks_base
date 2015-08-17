@@ -34,6 +34,7 @@ public class QSConstants {
     public static final String TILE_HOTSPOT = "hotspot";
     public static final String TILE_NFC = "nfc";
     public static final String TILE_COMPASS = "compass";
+    public static final String TILE_VOLUME = "volume_panel";
     public static final String TILE_SCREEN_TIMEOUT = "screen_timeout";
     public static final String TILE_SYNC = "sync";
     public static final String TILE_BRIGHTNESS = "brightness";
@@ -68,5 +69,6 @@ public class QSConstants {
         TILES_AVAILABLE.add(TILE_BRIGHTNESS);
         TILES_AVAILABLE.add(TILE_BATTERY_SAVER);
         TILES_AVAILABLE.add(TILE_SCREEN_OFF);
+        TILES_AVAILABLE.add(TILE_VOLUME);
     }
 }
