@@ -3233,6 +3233,13 @@ public final class Settings {
         public static final Validator SHOW_WEB_SUGGESTIONS_VALIDATOR = sBooleanValidator;
 
         /**
+         * Contains the notifications light maximum brightness to use.
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL =
+                "notification_light_brightness_level";
+
+        /**
          * Whether the notification LED should repeatedly flash when a notification is
          * pending. The value is boolean (1 or 0).
          * @hide
@@ -4879,7 +4886,8 @@ public final class Settings {
             INCREASING_RING,
             INCREASING_RING_START_VOLUME,
             INCREASING_RING_RAMP_UP_TIME,
-            ALLOW_LIGHTS
+            ALLOW_LIGHTS,
+            NOTIFICATION_LIGHT_BRIGHTNESS_LEVEL
         };
 
         /**

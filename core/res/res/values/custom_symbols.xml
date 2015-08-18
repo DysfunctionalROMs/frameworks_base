@@ -73,14 +73,6 @@
   
   <!-- Hardware key rebinding -->
   <java-symbol type="integer" name="config_deviceHardwareKeys" />
-  
-  <!-- Notification and battery light -->
-  <java-symbol type="bool" name="config_intrusiveNotificationLed" />
-  <java-symbol type="bool" name="config_multiColorNotificationLed" />
-  <java-symbol type="bool" name="config_intrusiveBatteryLed" />
-  <java-symbol type="bool" name="config_multiColorBatteryLed" />
-  <java-symbol type="array" name="notification_light_package_mapping" />
-  <java-symbol type="array" name="config_notificationNoAlertsVibePattern" />
 
   <!-- Power menu -->
   <java-symbol type="drawable" name="ic_lock_screenshot" />
@@ -168,5 +160,14 @@
   <java-symbol type="string" name="privacy_guard_notification_detail" />
   <java-symbol type="string" name="privacy_guard_dialog_title" />
   <java-symbol type="string" name="privacy_guard_dialog_summary" />
+  
+  <!-- Notification and battery light -->
+  <java-symbol type="bool" name="config_adjustableNotificationLedBrightness" />
+  <java-symbol type="bool" name="config_intrusiveNotificationLed" />
+  <java-symbol type="bool" name="config_multiColorNotificationLed" />
+  <java-symbol type="bool" name="config_intrusiveBatteryLed" />
+  <java-symbol type="bool" name="config_multiColorBatteryLed" />
+  <java-symbol type="array" name="notification_light_package_mapping" />
+  <java-symbol type="array" name="config_notificationNoAlertsVibePattern" />
 
 </resources>
