@@ -3829,13 +3829,6 @@ public final class Settings {
         public static final String RECENTS_CLEAR_ALL_LOCATION = "recents_clear_all_location";
 
         /**
-         * Boolean value whether to link ringtone and notification volume
-         *
-         * @hide
-         */
-        public static final String VOLUME_LINK_NOTIFICATION = "volume_link_notification";
-
-        /**
          * Action to perform when the home key is long-pressed.
          * (Default can be configured via config_longPressOnHomeBehavior)
          * 0 - Nothing
