@@ -30,8 +30,6 @@ import android.view.View;
 import android.widget.TextView;
 import com.android.systemui.statusbar.policy.BatteryController;
 
-import java.text.NumberFormat;
-
 public class BatteryLevelTextView extends TextView implements
         BatteryController.BatteryStateChangeCallback{
 
@@ -91,8 +89,7 @@ public class BatteryLevelTextView extends TextView implements
 
     @Override
     public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
-        String percentage = NumberFormat.getPercentInstance().format((double) level / 100.0);
-        setText(percentage);
+        setText(getResources().getString(R.string.battery_level_template, level));
         boolean changed = mBatteryCharging != charging;
         mBatteryCharging = charging;
         if (changed) {
@@ -139,10 +136,13 @@ public class BatteryLevelTextView extends TextView implements
     }
 
     public void setTextColor(boolean isHeader) {
+        int headerColor = Settings.System.getInt(mResolver,
+                Settings.System.STATUS_BAR_EXPANDED_HEADER_TEXT_COLOR, 0xffffffff);
         int color = Settings.System.getInt(mResolver,
                 Settings.System.STATUS_BAR_BATTERY_STATUS_TEXT_COLOR, 0xff000000);
-    }
 
+        super.setTextColor(isHeader ? headerColor : color);
+    }
 
     private void loadShowBatteryTextSetting() {
         int currentUserId = ActivityManager.getCurrentUser();
