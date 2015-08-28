@@ -3793,6 +3793,13 @@ public final class Settings {
         public static final String POWER_MENU_LOCKDOWN = "power_menu_lockdown";
 
         /**
+         * Toast icon
+         *
+         * @hide
+         */
+        public static final String TOAST_ICON = "toast_icon";
+
+        /**
          * Whether to show silent mode in power menu 
          * @hide
          */
