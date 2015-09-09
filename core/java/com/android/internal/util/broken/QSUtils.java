@@ -26,6 +26,7 @@ import android.hardware.camera2.CameraManager;
 import android.net.ConnectivityManager;
 import android.telephony.TelephonyManager;
 import android.nfc.NfcAdapter;
+import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
@@ -84,6 +85,9 @@ public class QSUtils {
                         break;
                     case QSConstants.TILE_LED:
                         removeTile = !deviceSupportsLed(context);
+                        break;
+                    case QSConstants.TILE_PERFORMANCE:
+                        removeTile = !hasPowerMode(context);
                         break;
                 }
                 if (removeTile) {
@@ -161,5 +165,10 @@ public class QSUtils {
         Boolean value = context.getResources().getBoolean(
         com.android.internal.R.bool.config_intrusiveNotificationLed);
         return value;
+    }
+
+    private static boolean hasPowerMode(Context context) {
+        PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        return mPowerManager.hasPowerProfiles();
     }
 }
