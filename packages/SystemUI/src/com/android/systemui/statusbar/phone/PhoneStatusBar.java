@@ -4133,6 +4133,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 mCurrentUserId);
     }
 
+    public void resetQsPanelVisibility() {
+        showTaskList = showTaskList;
+        if (showTaskList) {
+            mQSPanel.setVisibility(View.VISIBLE);
+            mTaskManagerPanel.setVisibility(View.GONE);
+            showTaskList = false;
+        }
+    }
+
     private void setHeadsUpVisibility(boolean vis) {
         if (DEBUG) Log.v(TAG, (vis ? "showing" : "hiding") + " heads up window");
         EventLog.writeEvent(EventLogTags.SYSUI_HEADS_UP_STATUS,
