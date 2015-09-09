@@ -71,7 +71,6 @@
             android:layout_gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.StatusBar.CarrierLabel"
             android:singleLine="true"
-            android:ellipsize="end"
-            android:visibility="gone" />
+            android:ellipsize="end"/>
 
 </com.android.systemui.statusbar.phone.KeyguardStatusBarView>
