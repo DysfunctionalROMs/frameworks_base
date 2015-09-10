@@ -104,9 +104,9 @@
                         android:singleLine="true"
                     />
                     
-                   </com.android.keyguard.AlphaOptimizedLinearLayout>
+                </com.android.keyguard.AlphaOptimizedLinearLayout>
                     
-					<com.android.systemui.statusbar.widget.CarrierLabel
+		<com.android.systemui.statusbar.widget.CarrierLabel
                     android:id="@+id/status_bar_carrier_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                     android:singleLine="true"
                 />
 					
-				   <TextView
+		<TextView
                    android:id="@+id/left_weather_temp"
                    android:layout_width="wrap_content"
                    android:layout_height="match_parent"
@@ -148,14 +148,25 @@
             android:orientation="horizontal"
             >
          
-                    <com.android.systemui.statusbar.policy.Traffic
+            <com.android.systemui.statusbar.policy.Traffic
                 android:id="@+id/traffic"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:singleLine="false"
                 android:gravity="right|center_vertical"
-                />
+                android:visibility="gone"
+                android:paddingEnd="2dp" />
 
+            <TextView
+                android:id="@+id/weather_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:singleLine="true"
+                android:gravity="right|center_vertical"
+                android:textAppearance="@style/TextAppearance.StatusBar.WeatherTemp"
+                android:visibility="gone"
+                android:paddingStart="2dp"
+                android:paddingEnd="4dp" />
 
             <include layout="@layout/msim_system_icons" />
             
