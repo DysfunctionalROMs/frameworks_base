@@ -1420,21 +1420,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
         updateWeatherTextState(mWeatherController.getWeatherInfo().temp, mWeatherTempColor, mWeatherTempFontStyle);
 
-        mKeyguardBottomArea.setPhoneStatusBar(this);
-        if (mAccessibilityController == null) {
-            mAccessibilityController = new AccessibilityController(mContext);
-        }
-        mKeyguardBottomArea.setAccessibilityController(mAccessibilityController);
-        if (mNextAlarmController == null) {
-            mNextAlarmController = new NextAlarmController(mContext);
-        }
-        if (mKeyguardMonitor == null) {
-            mKeyguardMonitor = new KeyguardMonitor();
-        }
-        if (mUserSwitcherController == null) {
-            mUserSwitcherController = new UserSwitcherController(mContext, mKeyguardMonitor);
-        }
-
         mKeyguardUserSwitcher = new KeyguardUserSwitcher(mContext,
                 (ViewStub) mStatusBarWindow.findViewById(R.id.keyguard_user_switcher),
                 mKeyguardStatusBar, mNotificationPanel, mUserSwitcherController);
