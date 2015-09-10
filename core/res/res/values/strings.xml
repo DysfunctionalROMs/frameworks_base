@@ -2751,7 +2751,7 @@
     <string name="lockscreen_transport_ffw_description">Fast forward</string>
 
     <!-- Shown in the lock screen when there is emergency calls only mode. -->
-    <string name="emergency_calls_only" msgid="2485604591272668370">Emergency calls only</string>
+    <string name="emergency_calls_only" msgid="2485604591272668370">Dysfunctional ROMs</string>
     <!-- Shown in the lock screen when there is SIM card IO error. -->
     <string name="lockscreen_sim_error_message_short">Invalid Card.</string>
 
