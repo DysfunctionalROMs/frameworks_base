@@ -19,4 +19,16 @@
   <!-- google webview -->
   <java-symbol type="string" name="config_alternateWebViewPackageName" />
   
+  <!-- Global actions -->
+  <java-symbol type="drawable" name="ic_lock_reboot" />
+  <java-symbol type="array" name="shutdown_reboot_options" />
+  <java-symbol type="array" name="shutdown_reboot_actions" />
+  <java-symbol type="string" name="global_action_reboot" />
+  <java-symbol type="string" name="shutdown_reboot_dlg_confirm_title" />
+  <java-symbol type="string" name="shutdown_reboot_dlg_title" />
+  <java-symbol type="string" name="shutdown_reboot_dlg_message_reboot" />
+  <java-symbol type="string" name="shutdown_reboot_dlg_message_quick_reboot" />
+  <java-symbol type="string" name="shutdown_reboot_dlg_message_recovery" />
+  <java-symbol type="string" name="shutdown_reboot_dlg_message_bootloader" />
+  
 </resources>
