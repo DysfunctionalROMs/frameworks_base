@@ -29,4 +29,6 @@
     <!-- Proximity check on screen on default -->
     <java-symbol type="bool" name="config_proximityCheckOnWakeEnabledByDefault" />
 
+    <!-- kill app long press back -->
+    <integer name="config_backKillTimeout">1000</integer>
 </resources>
