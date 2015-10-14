@@ -56,5 +56,4 @@
         <com.android.systemui.tuner.StatusBarSwitch
             android:key="airplane"
             android:title="@string/status_bar_airplane" />
-
 </PreferenceScreen>
