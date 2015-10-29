@@ -1645,7 +1645,6 @@ public final class PowerManagerService extends SystemService
                                     mButtonsLight.setBrightness(buttonBrightness);
                                     if (buttonBrightness != 0 && mButtonTimeout != 0) {
                                         nextTimeout = now + mButtonTimeout;
-                                    }
                                 }
                             }
                         }
