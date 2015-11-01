@@ -335,8 +335,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private long mKeyguardFadingAwayDelay;
     private long mKeyguardFadingAwayDuration;
 
-    private Bitmap mKeyguardWallpaper;
-
     int mKeyguardMaxNotificationCount;
 
     // carrier label
@@ -725,11 +723,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.Global.getUriFor(SETTING_HEADS_UP_TICKER), true,
                     mHeadsUpObserver);
         }
-
-        WallpaperManager wallpaperManager = (WallpaperManager) mContext.getSystemService(
-                Context.WALLPAPER_SERVICE);
-        mKeyguardWallpaper = wallpaperManager.getKeyguardBitmap();
-
         mUnlockMethodCache = UnlockMethodCache.getInstance(mContext);
         mUnlockMethodCache.addListener(this);
         startKeyguard();
@@ -1898,7 +1891,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         // apply user lockscreen image
         if (mMediaMetadata == null && backdropBitmap == null) {
-            backdropBitmap = mKeyguardWallpaper;
+            WallpaperManager wm = (WallpaperManager)
+                    mContext.getSystemService(Context.WALLPAPER_SERVICE);
+            if (wm != null) {
+                backdropBitmap = wm.getKeyguardBitmap();
+            }
         }
 
         final boolean hasBackdrop = backdropBitmap != null;
@@ -3165,9 +3162,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     updateMediaMetaData(true);
                 }
             } else if (Intent.ACTION_KEYGUARD_WALLPAPER_CHANGED.equals(action)) {
-                WallpaperManager wm = (WallpaperManager) mContext.getSystemService(
-                        Context.WALLPAPER_SERVICE);
-                mKeyguardWallpaper = wm.getKeyguardBitmap();
                 updateMediaMetaData(true);
             }
         }
@@ -3221,25 +3215,17 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     public void userSwitched(int newUserId) {
         super.userSwitched(newUserId);
         if (MULTIUSER_DEBUG) mNotificationPanelDebugText.setText("USER " + newUserId);
-        WallpaperManager wm = (WallpaperManager)
-                mContext.getSystemService(Context.WALLPAPER_SERVICE);
-        mKeyguardWallpaper = null;
-        wm.forgetLoadedKeyguardWallpaper();
-
         animateCollapsePanels();
         updatePublicMode();
         updateNotifications();
         resetUserSetupObserver();
         setControllerUsers();
 
+        mAssistManager.onUserSwitched(newUserId);
+
         WallpaperManager wm = (WallpaperManager)
                 mContext.getSystemService(Context.WALLPAPER_SERVICE);
         wm.forgetLoadedKeyguardWallpaper();
-        updateMediaMetaData(true);
-
-        mAssistManager.onUserSwitched(newUserId);
-
-        mKeyguardWallpaper = wm.getKeyguardBitmap();
         updateMediaMetaData(true);
     }
 
