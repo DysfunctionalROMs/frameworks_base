@@ -3902,6 +3902,12 @@ public final class Settings {
          * @hide
          */
         public static final String CLOCK_USE_SECOND = "clock_use_second";
+        
+        /**
+         * Swap volume buttons when the screen is rotated
+         * @hide
+         */
+        public static final String SWAP_VOLUME_BUTTONS = "swap_volume_buttons";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
