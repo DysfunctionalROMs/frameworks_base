@@ -46,8 +46,6 @@
     <string name="menu_delete">Delete</string>
     <!-- Menu item title that selects all documents in the current directory [CHAR LIMIT=24] -->
     <string name="menu_select_all">Select all</string>
-    <!-- Menu item title that copies the selected documents [CHAR LIMIT=24] -->
-    <string name="menu_copy">Copy to\u2026</string>
 
     <!-- Menu item that reveals internal storage built into the device [CHAR LIMIT=24] -->
     <string name="menu_advanced_show" product="nosdcard">Show internal storage</string>
