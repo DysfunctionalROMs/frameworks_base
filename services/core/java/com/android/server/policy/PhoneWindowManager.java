@@ -1708,8 +1708,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mBackKillTimeout = mContext.getResources().getInteger(
                 com.android.internal.R.integer.config_backKillTimeout);
 
-        readConfigurationDependentBehaviors();
-
         mAccessibilityManager = (AccessibilityManager) context.getSystemService(
                 Context.ACCESSIBILITY_SERVICE);
 
@@ -7599,8 +7597,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     // overridden by qemu.hw.mainkeys in the emulator.
     @Override
     public boolean hasNavigationBar() {
-        return mOverWriteHasNavigationBar || mDevForceNavbar;
-        ? mHasNavigationBar
+        return mOverWriteHasNavigationBar
+        ? mHasNavigationBar && mDevForceNavbar
             : mContext.getResources().getBoolean(
                     com.android.internal.R.bool.config_showNavigationBar);
     }

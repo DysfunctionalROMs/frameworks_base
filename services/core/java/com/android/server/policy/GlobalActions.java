@@ -29,8 +29,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -41,11 +41,10 @@ import android.graphics.drawable.Drawable;
 import android.Manifest;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
+import android.os.IBinder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
-import android.os.IPowerManager;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
@@ -119,7 +118,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private boolean mHasTelephony;
     private boolean mHasVibrator;
     private final boolean mShowSilentToggle;
-
+    
     // Power menu customizations
     String mActions;
 
@@ -157,7 +156,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
         mShowSilentToggle = SHOW_SILENT_TOGGLE && !mContext.getResources().getBoolean(
                 com.android.internal.R.bool.config_useFixedVolume);
-
+                
         updatePowerMenuActions();
     }
 
@@ -175,7 +174,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             // Show delayed, so that the dismiss of the previous dialog completes
             mHandler.sendEmptyMessage(MESSAGE_SHOW);
         } else {
-            mDialog = createDialog();
+			mDialog = createDialog();
             handleShow();
         }
     }
@@ -265,7 +264,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         onAirplaneModeChanged();
 
         mItems = new ArrayList<Action>();
-
+        
         String[] actionsArray;
         if (mActions == null) {
             actionsArray = mContext.getResources().getStringArray(
@@ -273,9 +272,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         } else {
             actionsArray = mActions.split("\\|");
         }
-
-        // Always add the power off option
-        mItems.add(new PowerAction());
 
         ArraySet<String> addedKeys = new ArraySet<String>();
         for (int i = 0; i < actionsArray.length; i++) {
@@ -285,7 +281,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                 continue;
             }
             if (GLOBAL_ACTION_KEY_POWER.equals(actionKey)) {
-                continue;
+                mItems.add(getPowerAction());
             } else if (GLOBAL_ACTION_KEY_REBOOT.equals(actionKey)) {
                 mItems.add(new RebootAction());
             } else if (GLOBAL_ACTION_KEY_SCREENSHOT.equals(actionKey)) {
@@ -402,7 +398,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             return true;
         }
     }
-
+    
     private Action getScreenshotAction() {
         return new SinglePressAction(com.android.internal.R.drawable.ic_lock_screenshot,
                 R.string.global_action_screenshot) {
@@ -618,7 +614,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             }
         }
     }
-
+    
     /**
      * functions needed for taking screenhots.
      * This leverages the built in ICS screenshot functionality
@@ -1178,12 +1174,12 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                     mIsWaitingForEcmExit = false;
                     changeAirplaneModeSystemSetting(true);
                 }
-            } else if (Intent.UPDATE_POWER_MENU.equals(action)) {
+                } else if (Intent.UPDATE_POWER_MENU.equals(action)) {
                 updatePowerMenuActions();
             }
         }
     };
-
+    
     protected void updatePowerMenuActions() {
         ContentResolver resolver = mContext.getContentResolver();
         mActions = Settings.Global.getStringForUser(resolver,
