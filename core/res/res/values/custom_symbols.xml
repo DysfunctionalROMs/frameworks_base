@@ -30,6 +30,7 @@
   <java-symbol type="string" name="shutdown_reboot_dlg_message_quick_reboot" />
   <java-symbol type="string" name="shutdown_reboot_dlg_message_recovery" />
   <java-symbol type="string" name="shutdown_reboot_dlg_message_bootloader" />
+  <java-symbol type="string" name="shutdown_reboot_dlg_message_systemui" />
   
   <!-- Proximity check on screen on -->
   <java-symbol type="bool" name="config_proximityCheckOnWake" />

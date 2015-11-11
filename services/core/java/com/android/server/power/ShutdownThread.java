@@ -64,6 +64,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.android.internal.util.broken.Helpers;
+
 public final class ShutdownThread extends Thread {
     // constants
     private static final String TAG = "ShutdownThread";
@@ -105,6 +107,8 @@ public final class ShutdownThread extends Thread {
     private static final int ACTION_QUICK_REBOOT = 1;
     private static final int ACTION_RECOVERY     = 2;
     private static final int ACTION_BOOTLOADER   = 3;
+    private static final int ACTION_SYSTEMUI_REBOOT = 4;
+
 
     // Indicates whether we are rebooting into safe mode
     public static final String REBOOT_SAFEMODE_PROPERTY = "persist.sys.safemode";
@@ -242,8 +246,12 @@ public final class ShutdownThread extends Thread {
                                         } catch (RemoteException e) {
                                             Log.e(TAG, "failure trying to perform quick reboot", e);
                                         }
-                                    } else {
-                                        if (mRebootAction < 0) {
+                                    } else { 
+										if (mRebootAction == ACTION_SYSTEMUI_REBOOT) {
+                                            mRebootAction = ACTION_SYSTEMUI_REBOOT;
+                                            doSystemUIReboot();
+                                            return;
+                                    } else if (mRebootAction < 0) {
                                             // no option was pressed, set reboot action to default (reboot)
                                             mRebootAction = ACTION_REBOOT;
                                         }
@@ -292,6 +300,10 @@ public final class ShutdownThread extends Thread {
     private static boolean advancedRebootEnabled(Context context) {
         return Settings.System.getInt(context.getContentResolver(),
                 Settings.System.POWER_MENU_SHOW_ADVANCED_REBOOT, 0) == 1;
+    }
+    
+    private static void doSystemUIReboot() {
+        Helpers.restartSystemUI();
     }
 
     private static class CloseDialogReceiver extends BroadcastReceiver
@@ -396,9 +408,9 @@ public final class ShutdownThread extends Thread {
                 pd.setIndeterminate(false);
             } else {
                 // Factory reset path. Set the dialog message accordingly.
-                pd.setTitle(context.getText(com.android.internal.R.string.reboot_to_reset_title));
+                pd.setTitle(context.getText(com.android.internal.R.string.shutdown_reboot_dlg_confirm_title));
                 pd.setMessage(context.getText(
-                        com.android.internal.R.string.reboot_to_reset_message));
+                        com.android.internal.R.string.shutdown_reboot_dlg_message_reboot));
                 pd.setIndeterminate(true);
             }
         } else {
@@ -415,6 +427,8 @@ public final class ShutdownThread extends Thread {
                     messageResourceId = com.android.internal.R.string.shutdown_reboot_dlg_message_recovery;
                 } else if (mRebootAction == ACTION_BOOTLOADER) {
                     messageResourceId = com.android.internal.R.string.shutdown_reboot_dlg_message_bootloader;
+                } else if (mRebootAction == ACTION_SYSTEMUI_REBOOT) {
+                    messageResourceId = com.android.internal.R.string.shutdown_reboot_dlg_message_systemui;
                 }
             }
             pd.setTitle(context.getText(titleResourceId));
@@ -883,4 +897,3 @@ public final class ShutdownThread extends Thread {
         }
     }
 }
-

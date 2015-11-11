@@ -23,6 +23,8 @@
     <string name="shutdown_reboot_option_recovery">Recovery</string>
     <!-- Option to reboot the phone into bootloader, within the Shut down reboot dialog -->
     <string name="shutdown_reboot_option_bootloader">Bootloader</string>
+    <!-- Button to soft reboot the device, within the Reboot Options dialog -->
+    <string name="shutdown_reboot_option_reboot_systemui">Restart SystemUI</string>
 
     <!-- Reboot Confirmation Dialog title -->
     <string name="shutdown_reboot_dlg_confirm_title" product="tablet">Your tablet will reboot.</string>
@@ -35,6 +37,7 @@
     <string name="shutdown_reboot_dlg_message_quick_reboot">Rebooting\u2026\n(Quick reboot)</string>
     <string name="shutdown_reboot_dlg_message_recovery">Rebooting\u2026\n(Recovery)</string>
     <string name="shutdown_reboot_dlg_message_bootloader">Rebooting\u2026\n(Bootloader)</string>
+    <string name="shutdown_reboot_dlg_message_systemui">Rebooting\u2026\n(SystemUI)</string>
     
     <string name="app_killed_message">App Killed</string>
     
