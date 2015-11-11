@@ -118,6 +118,7 @@ import com.android.systemui.EventLogTags;
 import com.android.systemui.Prefs;
 import com.android.systemui.R;
 import com.android.systemui.assist.AssistManager;
+import com.android.systemui.cm.UserContentObserver;
 import com.android.systemui.doze.DozeHost;
 import com.android.systemui.doze.DozeLog;
 import com.android.systemui.keyguard.KeyguardViewMediator;
@@ -393,12 +394,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
     };
 	
-	class SettingsObserver extends ContentObserver {
+	class SettingsObserver extends UserContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);        
         }
 
-        void observe() {
+        @Override
+        protected void observe() {
+			super.observe();
+			
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL), false, this);
@@ -407,14 +411,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             update();
         }
         
-        void unobserve() {
+        @Override
+        protected void unobserve() {
+			super.unobserve();
             ContentResolver resolver = mContext.getContentResolver();
             resolver.unregisterContentObserver(this);
-        }
-        
-        @Override
-        public void onChange(boolean selfChange) {
-            update();
         }
 
         public void update() {
@@ -429,21 +430,24 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 		}
     }
     
-    class DevForceNavbarObserver extends ContentObserver {
+    class DevForceNavbarObserver extends UserContentObserver {
         DevForceNavbarObserver(Handler handler) {
             super(handler);
         }
 
-        void observe() {
+        @Override
+        protected void observe() {
+			super.observe();
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.DEV_FORCE_SHOW_NAVBAR), false, this);
         }
 
         @Override
-        public void onChange(boolean selfChange) {
+        public void update() {
             boolean visible = Settings.System.getIntForUser(mContext.getContentResolver(),
                     Settings.System.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
+                    
             if (visible) {
                 forceAddNavigationBar();
             } else {
