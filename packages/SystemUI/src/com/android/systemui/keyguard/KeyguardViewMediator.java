@@ -563,6 +563,7 @@ public class KeyguardViewMediator extends SystemUI {
         mContext.registerReceiver(mBroadcastReceiver, new IntentFilter(DELAYED_KEYGUARD_ACTION));
         mContext.registerReceiver(mBroadcastReceiver, new IntentFilter(DISMISS_KEYGUARD_SECURELY_ACTION),
                 android.Manifest.permission.CONTROL_KEYGUARD, null);
+        mContext.registerReceiver(mBroadcastReceiver, new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED));
 
         mKeyguardDisplayManager = new KeyguardDisplayManager(mContext);
 
@@ -1213,6 +1214,9 @@ public class KeyguardViewMediator extends SystemUI {
                 synchronized (KeyguardViewMediator.this) {
                     dismiss();
                 }
+            } else if (TelephonyManager.ACTION_PHONE_STATE_CHANGED.equals(intent.getAction())) {
+                mPhoneState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+                if (DEBUG) Log.d(TAG, "phone state change, new state: " + mPhoneState);
             }
         }
     };
