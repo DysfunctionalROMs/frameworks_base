@@ -260,4 +260,7 @@
   <!-- Greeting -->
   <java-symbol type="string" name="default_greeting_welcome" />
 
+  <!-- Vendor warning -->
+  <java-symbol type="string" name="system_error_vendorprint" />
+
 </resources>
