@@ -257,4 +257,7 @@
   <!-- Wifi AP Disabled from Subscription change -->
   <java-symbol type="string" name="subscription_change_disabled_wifi_ap" />
 
+  <!-- Greeting -->
+  <java-symbol type="string" name="default_greeting_welcome" />
+
 </resources>

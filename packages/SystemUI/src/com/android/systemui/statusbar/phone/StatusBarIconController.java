@@ -38,6 +38,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.internal.statusbar.StatusBarIcon;
+import com.android.internal.util.broken.StatusBarColorHelper;
 import com.android.internal.util.NotificationColorUtil;
 import com.android.systemui.BatteryLevelTextView;
 import com.android.systemui.BatteryMeterView;
@@ -64,6 +65,9 @@ public class StatusBarIconController implements Tunable {
 
     public static final String ICON_BLACKLIST = "icon_blacklist";
 
+    private static final int GREETING_ALWAYS = 0;
+    private static final int GREETING_HIDDEN = 2;
+
     private Context mContext;
     private PhoneStatusBar mPhoneStatusBar;
     private Interpolator mLinearOutSlowIn;
@@ -74,6 +78,8 @@ public class StatusBarIconController implements Tunable {
     private LinearLayout mSystemIconArea;
     private LinearLayout mStatusIcons;
     private SignalClusterView mSignalCluster;
+    private LinearLayout mGreetingLayout;
+    private TextView mGreetingView;
     private LinearLayout mStatusIconsKeyguard;
     private IconMerger mNotificationIcons;
     private View mNotificationIconArea;
@@ -94,6 +100,14 @@ public class StatusBarIconController implements Tunable {
 
     private int mIconTint = Color.WHITE;
     private float mDarkIntensity;
+
+    private int mGreetingColor;
+    private int mGreetingColorTint;
+
+    private int mShowGreeting;
+    private boolean mHideGreeting = false;
+    private int mGreetingTimeout;
+    private boolean mIsGreetingVisible = false;
 
     private boolean mTransitionPending;
     private boolean mTintChangePending;
@@ -126,6 +140,8 @@ public class StatusBarIconController implements Tunable {
         mStatusIcons = (LinearLayout) statusBar.findViewById(R.id.statusIcons);
         mSignalCluster = (SignalClusterView) statusBar.findViewById(R.id.signal_cluster);
         mNotificationIconArea = statusBar.findViewById(R.id.notification_icon_area_inner);
+        mGreetingLayout = (LinearLayout) statusBar.findViewById(R.id.status_bar_greeting_layout);
+        mGreetingView = (TextView) statusBar.findViewById(R.id.status_bar_greeting_view);
         mNotificationIcons = (IconMerger) statusBar.findViewById(R.id.notificationIcons);
         mMoreIcon = (ImageView) statusBar.findViewById(R.id.moreIcon);
         mNotificationIcons.setOverflowIndicator(mMoreIcon);
@@ -136,7 +152,7 @@ public class StatusBarIconController implements Tunable {
         mClock = (Clock) statusBar.findViewById(R.id.clock);
         mCenterClock = (Clock) statusBar.findViewById(R.id.center_clock);
         mLeftClock = (Clock) statusBar.findViewById(R.id.left_clock);
-        mCenterClockLayout = (LinearLayout)statusBar.findViewById(R.id.center_clock_layout); 
+        mCenterClockLayout = (LinearLayout)statusBar.findViewById(R.id.center_clock_layout);
         mCarrier = (TextView) statusBar.findViewById(R.id.statusbar_carrier_text);
         mLinearOutSlowIn = AnimationUtils.loadInterpolator(mContext,
                 android.R.interpolator.linear_out_slow_in);
@@ -152,6 +168,7 @@ public class StatusBarIconController implements Tunable {
         mLeftClock.setIconController(this);
 
         TunerService.get(mContext).addTunable(this, ICON_BLACKLIST);
+        setUpCustomColors();
     }
 
     @Override
@@ -175,6 +192,11 @@ public class StatusBarIconController implements Tunable {
             addSystemIcon(views.get(i).getSlot(), i, i, views.get(i).getStatusBarIcon());
         }
     };
+
+    private void setUpCustomColors() {
+		mGreetingColor = StatusBarColorHelper.getGreetingColor(mContext);
+        mGreetingColorTint = mGreetingColor;
+	}
 
     public void updateResources() {
         mIconSize = mContext.getResources().getDimensionPixelSize(
@@ -268,14 +290,39 @@ public class StatusBarIconController implements Tunable {
         applyNotificationIconsTint();
     }
 
+    public void showGreeting(boolean isPreview) {
+        if (mIsGreetingVisible) {
+            return;
+        }
+        mIsGreetingVisible = true;
+        if (isPreview) {
+            hideSystemIconArea(true);
+            hideNotificationIconArea(true);
+        } else {
+            animateHide(mSystemIconArea, false);
+            animateHide(mNotificationIconArea, false);
+        }
+        animateShow(mGreetingLayout, true, true);
+    }
+
+    public void hideGreeting() {
+        animateShow(mSystemIconArea, true);
+        animateShow(mNotificationIconArea, true);
+        animateHide(mGreetingLayout, true, true);
+    }
+
     public void hideSystemIconArea(boolean animate) {
         animateHide(mSystemIconArea, animate);
         animateHide(mCenterClockLayout, animate);
     }
 
     public void showSystemIconArea(boolean animate) {
+		if (mShowGreeting != GREETING_HIDDEN && !mHideGreeting && animate) {
+            showGreeting(false);
+        } else {
         animateShow(mSystemIconArea, animate);
         animateShow(mCenterClockLayout, animate);
+	    }
     }
 
     public void hideNotificationIconArea(boolean animate) {
@@ -283,7 +330,13 @@ public class StatusBarIconController implements Tunable {
     }
 
     public void showNotificationIconArea(boolean animate) {
-        animateShow(mNotificationIconArea, animate);
+        if (mShowGreeting == GREETING_HIDDEN || mHideGreeting || !animate) {
+            animateShow(mNotificationIconArea, animate);
+        }
+    }
+
+    private void animateHide(final View v, boolean animate) {
+        animateHide(v, animate, false);
     }
 
     public void setClockVisibility(boolean visible) {
@@ -332,7 +385,7 @@ public class StatusBarIconController implements Tunable {
     /**
      * Hides a view.
      */
-    private void animateHide(final View v, boolean animate) {
+    private void animateHide(final View v, boolean animate, final boolean isGreeting) {
         v.animate().cancel();
         if (!animate) {
             v.setAlpha(0f);
@@ -342,20 +395,28 @@ public class StatusBarIconController implements Tunable {
         v.animate()
                 .alpha(0f)
                 .setDuration(160)
-                .setStartDelay(0)
+                .setStartDelay(mIsGreetingVisible && isGreeting ? mGreetingTimeout : 0)
                 .setInterpolator(PhoneStatusBar.ALPHA_OUT)
                 .withEndAction(new Runnable() {
                     @Override
                     public void run() {
                         v.setVisibility(View.INVISIBLE);
+                        if (isGreeting) {
+                            mIsGreetingVisible = false;
+                            mHideGreeting = true;
+                        }
                     }
                 });
+    }
+
+    private void animateShow(View v, boolean animate) {
+        animateShow(v, animate, false);
     }
 
     /**
      * Shows a view, and synchronizes the animation with Keyguard exit animations, if applicable.
      */
-    private void animateShow(View v, boolean animate) {
+    private void animateShow(View v, boolean animate, boolean isGreeting) {
         v.animate().cancel();
         v.setVisibility(View.VISIBLE);
         if (!animate) {
@@ -366,15 +427,26 @@ public class StatusBarIconController implements Tunable {
                 .alpha(1f)
                 .setDuration(320)
                 .setInterpolator(PhoneStatusBar.ALPHA_IN)
-                .setStartDelay(50)
+                .setStartDelay(mIsGreetingVisible && !isGreeting ? mGreetingTimeout : 50);
 
-                // We need to clean up any pending end action from animateHide if we call
-                // both hide and show in the same frame before the animation actually gets started.
-                // cancel() doesn't really remove the end action.
-                .withEndAction(null);
+        if (isGreeting) {
+            v.animate()
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideGreeting();
+                        }
+                    });
+        } else {
+            // We need to clean up any pending end action from animateHide if we call
+            // both hide and show in the same frame before the animation actually gets started.
+            // cancel() doesn't really remove the end action.
+            v.animate()
+                    .withEndAction(null);
+        }
 
         // Synchronize the motion with the Keyguard fading if necessary.
-        if (mPhoneStatusBar.isKeyguardFadingAway()) {
+        if (mPhoneStatusBar.isKeyguardFadingAway() && !mIsGreetingVisible && !isGreeting) {
             v.animate()
                     .setDuration(mPhoneStatusBar.getKeyguardFadingAwayDuration())
                     .setInterpolator(mLinearOutSlowIn)
@@ -420,6 +492,8 @@ public class StatusBarIconController implements Tunable {
 
     private void setIconTintInternal(float darkIntensity) {
         mDarkIntensity = darkIntensity;
+        mGreetingColorTint = (int) ArgbEvaluator.getInstance().evaluate(darkIntensity,
+                mGreetingColor,  StatusBarColorHelper.getGreetingColorDark(mContext));
         mIconTint = (int) ArgbEvaluator.getInstance().evaluate(darkIntensity,
                 mLightModeIconColorSingleTone, mDarkModeIconColorSingleTone);
         applyIconTint();
@@ -444,6 +518,7 @@ public class StatusBarIconController implements Tunable {
         mBatteryMeterView.setDarkIntensity(mDarkIntensity);
         mClock.setTextColor(mIconTint);
         mCarrier.setTextColor(mIconTint);
+        mGreetingView.setTextColor(mGreetingColorTint);
         applyNotificationIconsTint();
     }
 
@@ -511,5 +586,28 @@ public class StatusBarIconController implements Tunable {
             }
         }
         return ret;
+    }
+
+    public void resetHideGreeting() {
+        if (mShowGreeting == GREETING_ALWAYS) {
+            mHideGreeting = false;
+        }
+    }
+    public void updateShowGreeting(int show) {
+        mShowGreeting = show;
+    }
+
+    public void updateGreetingText(String text) {
+        mGreetingView.setText(text);
+    }
+
+    public void updateGreetingTimeout(int timeout) {
+        mGreetingTimeout = timeout;
+    }
+
+    public void updateGreetingColor() {
+        mGreetingColor = StatusBarColorHelper.getGreetingColor(mContext);
+        mGreetingView.setTextColor(mGreetingColor);
+        mGreetingColorTint = mGreetingColor;
     }
 }
