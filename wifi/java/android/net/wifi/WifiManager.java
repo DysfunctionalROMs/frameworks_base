@@ -1387,7 +1387,7 @@ public class WifiManager {
            return(country);
        } catch (RemoteException e) {
            return null;
-       }
+        }
     }
 
     /**
