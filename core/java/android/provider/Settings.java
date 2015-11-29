@@ -3364,6 +3364,12 @@ public final class Settings {
         public static final String STATUS_BAR_SHOW_WEATHER = "status_bar_show_weather";
 
         /**
+         * Whether to display recents in full screen
+         * @hide
+         */
+        public static final String RECENTS_FULL_SCREEN = "recents_full_screen";
+
+        /**
          * I am the lolrus.
          * <p>
          * Nonzero values indicate that the user has a bukkit.
