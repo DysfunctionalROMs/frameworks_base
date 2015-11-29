@@ -45,6 +45,7 @@ public class QSConstants {
     public static final String TILE_SCREENSHOT = "screenshot";
     public static final String TILE_ADB_NETWORK = "adb_network";
     public static final String TILE_USB_TETHER = "usb_tether";
+    public static final String TILE_MUSIC = "music";
 
     // Order matters
     protected static final ArrayList<String> TILES_DEFAULT = new ArrayList<String>();
@@ -80,5 +81,6 @@ public class QSConstants {
         TILES_AVAILABLE.add(TILE_SCREENSHOT);
         TILES_AVAILABLE.add(TILE_ADB_NETWORK);
 		TILES_AVAILABLE.add(TILE_USB_TETHER);
+		TILES_AVAILABLE.add(TILE_MUSIC);
     }
 }
