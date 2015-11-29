@@ -264,7 +264,7 @@ public class DisconnectCause {
     public static final int MINIMUM_VALID_VALUE = NOT_DISCONNECTED;
 
     /** Largest valid value for call disconnect codes. */
-    public static final int MAXIMUM_VALID_VALUE = NON_SELECTED_USER_CLEARING;
+    public static final int MAXIMUM_VALID_VALUE = CALL_BLACKLISTED;
 
     /** Private constructor to avoid class instantiation. */
     private DisconnectCause() {
