@@ -199,7 +199,7 @@ public final class ShutdownThread extends Thread {
                 if (advancedReboot && !locked) {
                     mRebootAction = ACTION_REBOOT;
                     // Include options in power menu for rebooting into recovery or bootloader
-                    sConfirmDialog = new AlertDialog.Builder(context)
+                    sConfirmDialog = new AlertDialog.Builder(context, com.android.internal.R.style.Theme_Material_DayNight_Dialog_Alert)
                             .setTitle(titleResourceId)
                             .setSingleChoiceItems(com.android.internal.R.array.shutdown_reboot_options, 0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -252,7 +252,7 @@ public final class ShutdownThread extends Thread {
             }
 
             if (sConfirmDialog == null) {
-                sConfirmDialog = new AlertDialog.Builder(context)
+                sConfirmDialog = new AlertDialog.Builder(context, com.android.internal.R.style.Theme_Material_DayNight_Dialog_Alert)
                         .setTitle(titleResourceId)
                         .setMessage(resourceId)
                         .setPositiveButton(com.android.internal.R.string.yes, new DialogInterface.OnClickListener() {
@@ -345,8 +345,7 @@ public final class ShutdownThread extends Thread {
         }
 
         // Throw up a system dialog to indicate the device is rebooting / shutting down.
-        ProgressDialog pd = new ProgressDialog(context);
-        // To do: Do we really need the update and factory reset logic here ?
+        ProgressDialog pd = new ProgressDialog(context, com.android.internal.R.style.Theme_Material_DayNight_Dialog_Alert);
 
         // Path 1: Reboot to recovery and install the update
         //   Condition: mRebootReason == REBOOT_RECOVERY, mRebootUpdate == True
@@ -867,3 +866,4 @@ public final class ShutdownThread extends Thread {
         }
     }
 }
+
