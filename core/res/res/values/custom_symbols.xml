@@ -55,9 +55,5 @@
   <java-symbol type="drawable" name="ic_lock_user" />
   <java-symbol type="drawable" name="ic_lock_assist" />
   <java-symbol type="drawable" name="ic_lock_voice" />
-  
-  <!-- DayNight Power menu text -->
-  <java-symbol type="style" name="TextAppearance.Material.Small.Custom" />
-  <java-symbol type="style" name="TextAppearance.Material.Large.Custom" />
 
 </resources>
