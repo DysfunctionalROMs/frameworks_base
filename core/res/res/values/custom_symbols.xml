@@ -93,5 +93,10 @@
 
   <!-- Power menu mod -->
   <java-symbol type="style" name="GlobalActionsAnimation" />
+  
+  <!-- Unlink notification images -->
+  <java-symbol type="drawable" name="ic_audio_notification_new" />
+  <java-symbol type="drawable" name="ic_audio_notification_mute_new" />
+  <java-symbol type="drawable" name="ic_audio_notification_mute_alpha" />
 
 </resources>
