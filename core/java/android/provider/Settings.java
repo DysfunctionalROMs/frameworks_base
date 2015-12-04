@@ -3945,6 +3945,12 @@ public final class Settings {
          */
         public static final String VOLUME_LINK_NOTIFICATION = "volume_link_notification";
 
+        /**
+         * Boolean value whether volume down in silent can enter zen mode
+         * @hide
+         */
+        public static final String VOLUME_DOWN_ZEN = "volume_down_zen";
+
         /** 
          *
          * @hide
