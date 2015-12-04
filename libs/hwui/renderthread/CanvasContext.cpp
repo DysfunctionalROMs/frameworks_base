@@ -116,11 +116,6 @@ void CanvasContext::initialize(ANativeWindow* window) {
     if (mCanvas) return;
     mCanvas = new OpenGLRenderer(mRenderThread.renderState());
     mCanvas->initProperties();
-    if (window) {
-        Surface *s = static_cast<Surface*>(window);
-        s->allocateBuffers();
-    }
-    return;
 }
 
 void CanvasContext::updateSurface(ANativeWindow* window) {
