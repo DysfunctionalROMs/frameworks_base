@@ -19,6 +19,10 @@
 
     <!-- Button to reboot the phone, within the Global actions dialog -->
     <string name="global_action_reboot">Reboot</string>
+    <string name="global_action_screenrecord">Screenrecord</string>
+    <string name="global_action_screenshot">Screenshot</string>
+    <string name="global_action_search">Search</string>
+    <string name="global_action_voicesearch">Voice Search</string>
 
     <!-- Shut down reboot dialogs -->
 
@@ -50,11 +54,6 @@
     <string name="permlab_setKeyguardWallpaper">set keyguard wallpaper</string>
     <!-- Description of an application permission, listed so the user can choose whether they want to allow the application to do this. -->
     <string name="permdesc_setKeyguardWallpaper">Allows an app to change the lock screen wallpaper.</string>
-    
-    <!-- Global Actions -->
-    <string name="global_action_screenshot">Screenshot</string>
-    <string name="global_action_search">Search</string>
-    <string name="global_action_voicesearch">Voice Search</string>
     
     <!-- WiFi turn off notification action text -->
     <string name="notify_turn_wifi_off_title">Turn Wi-Fi off</string>
