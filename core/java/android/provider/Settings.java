@@ -3951,6 +3951,12 @@ public final class Settings {
          */
         public static final String VOLUME_DOWN_ZEN = "volume_down_zen";
 
+        /**
+         * Boolean value whether volume up in zen mode can exit zen mode
+         * @hide
+         */
+        public static final String VOLUME_UP_LEAVE_ZEN = "volume_up_leave_zen";
+
         /** 
          *
          * @hide
