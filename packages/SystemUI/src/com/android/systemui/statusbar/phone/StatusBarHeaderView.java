@@ -188,6 +188,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         mDateExpanded = (TextView) findViewById(R.id.date_expanded);
         mSettingsButton = findViewById(R.id.settings_button);
         mSettingsButton.setOnClickListener(this);
+        mSettingsButton.setOnLongClickListener(this);
         mQsDetailHeader = findViewById(R.id.qs_detail_header);
         mQsDetailHeader.setAlpha(0);
         mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
@@ -600,7 +601,9 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
     @Override
     public boolean onLongClick(View v) {
-        if (v == mSystemIconsSuperContainer) {
+        if (v == mSettingsButton) {
+            startSettingsLongClickActivity();
+        } else if (v == mSystemIconsSuperContainer) {
             startBatteryLongClickActivity();
         } else if (v == mClock) {
             startClockLongClickActivity();
@@ -618,6 +621,13 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private void startSettingsActivity() {
         mActivityStarter.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS),
                 true /* dismissShade */);
+    }
+
+    private void startSettingsLongClickActivity() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+	intent.setClassName("com.android.settings",
+            "com.android.settings.Settings$BrokenPiecesActivity");
+        mActivityStarter.startActivity(intent, true /* dismissShade */);
     }
 
     private void startBatteryActivity() {
