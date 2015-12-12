@@ -23,6 +23,7 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManagerNative;
 import android.app.StatusBarManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -710,24 +711,24 @@ public class NavigationBarView extends LinearLayout {
     }
 
     private class SettingsObserver extends ContentObserver {
-
         SettingsObserver(Handler handler) {
             super(handler);
         }
 
         void observe() {
-            mContext.getContentResolver().registerContentObserver(
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.STATUS_BAR_IME_ARROWS), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DIM_NAV_BUTTONS), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DIM_NAV_BUTTONS_TIMEOUT), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DIM_NAV_BUTTONS_ALPHA), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DIM_NAV_BUTTONS_ANIMATE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DIM_NAV_BUTTONS_ANIMATE_DURATION), false, this);
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.DIM_NAV_BUTTONS), false, this);
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.DIM_NAV_BUTTONS_TIMEOUT), false, this);
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.DIM_NAV_BUTTONS_ALPHA), false, this);
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.DIM_NAV_BUTTONS_ANIMATE), false, this);
+            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.DIM_NAV_BUTTONS_ANIMATE_DURATION), false, this);
 
             onChange(false);
         }
@@ -746,57 +747,6 @@ public class NavigationBarView extends LinearLayout {
                             Settings.System.STATUS_BAR_IME_ARROWS, HIDE_IME_ARROW,
                             UserHandle.USER_CURRENT) == SHOW_IME_ARROW);
             setNavigationIconHints(mNavigationIconHints, true);
-    }
-
-    public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
-        pw.println("NavigationBarView {");
-        final Rect r = new Rect();
-        final Point size = new Point();
-        mDisplay.getRealSize(size);
-
-        pw.println(String.format("      this: " + PhoneStatusBar.viewInfo(this)
-                        + " " + visibilityToString(getVisibility())));
-
-        getWindowVisibleDisplayFrame(r);
-        final boolean offscreen = r.right > size.x || r.bottom > size.y;
-        pw.println("      window: "
-                + r.toShortString()
-                + " " + visibilityToString(getWindowVisibility())
-                + (offscreen ? " OFFSCREEN!" : ""));
-
-        pw.println(String.format("      mCurrentView: id=%s (%dx%d) %s",
-                        getResourceName(mCurrentView.getId()),
-                        mCurrentView.getWidth(), mCurrentView.getHeight(),
-                        visibilityToString(mCurrentView.getVisibility())));
-
-        pw.println(String.format("      disabled=0x%08x vertical=%s menu=%s",
-                        mDisabledFlags,
-                        mVertical ? "true" : "false",
-                        mShowMenu ? "true" : "false"));
-
-        dumpButton(pw, "back", getBackButton());
-        dumpButton(pw, "home", getHomeButton());
-        dumpButton(pw, "rcnt", getRecentsButton());
-        dumpButton(pw, "menu", getMenuButton());
-
-        pw.println("    }");
-    }
-
-    private static void dumpButton(PrintWriter pw, String caption, View button) {
-        pw.print("      " + caption + ": ");
-        if (button == null) {
-            pw.print("null");
-        } else {
-            pw.print(PhoneStatusBar.viewInfo(button)
-                    + " " + visibilityToString(button.getVisibility())
-                    + " alpha=" + button.getAlpha()
-                    );
-        }
-        pw.println();
-    }
-
-    public interface OnVerticalChangedListener {
-        void onVerticalChanged(boolean isVertical);
     }
     
     public void update() {
@@ -855,4 +805,55 @@ public class NavigationBarView extends LinearLayout {
             }
         }
     };
+    
+    public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+        pw.println("NavigationBarView {");
+        final Rect r = new Rect();
+        final Point size = new Point();
+        mDisplay.getRealSize(size);
+
+        pw.println(String.format("      this: " + PhoneStatusBar.viewInfo(this)
+                        + " " + visibilityToString(getVisibility())));
+
+        getWindowVisibleDisplayFrame(r);
+        final boolean offscreen = r.right > size.x || r.bottom > size.y;
+        pw.println("      window: "
+                + r.toShortString()
+                + " " + visibilityToString(getWindowVisibility())
+                + (offscreen ? " OFFSCREEN!" : ""));
+
+        pw.println(String.format("      mCurrentView: id=%s (%dx%d) %s",
+                        getResourceName(mCurrentView.getId()),
+                        mCurrentView.getWidth(), mCurrentView.getHeight(),
+                        visibilityToString(mCurrentView.getVisibility())));
+
+        pw.println(String.format("      disabled=0x%08x vertical=%s menu=%s",
+                        mDisabledFlags,
+                        mVertical ? "true" : "false",
+                        mShowMenu ? "true" : "false"));
+
+        dumpButton(pw, "back", getBackButton());
+        dumpButton(pw, "home", getHomeButton());
+        dumpButton(pw, "rcnt", getRecentsButton());
+        dumpButton(pw, "menu", getMenuButton());
+
+        pw.println("    }");
+    }
+
+    private static void dumpButton(PrintWriter pw, String caption, View button) {
+        pw.print("      " + caption + ": ");
+        if (button == null) {
+            pw.print("null");
+        } else {
+            pw.print(PhoneStatusBar.viewInfo(button)
+                    + " " + visibilityToString(button.getVisibility())
+                    + " alpha=" + button.getAlpha()
+                    );
+        }
+        pw.println();
+    }
+    
+    public interface OnVerticalChangedListener {
+        void onVerticalChanged(boolean isVertical);
+    }
 }
