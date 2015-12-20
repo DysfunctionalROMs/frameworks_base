@@ -770,6 +770,12 @@ public class NavigationBarView extends LinearLayout {
 
         mIsImeButtonVisible = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0
                     && !mImeArrowVisibility);
+
+        if (getImeSwitchButton() != null) {
+            getImeSwitchButton().setVisibility(showImeButton ? View.INVISIBLE : View.GONE);
+            mIsImeButtonVisible = showImeButton;
+        }
+
         mIsImeArrowVisible = (backAlt && mImeArrowVisibility);
 
         setDisabledFlags(mDisabledFlags, true);
