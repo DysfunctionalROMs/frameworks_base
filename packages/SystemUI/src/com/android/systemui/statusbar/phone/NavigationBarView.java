@@ -27,14 +27,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.database.ContentObserver;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
-import android.os.UserHandle;
 import android.provider.Settings;
 import android.os.RemoteException;
 import android.util.AttributeSet;
@@ -69,14 +67,8 @@ public class NavigationBarView extends LinearLayout {
     final static boolean DEBUG = false;
     final static String TAG = "PhoneStatusBar/NavigationBarView";
 
-    private final static int HIDE_IME_ARROW = 0;
-    private final static int SHOW_IME_ARROW = 1;
-
     // slippery nav bar when everything is disabled, e.g. during setup
     final static boolean SLIPPERY_WHEN_DISABLED = true;
-
-    private boolean mImeArrowVisibility;
-    private boolean mIsImeArrowVisible = false;
 
     final Display mDisplay;
     View mCurrentView = null;
@@ -119,8 +111,6 @@ public class NavigationBarView extends LinearLayout {
     private boolean mLayoutTransitionsEnabled;
 
     private GestureDetector mDoubleTapGesture;
-
-    private SettingsObserver mSettingsObserver;
 
     private class NavTransitionListener implements TransitionListener {
         private boolean mBackTransitioning;
@@ -240,23 +230,15 @@ public class NavigationBarView extends LinearLayout {
             }
         });
 
-        mSettingsObserver = new SettingsObserver(new Handler());
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        mSettingsObserver.observe();
         ViewRootImpl root = getViewRootImpl();
         if (root != null) {
             root.setDrawDuringWindowsAnimating(true);
         }
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mSettingsObserver.unobserve();
     }
 
     public BarTransitions getBarTransitions() {
@@ -322,14 +304,6 @@ public class NavigationBarView extends LinearLayout {
         return mCurrentView.findViewById(R.id.ime_switcher);
     }
 
-    public View getLeftImeArrowButton() {
-        return mCurrentView.findViewById(R.id.ime_left);
-    }
-
-    public View getRightImeArrowButton() {
-        return mCurrentView.findViewById(R.id.ime_right);
-	}
-
     public ViewGroup getNavButtons() {
         return (ViewGroup) mCurrentView.findViewById(R.id.nav_buttons);
     }
@@ -379,14 +353,8 @@ public class NavigationBarView extends LinearLayout {
 
         ((ImageView)getRecentsButton()).setImageDrawable(mVertical ? mRecentLandIcon : mRecentIcon);
 
-        final boolean showImeButton = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0
-                    && !mImeArrowVisibility);
+        final boolean showImeButton = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0);
         getImeSwitchButton().setVisibility(showImeButton ? View.VISIBLE : View.INVISIBLE);
-
-        mIsImeArrowVisible = (backAlt && mImeArrowVisibility);
-        getLeftImeArrowButton().setVisibility(mIsImeArrowVisible ? View.VISIBLE : View.GONE);
-        getRightImeArrowButton().setVisibility(mIsImeArrowVisible ? View.VISIBLE : View.GONE);
-
         // Update menu button in case the IME state has changed.
         setMenuVisibility(mShowMenu, true);
 
@@ -669,6 +637,7 @@ public class NavigationBarView extends LinearLayout {
                     changed?"changed":"notchanged", left, top, right, bottom));
         super.onLayout(changed, left, top, right, bottom);
     }
+
     // uncomment this for extra defensiveness in WORKAROUND_INVALID_LAYOUT situations: if all else
     // fails, any touch on the display will fix the layout.
     @Override
@@ -736,17 +705,6 @@ public class NavigationBarView extends LinearLayout {
         void unobserve() {
             mContext.getContentResolver().unregisterContentObserver(this);
         }
-
-        @Override
-        public void onChange(boolean selfChange) {
-			super.onChange(selfChange);
-            update();
-            onNavButtonTouched();
-            mImeArrowVisibility =
-                    (Settings.System.getIntForUser(mContext.getContentResolver(),
-                            Settings.System.STATUS_BAR_IME_ARROWS, HIDE_IME_ARROW,
-                            UserHandle.USER_CURRENT) == SHOW_IME_ARROW);
-            setNavigationIconHints(mNavigationIconHints, true);
     }
     
     public void update() {
