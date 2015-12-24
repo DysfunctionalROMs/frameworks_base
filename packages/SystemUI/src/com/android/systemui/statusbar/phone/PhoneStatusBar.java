@@ -4170,7 +4170,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     // won't be together, so send the standard long-press action.
                     sendBackLongPress = true;
                 } else if ((NavbarEditor.NAVBAR_RECENT.equals(v.getTag()))) {
-                    hijackRecentsLongPress = true;
                 }
                 mLastLockToAppLongPress = time;
             } else {
@@ -4178,7 +4177,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 if (NavbarEditor.NAVBAR_BACK.equals(v.getTag())) {
                     sendBackLongPress = true;
                 } else if (NavbarEditor.NAVBAR_RECENT.equals(v.getTag())) {
-                    hijackRecentsLongPress = true;
                 } else if (isAccessiblityEnabled && activityManager.isInLockTaskMode()) {
                     // When in accessibility mode a long press that is recents (not back)
                     // should stop lock task.
