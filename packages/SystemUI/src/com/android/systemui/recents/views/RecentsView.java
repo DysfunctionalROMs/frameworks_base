@@ -16,11 +16,16 @@
 
 package com.android.systemui.recents.views;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.MemoryInfo;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.ActivityOptions;
 import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.ContentResolver;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -40,6 +45,8 @@ import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManagerGlobal;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.systemui.R;
@@ -52,6 +59,11 @@ import com.android.systemui.recents.model.RecentsTaskLoader;
 import com.android.systemui.recents.model.Task;
 import com.android.systemui.recents.model.TaskStack;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +99,10 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
     View mClearRecents;
     View mFloatingButton;
 
+    TextView mMemText;
+    ProgressBar mMemBar;
+    private ActivityManager mAm;
+
     public RecentsView(Context context) {
         super(context);
     }
@@ -104,6 +120,7 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         mConfig = RecentsConfiguration.getInstance();
         mInflater = LayoutInflater.from(context);
         mLayoutAlgorithm = new RecentsViewLayoutAlgorithm(mConfig);
+        mAm = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
     }
 
     /** Sets the callbacks */
@@ -338,6 +355,14 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
+        int paddingStatusBar = mContext.getResources().getDimensionPixelSize(R.dimen.status_bar_height) / 2;
+
+        final Resources res = getContext().getResources();
+        boolean isLandscape = res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+
+        boolean enableMemDisplay = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.SYSTEMUI_RECENTS_MEM_DISPLAY, 1) == 1;
+
         // Get the search bar bounds and measure the search bar layout
         Rect searchBarSpaceBounds = new Rect();
         if (mSearchBar != null) {
@@ -345,7 +370,22 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
             mSearchBar.measure(
                     MeasureSpec.makeMeasureSpec(searchBarSpaceBounds.width(), MeasureSpec.EXACTLY),
                     MeasureSpec.makeMeasureSpec(searchBarSpaceBounds.height(), MeasureSpec.EXACTLY));
+
+            int paddingSearchBar = searchBarSpaceBounds.height() + 25;
+
+            if (enableMemDisplay) {
+                if (!isLandscape) {
+                    mMemBar.setPadding(0, paddingSearchBar, 0, 0);
+                } else {
+                    mMemBar.setPadding(0, paddingStatusBar, 0, 0);
+                }
+            }
+        } else {
+            if (enableMemDisplay) {
+                mMemBar.setPadding(0, paddingStatusBar, 0, 0);
+            }
         }
+        showMemDisplay();
 
         boolean showClearAllRecents = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.SHOW_CLEAR_ALL_RECENTS, 0, UserHandle.USER_CURRENT) != 0;
@@ -446,6 +486,52 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
                 dismissAllTasksAnimated();
             }
         });
+        mMemText = (TextView) ((View)getParent()).findViewById(R.id.recents_memory_text);
+        mMemBar = (ProgressBar) ((View)getParent()).findViewById(R.id.recents_memory_bar);
+
+        updateMemoryStatus();
+    }
+
+    private boolean showMemDisplay() {
+        boolean enableMemDisplay = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.SYSTEMUI_RECENTS_MEM_DISPLAY, 0) == 1;
+
+        if (!enableMemDisplay) {
+            mMemText.setVisibility(View.GONE);
+            mMemBar.setVisibility(View.GONE);
+            return false;
+        }
+        mMemText.setVisibility(View.VISIBLE);
+        mMemBar.setVisibility(View.VISIBLE);
+
+        updateMemoryStatus();
+        return true;
+    }
+
+    public void updateMemoryStatus() {
+        if (mMemText.getVisibility() == View.GONE
+                || mMemBar.getVisibility() == View.GONE) return;
+
+            int max = (int)(readTotalMem() / 1048576L);
+            int currentMem = (int)(readAvailMem() / 1048576L);
+
+            mMemText.setText("Free RAM: " + String.valueOf(currentMem) + "MB");
+            mMemBar.setMax(max);
+            mMemBar.setProgress(currentMem);
+    }
+
+    private long readAvailMem() {
+        MemoryInfo mi = new MemoryInfo();
+        mAm.getMemoryInfo(mi);
+        long availableMem = mi.availMem;
+        return availableMem;
+    }
+
+    private long readTotalMem() {
+        MemoryInfo mi = new MemoryInfo();
+        mAm.getMemoryInfo(mi);
+        long totalMem = mi.totalMem;
+        return totalMem;
     }
 
     /**
@@ -462,7 +548,7 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
                     searchBarSpaceBounds.right, searchBarSpaceBounds.bottom);
         }
 
-        // Layout each TaskStackView with the full width and height of the window since the 
+        // Layout each TaskStackView with the full width and height of the window since the
         // transition view is a child of that stack view
         List<TaskStackView> stackViews = getTaskStackViews();
         int stackCount = stackViews.size();
@@ -738,6 +824,8 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
 
         // Remove the old task from activity manager
         loader.getSystemServicesProxy().removeTask(t.key.id);
+
+        updateMemoryStatus();
     }
 
     @Override
@@ -750,6 +838,8 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         }
 
         mCb.onAllTaskViewsDismissed();
+
+        updateMemoryStatus();
 
         // Keep track of all-deletions
         MetricsLogger.count(getContext(), "overview_task_all_dismissed", 1);

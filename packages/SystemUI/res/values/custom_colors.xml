@@ -62,5 +62,8 @@
     <!-- Floating action button -->
     <color name="fab_color">#4D000000</color>
     <color name="floating_action_button_icon_color">#ffffff</color>
+
+    <!-- Color for the RAM bar text in the recent view -->
+    <color name="ram_bar_text">#FFFFFFFF</color>
     
 </resources>
