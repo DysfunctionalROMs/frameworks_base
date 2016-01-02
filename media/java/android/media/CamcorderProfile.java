@@ -94,15 +94,10 @@ public class CamcorderProfile
      * Quality level corresponding to the 2160p (3840x2160) resolution.
      */
     public static final int QUALITY_2160P = 8;
-    
-    /** @hide
-     * Quality level corresponding to 1440p resolution
-     */
-    public static final int QUALITY_1440P = 9;
 
     // Start and end of quality list
     private static final int QUALITY_LIST_START = QUALITY_LOW;
-    private static final int QUALITY_LIST_END = QUALITY_1440P;
+    private static final int QUALITY_LIST_END = QUALITY_2160P;
 
     /**
      * Time lapse quality level corresponding to the lowest available resolution.
@@ -148,15 +143,10 @@ public class CamcorderProfile
      * Time lapse quality level corresponding to the 2160p (3840 x 2160) resolution.
      */
     public static final int QUALITY_TIME_LAPSE_2160P = 1008;
-    
-    /** @hide
-     * Time lapse quality level corresponding to the 1440p resolution.
-     */
-    public static final int QUALITY_TIME_LAPSE_1440P = 1009;
 
     // Start and end of timelapse quality list
     private static final int QUALITY_TIME_LAPSE_LIST_START = QUALITY_TIME_LAPSE_LOW;
-    private static final int QUALITY_TIME_LAPSE_LIST_END = QUALITY_TIME_LAPSE_1440P;
+    private static final int QUALITY_TIME_LAPSE_LIST_END = QUALITY_TIME_LAPSE_2160P;
 
     /**
      * High speed ( >= 100fps) quality level corresponding to the lowest available resolution.
@@ -259,9 +249,45 @@ public class CamcorderProfile
      */
     public static final int QUALITY_HIGH_SPEED_4KDCI = 10006;
 
+    /**
+     * Quality level corresponding to QHD resolution
+     * @hide
+     */
+    public static final int QUALITY_QHD = 10007;
+
+    /**
+     * Quality level corresponding to 2K resolution
+     * @hide
+     */
+    public static final int QUALITY_2k = 10008;
+
+    /**
+     * Time lapse quality level corresponding to the QHD resolution.
+     * @hide
+     */
+    public static final int QUALITY_TIME_LAPSE_QHD = 10009;
+
+    /**
+     * Time lapse quality level corresponding to the 2K resolution.
+     * @hide
+     */
+    public static final int QUALITY_TIME_LAPSE_2k = 10010;
+
+    /**
+     * Quality level corresponding to 1440p (2560 x 1440) resolution.
+     * @hide
+     */
+    public static final int QUALITY_1440P = 10011;
+
+    /**
+     * Time lapse quality level corresponding to the 1440p (2560 x 1440) resolution.
+     * @hide
+     */
+    public static final int QUALITY_TIME_LAPSE_1440P = 10012;
+
     // Start and end of vendor quality list
     private static final int QUALITY_VENDOR_LIST_START = QUALITY_VGA;
-    private static final int QUALITY_VENDOR_LIST_END = QUALITY_HIGH_SPEED_4KDCI;
+    private static final int QUALITY_VENDOR_LIST_END = QUALITY_TIME_LAPSE_1440P;
 
     /**
      * Default recording duration in seconds before the session is terminated.

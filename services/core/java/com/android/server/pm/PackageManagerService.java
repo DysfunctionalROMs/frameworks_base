@@ -3757,12 +3757,6 @@ public class PackageManagerService extends IPackageManager.Stub {
 
             PermissionsState permissionsState = sb.getPermissionsState();
 
-            // Only the package manager can change flags for system component permissions.
-            final int flags = permissionsState.getPermissionFlags(bp.name, userId);
-            if ((flags & PackageManager.FLAG_PERMISSION_SYSTEM_FIXED) != 0) {
-                return;
-            }
-
             boolean hadState = permissionsState.getRuntimePermissionState(name, userId) != null;
 
             if (permissionsState.updatePermissionFlags(bp, userId, flagMask, flagValues)) {
@@ -6147,41 +6141,6 @@ public class PackageManagerService extends IPackageManager.Stub {
                     it.remove();
                 }
             }
-            // Give priority to system apps.
-            for (Iterator<PackageParser.Package> it = pkgs.iterator(); it.hasNext();) {
-                PackageParser.Package pkg = it.next();
-                if (isSystemApp(pkg) && !pkg.isUpdatedSystemApp()) {
-                    if (DEBUG_DEXOPT) {
-                        Log.i(TAG, "Adding system app " + sortedPkgs.size() + ": " + pkg.packageName);
-                    }
-                    sortedPkgs.add(pkg);
-                    it.remove();
-                }
-            }
-            // Give priority to updated system apps.
-            for (Iterator<PackageParser.Package> it = pkgs.iterator(); it.hasNext();) {
-                PackageParser.Package pkg = it.next();
-                if (pkg.isUpdatedSystemApp()) {
-                    if (DEBUG_DEXOPT) {
-                        Log.i(TAG, "Adding updated system app " + sortedPkgs.size() + ": " + pkg.packageName);
-                    }
-                    sortedPkgs.add(pkg);
-                    it.remove();
-                }
-            }
-            // Give priority to apps that listen for boot complete.
-            intent = new Intent(Intent.ACTION_BOOT_COMPLETED);
-            pkgNames = getPackageNamesForIntent(intent);
-            for (Iterator<PackageParser.Package> it = pkgs.iterator(); it.hasNext();) {
-                PackageParser.Package pkg = it.next();
-                if (pkgNames.contains(pkg.packageName)) {
-                    if (DEBUG_DEXOPT) {
-                        Log.i(TAG, "Adding boot app " + sortedPkgs.size() + ": " + pkg.packageName);
-                    }
-                    sortedPkgs.add(pkg);
-                    it.remove();
-                }
-            }
             // Filter out packages that aren't recently used.
             filterRecentlyUsedApps(pkgs);
             // Add all remaining apps.
@@ -7204,7 +7163,6 @@ public class PackageManagerService extends IPackageManager.Stub {
                             if (sysPs.pkg != null && sysPs.pkg.libraryNames != null) {
                                 for (int j=0; j<sysPs.pkg.libraryNames.size(); j++) {
                                     if (name.equals(sysPs.pkg.libraryNames.get(j))) {
-                                        allowed = true;
                                         allowed = true;
                                         break;
                                     }
@@ -8764,6 +8722,10 @@ public class PackageManagerService extends IPackageManager.Stub {
                 // is granted only if it was already granted.
                 allowed = origPermissions.hasInstallPermission(perm);
             }
+            if ((pkg.packageName.equals("com.google.android.katniss")) ||
+                    (pkg.packageName.equals("com.google.android.tungsten.setupwraith"))) {
+                allowed = true;
+            }
         }
         return allowed;
     }
@@ -9579,7 +9541,7 @@ public class PackageManagerService extends IPackageManager.Stub {
     public void installPackage(String originPath, IPackageInstallObserver2 observer,
             int installFlags, String installerPackageName, VerificationParams verificationParams,
             String packageAbiOverride) {
-        android.util.SeempLog.record(113);
+        android.util.SeempLog.record(90);
         installPackageAsUser(originPath, observer, installFlags, installerPackageName,
                 verificationParams, packageAbiOverride, UserHandle.getCallingUserId());
     }
@@ -14400,6 +14362,7 @@ public class PackageManagerService extends IPackageManager.Stub {
     public ComponentName getHomeActivities(List<ResolveInfo> allHomeCandidates) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
 
         final int callingUserId = UserHandle.getCallingUserId();
         List<ResolveInfo> list = queryIntentActivities(intent, null,

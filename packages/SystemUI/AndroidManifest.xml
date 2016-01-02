@@ -45,6 +45,9 @@
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
     <uses-permission android:name="android.permission.GET_APP_OPS_STATS" />
 
+    <!-- Screen recording -->
+    <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" />
+
     <!-- Networking and telephony -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -82,6 +85,10 @@
     <uses-permission android:name="android.permission.GET_TOP_ACTIVITY_INFO" />
     <uses-permission android:name="android.permission.MANAGE_ACTIVITY_STACKS" />
     <uses-permission android:name="android.permission.START_TASKS_FROM_RECENTS" />
+
+    <!-- Reboot -->
+    <uses-permission android:name="android.permission.REBOOT" />
+    <uses-permission android:name="android.permission.RECOVERY" />
 
     <!-- WindowManager -->
     <uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW" />
@@ -130,6 +137,10 @@
     <!-- Weather -->
     <uses-permission android:name="com.cyanogenmod.lockclock.permission.READ_WEATHER" />
 
+    <!-- Sync tile -->
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
     <!-- Assist -->
     <uses-permission android:name="android.permission.ACCESS_VOICE_INTERACTION_SERVICE" />
 
@@ -137,6 +148,9 @@
     <permission android:name="com.android.systemui.permission.SELF"
             android:protectionLevel="signature" />
     <uses-permission android:name="com.android.systemui.permission.SELF" />
+
+    <!-- blur surface -->
+    <uses-permission android:name="android.permission.ACCESS_SURFACE_FLINGER" />
 
     <application
         android:name=".SystemUIApplication"
@@ -167,6 +181,22 @@
             android:process=":screenshot"
             android:exported="false" />
 
+        <receiver android:name=".screenshot.TrashScreenshot"
+                android:exported="true" />
+
+ 	<!-- started from PhoneWindowManager
+             TODO: Should have an android:permission attribute -->
+        <service android:name=".nameless.onthego.OnTheGoService"
+            android:process=":onthego"
+            android:exported="false" />
+
+
+        <!-- started from PhoneWindowManager
+             TODO: Should have an android:permission attribute -->
+        <service android:name=".omni.screenrecord.TakeScreenrecordService"
+            android:process=":screenrecord"
+            android:exported="false" />
+
         <service android:name=".LoadAverageService"
                 android:exported="true" />
 
@@ -194,17 +224,10 @@
 
         <activity android:name=".tuner.TunerActivity"
                   android:enabled="true"
-                  android:icon="@drawable/tuner"
                   android:theme="@android:style/Theme.Material.Settings"
-                  android:label="@string/system_ui_tuner"
+                  android:label="@string/systemui_tuner_statusbar_title"
                   android:process=":tuner"
                   android:exported="true">
-            <intent-filter>
-                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data android:name="com.android.settings.category"
-                    android:value="com.android.settings.category.system" />
         </activity>
 
         <!-- Alternate Recents -->
@@ -416,3 +439,4 @@
         </receiver>
     </application>
 </manifest>
+

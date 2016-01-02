@@ -62,6 +62,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
+                <ImageView
+                    android:id="@+id/broken_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="4dip"
+                    android:src="@drawable/ic_status_bar_broken_logo"
+                    android:scaleType="center"
+                    android:visibility="gone"
+                    />
                 <com.android.systemui.statusbar.policy.ClockLeft
                     android:id="@+id/left_clock"
                     android:textAppearance="@style/TextAppearance.StatusBar.Clock"
@@ -149,5 +158,11 @@
             android:singleLine="true"
             />
     </com.android.keyguard.AlphaOptimizedLinearLayout>
+
+    <com.android.systemui.statusbar.policy.BatteryBarController
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        systemui:viewLocation="1" />
 
 </com.android.systemui.statusbar.phone.PhoneStatusBarView>

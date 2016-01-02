@@ -706,7 +706,7 @@
              1 - MODE_NIGHT_NO
              2 - MODE_NIGHT_YES
     -->
-    <integer name="config_defaultNightMode">1</integer>
+    <integer name="config_defaultNightMode">2</integer>
 
     <!-- Indicate whether to allow the device to suspend when the screen is off
          due to the proximity sensor.  This resource should only be set to true
@@ -2033,15 +2033,20 @@
          on the current state of the device.
          Each item must be one of the following strings:
          "power" = Power off
-         "settings" = An action to launch settings
+         "reboot" = Reboot
+         "screenshot" = Take screenshot
+         "screenrecord" = Take screen recording
+         "profile" = Change phone's profile
          "airplane" = Airplane mode toggle
+         "users" = list of users
+         "settings" = An action to launch settings
+         "lockdown" = lock the phone down
          "bugreport" = Take bug report, if available
          "silent" = silent mode
-         "users" = list of users
          -->
     <string-array translatable="false" name="config_globalActionsList">
         <item>power</item>
-        <!-- <item>bugreport</item> -->
+        <item>reboot</item>
         <item>users</item>
     </string-array>
 
@@ -2355,39 +2360,6 @@
     <string-array name="config_cell_retries_per_error_code">
     </string-array>
 
-    <!-- Whether cpu boost is enabled for AppLaunch -->
-    <bool name="config_enableCpuBoostForAppLaunch">false</bool>
-    <integer name="launchboost_timeout_param">0</integer>
-    <integer-array name="launchboost_param_value"/>
-
-    <!-- Whether disablepacking is enabled or not -->
-    <bool name="config_disablePacking">false</bool>
-    <integer name="disablepacking_timeout_param">0</integer>
-    <integer-array name="launchboost_packing_param_value"/>
-
-    <!-- Whether cpu boost is enabled for animation. -->
-    <bool name="config_enablePerfBoostForAnimation">false</bool>
-    <integer name="animationboost_timeout_param">0</integer>
-    <integer-array name="animationboost_param_value"/>
-
-    <!-- Whether cpu boost is enabled for overscroller fling. -->
-    <bool name="config_enableCpuBoostForOverScrollerFling">false</bool>
-    <integer name="flingboost_timeout_param">0</integer>
-    <integer-array name="flingboost_param_value"/>
-
-    <!-- Whether cpu boost is enabled for horizontal scroll. -->
-    <bool name="config_enableCpuBoostForScroller">false</bool>
-    <integer name="scrollboost_timeout_param">0</integer>
-    <integer-array name="scrollboost_param_value"/>
-
-    <!-- Activities list for boost -->
-    <string-array translatable="false" name="boost_activityList">
-    </string-array>
-
-    <!-- Activity scroll boost params -->
-    <integer name="ascrollboost_timeout">0</integer>
-    <integer-array name="ascrollboost_param_value"/>
-
    <!-- Configuration to play sms ringtone during MO/MT call -->
    <bool name="config_sms_ringtone_incall">false</bool>
     <!-- IpReachability monitor enable/Disable -->
@@ -2426,5 +2398,9 @@
 
     <!-- Boolean to enable stk functionality on Samsung phones -->
     <bool name="config_samsung_stk">false</bool>
+
+    <!-- Support in Surfaceflinger for blur layers.
+         NOTE: This requires additional hardware-specific code. -->
+    <bool name="config_ui_blur_enabled">false</bool>
 
 </resources>

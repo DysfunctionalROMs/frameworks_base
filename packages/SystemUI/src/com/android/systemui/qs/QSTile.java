@@ -16,6 +16,7 @@
 
 package com.android.systemui.qs;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
@@ -323,6 +324,7 @@ public abstract class QSTile<TState extends State> implements Listenable {
 
     public interface Host {
         void startActivityDismissingKeyguard(Intent intent);
+        void startActivityDismissingKeyguard(PendingIntent intent);
         void warn(String message, Throwable t);
         void collapsePanels();
         Looper getLooper();
@@ -405,13 +407,14 @@ public abstract class QSTile<TState extends State> implements Listenable {
         @Override
         public Drawable getDrawable(Context context) {
             // workaround: get a clean state for every new AVD
-            final AnimatedVectorDrawable d = (AnimatedVectorDrawable) context.getDrawable(mResId)
-                    .getConstantState().newDrawable();
-            d.start();
-            if (mAllowAnimation) {
-                mAllowAnimation = false;
-            } else {
-                d.stop(); // skip directly to end state
+            final Drawable d = super.getDrawable(context).getConstantState().newDrawable();
+            if (d instanceof AnimatedVectorDrawable) {
+                ((AnimatedVectorDrawable)d).start();
+                if (mAllowAnimation) {
+                    mAllowAnimation = false;
+                } else {
+                    ((AnimatedVectorDrawable)d).stop(); // skip directly to end state
+                }
             }
             return d;
         }

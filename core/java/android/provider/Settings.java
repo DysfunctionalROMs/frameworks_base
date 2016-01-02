@@ -16,6 +16,8 @@
 
 package android.provider;
 
+import android.annotation.ChaosLab;
+import android.annotation.ChaosLab.Classification;
 import android.annotation.SdkConstant;
 import android.annotation.SdkConstant.SdkConstantType;
 import android.annotation.SystemApi;
@@ -1660,6 +1662,42 @@ public final class Settings {
         }
 
         /**
+         * Look up a boolean in the database.
+         * @param resolver to access the database with
+         * @param name to look up in the table
+         * @param def Value to return if the setting is not defined.
+         * @return The setting's current value, or 'def' if it is not defined
+         * or not a valid boolean.
+         */
+        public static boolean getBoolean(ContentResolver cr, String name, boolean def) {
+            String v = getString(cr, name);
+            try {
+                if(v != null)
+                    return "1".equals(v);
+                else
+                    return def;
+            } catch (NumberFormatException e) {
+                return def;
+            }
+        }
+        /**
+         * Convenience function for updating a single settings value as a
+         * boolean. This will either create a new entry in the table if the
+         * given name does not exist, or modify the value of the existing row
+         * with that name.  Note that internally setting values are always
+         * stored as strings, so this function converts the given value to a
+         * string before storing it.
+         *
+         * @param cr The ContentResolver to access.
+         * @param name The name of the setting to modify.
+         * @param value The new value for the setting.
+         * @return true if the value was set, false on database errors
+         */
+        public static boolean putBoolean(ContentResolver cr, String name, boolean value) {
+            return putString(cr, name, value ? "1" : "0");
+        }
+
+        /**		
          * Look up a name in the database.
          * @param resolver to access the database with
          * @param name to look up in the table
@@ -2186,6 +2224,19 @@ public final class Settings {
         public static final int ADVANCED_SETTINGS_DEFAULT = 0;
 
         /**
+         * boolean value. toggles using arrow key locations on nav bar
+         * as left and right dpad keys
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_MENU_ARROW_KEYS = "navigation_bar_menu_arrow_keys";
+
+        /**
+         * Navigation controls to Use
+         * @hide
+         */
+        public static final String NAV_BUTTONS = "nav_buttons";
+
+        /**
          * @deprecated Use {@link android.provider.Settings.Global#AIRPLANE_MODE_ON} instead
          */
         @Deprecated
@@ -2396,6 +2447,13 @@ public final class Settings {
                 "lockscreen_scramble_pin_layout";
 
         /**
+         * Whether to use the custom quick unlock screen control
+         * @hide
+         */
+        public static final String LOCKSCREEN_QUICK_UNLOCK_CONTROL =
+                "lockscreen_quick_unlock_control";
+
+        /**
          * A formatted string of the next alarm that is set, or the empty string
          * if there is no alarm set.
          *
@@ -2529,6 +2587,54 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_BRIGHTNESS_CONTROL = "status_bar_brightness_control";
+
+        /**
+         * Statusbar BROKEN logo
+         * @hide
+         */
+        public static final String STATUS_BAR_BROKEN_LOGO = "status_bar_broken_logo";
+
+        /**
+         * Statusbar DU logo color setting
+         * @hide
+         */
+        public static final String STATUS_BAR_BROKEN_LOGO_COLOR = "status_bar_broken_logo_color";
+
+        /**
+         * Timeout for ambient display notification
+         * @hide
+         */
+        public static final String DOZE_TIMEOUT = "doze_timeout";
+
+        /**
+         * Use pick up gesture sensor as doze pulse trigger
+         * @hide
+         */
+        public static final String DOZE_TRIGGER_PICKUP = "doze_trigger_pickup";
+
+        /**
+         * Use significant motion sensor as doze pulse trigger
+         * @hide
+         */
+        public static final String DOZE_TRIGGER_SIGMOTION = "doze_trigger_sigmotion";
+
+        /**
+         * Use notifications as doze pulse triggers
+         * @hide
+         */
+        public static final String DOZE_TRIGGER_NOTIFICATION = "doze_trigger_notification";
+
+        /**
+         * Follow pre-configured doze pulse repeat schedule
+         * @hide
+         */
+        public static final String DOZE_SCHEDULE = "doze_schedule";
+
+        /**
+         * Doze pulse screen brightness level
+         * @hide
+         */
+        public static final String DOZE_BRIGHTNESS = "doze_brightness";
 
         /**
          * Control whether the process CPU usage meter should be shown.
@@ -2886,6 +2992,36 @@ public final class Settings {
                 new DiscreteValueValidator(new String[] {"12", "24"});
 
         /**
+         * Toast Animations
+         * @hide
+         */
+        public static final String TOAST_ANIMATION = "toast_animation";
+		
+        /**
+         *
+         * @hide
+         */
+        public static final String ANIMATION_IME_DURATION = "animation_ime_duration";
+
+        /**
+         *
+         * @hide
+         */
+        public static final String ANIMATION_IME_ENTER = "animation_ime_enter";
+
+        /**
+         *
+         * @hide
+         */
+        public static final String ANIMATION_IME_EXIT = "animation_ime_exit";
+
+        /**
+         *
+         * @hide
+         */
+        public static final String ANIMATION_IME_INTERPOLATOR = "animation_ime_interpolator";
+
+        /**
          * Date format string
          *   mm/dd/yyyy
          *   dd/mm/yyyy
@@ -2945,12 +3081,42 @@ public final class Settings {
          */
         @Deprecated
         public static final String ANIMATOR_DURATION_SCALE = Global.ANIMATOR_DURATION_SCALE;
-
+        
         /**
          * Use EdgeGesture Service for system gestures in PhoneWindowManager
          * @hide
          */
         public static final String USE_EDGE_SERVICE_FOR_GESTURES = "edge_service_for_gestures";
+
+        /**
+         *
+         * @hide
+         */
+        public static final String ANIMATION_CONTROLS_NO_SCROLL = "animation_controls_no_scroll";        
+        
+        /**
+         * Determine custom scroll friction.
+         * @hide
+         */
+        public static final String CUSTOM_SCROLL_FRICTION = "custom_scroll_friction";
+
+        /**
+         * Determine custom fling velocity.
+         * @hide
+         */
+        public static final String CUSTOM_FLING_VELOCITY = "custom_fling_velocity";
+
+        /**
+         * Determine custom overscroll distance.
+         * @hide
+         */
+        public static final String CUSTOM_OVERSCROLL_DISTANCE = "custom_overscroll_distance";
+
+        /**
+         * Determine custom overfling distance.
+         * @hide
+         */
+        public static final String CUSTOM_OVERFLING_DISTANCE = "custom_overfling_distance";        
 
         /**
          * Show the pending notification counts as overlays on the status bar
@@ -3028,6 +3194,33 @@ public final class Settings {
 
         /** @hide */
         public static final Validator VIBRATE_WHEN_RINGING_VALIDATOR = sBooleanValidator;
+
+        /**
+         * Whether to show the battery bar
+         * @hide
+               */
+        public static final String STATUSBAR_BATTERY_BAR = "statusbar_battery_bar";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_COLOR = "statusbar_battery_bar_color";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_THICKNESS = "statusbar_battery_bar_thickness";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_STYLE = "statusbar_battery_bar_style";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_ANIMATE = "statusbar_battery_bar_animate";
+
 
         /**
          * Whether the audible DTMF tones are played by the dialer when dialing. The value is
@@ -3443,6 +3636,12 @@ public final class Settings {
         public static final String STATUS_BAR_SHOW_WEATHER = "status_bar_show_weather";
 
         /**
+         * Whether to display recents in full screen
+         * @hide
+         */
+        public static final String RECENTS_FULL_SCREEN = "recents_full_screen";
+
+        /**
          * I am the lolrus.
          * <p>
          * Nonzero values indicate that the user has a bukkit.
@@ -3512,6 +3711,36 @@ public final class Settings {
          * @hide
          */
         public static final String WIFI_AUTO_CONNECT_TYPE = "wifi_auto_connect_type";
+
+        /**
+         * Whether to dim the navigation bar icons after inactivity
+         * @hide
+         */
+        public static final String DIM_NAV_BUTTONS = "dim_nav_buttons";
+
+        /**
+         * Time in milliseconds to wait before dimming the nav buttons
+         * @hide
+         */
+        public static final String DIM_NAV_BUTTONS_TIMEOUT = "dim_nav_buttons_timeout";
+
+        /**
+         * Alpha value percentage to dim the nav buttons to
+         * @hide
+         */
+        public static final String DIM_NAV_BUTTONS_ALPHA = "dim_nav_buttons_alpha";
+
+        /**
+         * Whether to animate the nav button dimming
+         * @hide
+         */
+        public static final String DIM_NAV_BUTTONS_ANIMATE = "dim_nav_buttons_animate";
+
+        /**
+         * Duration of the fade animation in milliseconds
+         * @hide
+         */
+        public static final String DIM_NAV_BUTTONS_ANIMATE_DURATION = "dim_nav_buttons_animate_duration";
 
         /**
          * Action to perform when the home key is long-pressed.
@@ -3728,12 +3957,6 @@ public final class Settings {
         public static final String NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD = "network_traffic_autohide_threshold";
 
         /**
-         * Whether to show the IME arrows in the status bar
-         * @hide
-         */
-        public static final String STATUS_BAR_IME_ARROWS = "status_bar_ime_arrows";
-        
-        /**
          * Swap volume buttons when the screen is rotated
          * @hide
          */
@@ -3760,6 +3983,174 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_CARRIER_COLOR = "status_bar_carrier_color";
+
+        /**
+         * Whether to use the custom status bar header or not
+         * @hide
+         */
+        public static final String STATUS_BAR_CUSTOM_HEADER = "status_bar_custom_header";
+
+        /**
+         * Boolean value whether to link ringtone and notification volume
+         * @hide
+         */
+        public static final String VOLUME_LINK_NOTIFICATION = "volume_link_notification";
+
+        /**
+         * Boolean value whether volume down in silent can enter zen mode
+         * @hide
+         */
+        public static final String VOLUME_DOWN_ZEN = "volume_down_zen";
+
+        /**
+         * Boolean value whether volume up in zen mode can exit zen mode
+         * @hide
+         */
+        public static final String VOLUME_UP_LEAVE_ZEN = "volume_up_leave_zen";
+
+        /** 
+         *
+         * @hide
+         */
+        public static final String STATUS_BAR_CUSTOM_HEADER_PROVIDER = "status_bar_custom_header_provider";
+
+        /**
+         * Whether to use gesture anywhere feature.
+         * @hide
+         */
+        @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
+        public static final String GESTURE_ANYWHERE_ENABLED = "gesture_anywhere_enabled";
+
+        /**
+         * Position of gesture anywhere trigger.  Value is either Gravity.LEFT or Gravity.RIGHT
+         * @hide
+         */
+        @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
+        public static final String GESTURE_ANYWHERE_POSITION = "gesture_anywhere_position";
+
+        /**
+         * Last time gestures were altered.
+         * Used to determine if gestures should be reloaded by the view.
+         * @hide
+         */
+        @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
+        public static final String GESTURE_ANYWHERE_CHANGED = "gesture_anywhere_changed";
+
+        /**
+         * Width of the gesture anywhere trigger.
+         * @hide
+         */
+        @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
+        public static final String GESTURE_ANYWHERE_TRIGGER_WIDTH = "gesture_anywhere_trigger_width";
+
+        /**
+         * Position of gesture anywhere trigger.
+         * @hide
+         */
+        @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
+        public static final String GESTURE_ANYWHERE_TRIGGER_TOP = "gesture_anywhere_trigger_top";
+
+        /**
+         * Height of the gesture anywhere trigger.
+         * @hide
+         */
+        @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
+        public static final String GESTURE_ANYWHERE_TRIGGER_HEIGHT = "gesture_anywhere_trigger_height";
+
+        /**
+         * Whether to display the gesture anywhere trigger region or not.
+         * Used internally for showing the trigger in settings so user can see its placement
+         * @hide
+         */
+        @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
+        public static final String GESTURE_ANYWHERE_SHOW_TRIGGER = "gesture_anywhere_show_trigger";
+
+        /**
+         * Custom System Animations
+         *
+         * @hide
+         */
+        public static final String[] ACTIVITY_ANIMATION_CONTROLS = new String[] {
+                "activity_open",
+                "activity_close",
+                "task_open",
+                "task_close",
+                "task_to_front",
+                "task_to_back",
+                "wallpaper_open",
+                "wallpaper_close",
+                "wallpaper_intra_open",
+                "wallpaper_intra_close",
+        };
+        public static final String ANIMATION_CONTROLS_DURATION = "animation_controls_duration";
+        public static final String ANIMATION_CONTROLS_NO_OVERRIDE = "animation_controls_no_override";
+        public static final String ANIMATION_CONTROLS_EXIT_ONLY = "animation_controls_exit_only";
+        public static final String ANIMATION_CONTROLS_REVERSE_EXIT = "animation_controls_reverse_exit";		
+		
+        /**
+         * ListView Animations
+         * 0 == None
+         * 1 == Wave (Left)
+         * 2 == Wave (Right)
+         * 3 == Scale
+         * 4 == Alpha
+         * 5 == Stack (Top)
+         * 6 == Stack (Bottom)
+         * 7 == Translate (Left)
+         * 8 == Translate (Right)
+          * @hide
+          */
+        public static final String LISTVIEW_ANIMATION = "listview_animation";
+        
+         /**
+         * ListView Interpolators
+         * 0 == None
+         * 1 == accelerate_interpolator
+         * 2 == decelerate_interpolator
+         * 3 == accelerate_decelerate_interpolator
+         * 4 == anticipate_interpolator
+         * 5 == overshoot_interpolator
+         * 6 == anticipate_overshoot_interpolator
+         * 7 == bounce_interpolator
+         * @hide
+         */
+        public static final String LISTVIEW_INTERPOLATOR = "listview_interpolator";
+        
+		/**
+         * Navigation bar button color
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_TINT = "navigation_bar_tint";
+
+        /**
+         * If On-The-Go should be displayed at the power menu.
+         *
+         * @hide
+         */
+        public static final String POWER_MENU_ONTHEGO_ENABLED = "power_menu_onthego_enabled";
+
+        /**
+         * The alpha value of the On-The-Go overlay.
+         *
+         * @hide
+         */
+        public static final String ON_THE_GO_ALPHA = "on_the_go_alpha";
+
+        /**
+         * The camera instance to use.
+         * 0 = Rear Camera
+         * 1 = Front Camera
+         *
+         * @hide
+         */
+        public static final String ON_THE_GO_CAMERA = "on_the_go_camera";
+
+        /**
+         * Whether the service should restart itself or not.
+         *
+         * @hide
+         */
+        public static final String ON_THE_GO_SERVICE_RESTART = "on_the_go_service_restart";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -6136,6 +6527,12 @@ public final class Settings {
         public static final String SMS_DEFAULT_APPLICATION = "sms_default_application";
 
         /**
+         * Whether user is allowed to pull down quick settings on secure keyguard.
+         * @hide
+         */
+        public static final String STATUS_BAR_LOCKED_ON_SECURE_KEYGUARD = "status_bar_locked_on_secure_keyguard";
+        
+        /**
          * Specifies the package name currently configured to be the default dialer application
          * @hide
          */
@@ -6289,6 +6686,12 @@ public final class Settings {
          */
         public static final String ASSISTANT = "assistant";
 
+        /**
+         * Whether detail view for the location tile is enabled
+         * @hide
+         */
+        public static final String QS_LOCATION_ADVANCED = "qs_location_advanced";
+
         /** Whether to show the brightness slider in quick settings panel.
          *
          * @hide
@@ -6300,6 +6703,37 @@ public final class Settings {
           * @hide
           */
          public static final String KILL_APP_LONGPRESS_BACK = "kill_app_longpress_back";
+         
+         /**
+         * List of QS tile names
+         * @hide
+         */
+        public static final String QS_TILES = "sysui_qs_tiles";
+
+        /**
+         * Whether to display the ADB notification.
+         * @hide
+         */
+        public static final String ADB_NOTIFY = "adb_notify";
+
+        /**
+         * The TCP/IP port to run ADB on, or -1 for USB
+         * @hide
+         */
+        public static final String ADB_PORT = "adb_port";
+
+        /**
+         * Whether to show four tiles per row.
+         * @hide
+         */
+        public static final String QS_USE_FOUR_COLUMNS = "qs_use_four_columns";
+
+        /**
+         * Use "main" tiles on the first row of the quick settings panel
+         * 0 = no, 1 = yes
+         * @hide
+         */
+        public static final String QS_USE_MAIN_TILES = "sysui_qs_main_tiles";
 
         /**
          * This are the settings to be backed up.
@@ -6357,6 +6791,7 @@ public final class Settings {
             MOUNT_UMS_NOTIFY_ENABLED,
             SLEEP_TIMEOUT,
             DOUBLE_TAP_TO_WAKE,
+            STATUS_BAR_LOCKED_ON_SECURE_KEYGUARD
         };
 
         /**
@@ -8190,6 +8625,12 @@ public final class Settings {
          * @hide
          */
         public static final String POLICY_CONTROL_SELECTED = "policy_control_selected";
+
+        /**
+         * @hide
+         */
+        public static final String ZEN_DISABLE_DUCKING_DURING_MEDIA_PLAYBACK =
+                "zen_disable_ducking_during_media_playback";
 
         /**
          * Defines global zen mode.  ZEN_MODE_OFF, ZEN_MODE_IMPORTANT_INTERRUPTIONS,

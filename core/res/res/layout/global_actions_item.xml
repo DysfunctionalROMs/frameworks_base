@@ -45,15 +45,14 @@
             android:layout_gravity="top"
 
             android:gravity="center_vertical"
-            android:textAppearance="@style/TextAppearance.Material.Large.Custom"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             />
         <TextView android:id="@+id/status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:minHeight="26dp"
-
-            android:textAppearance="@style/TextAppearance.Material.Small.Custom"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             />
     </LinearLayout>
 </LinearLayout>

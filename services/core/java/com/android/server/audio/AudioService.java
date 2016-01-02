@@ -579,6 +579,7 @@ public class AudioService extends IAudioService.Stub {
     private AudioManagerInternal.RingerModeDelegate mRingerModeDelegate;
     private VolumePolicy mVolumePolicy = VolumePolicy.DEFAULT;
     private long mLoweredFromNormalToVibrateTime;
+    private boolean mLinkNotificationWithVolume;
 
     // Intent "extra" data keys.
     public static final String CONNECT_INTENT_KEY_PORT_NAME = "portName";
@@ -656,6 +657,9 @@ public class AudioService extends IAudioService.Stub {
 
         mUseFixedVolume = mContext.getResources().getBoolean(
                 com.android.internal.R.bool.config_useFixedVolume);
+
+        mLinkNotificationWithVolume = Settings.System.getIntForUser(mContentResolver,
+                Settings.System.VOLUME_LINK_NOTIFICATION, 1, UserHandle.USER_CURRENT) == 1;
 
         // must be called before readPersistedSettings() which needs a valid mStreamVolumeAlias[]
         // array initialized by updateStreamVolumeAlias()
@@ -1071,6 +1075,12 @@ public class AudioService extends IAudioService.Stub {
             } else {
                 mRingerModeAffectedStreams |= (1 << AudioSystem.STREAM_DTMF);
             }
+        }
+
+        if (mLinkNotificationWithVolume) {
+            mStreamVolumeAlias[AudioSystem.STREAM_NOTIFICATION] = AudioSystem.STREAM_RING;
+        } else {
+            mStreamVolumeAlias[AudioSystem.STREAM_NOTIFICATION] = AudioSystem.STREAM_NOTIFICATION;
         }
 
         mStreamVolumeAlias[AudioSystem.STREAM_DTMF] = dtmfStreamAlias;
@@ -3404,17 +3414,15 @@ public class AudioService extends IAudioService.Stub {
             } else if (direction == AudioManager.ADJUST_RAISE
                     || direction == AudioManager.ADJUST_TOGGLE_MUTE
                     || direction == AudioManager.ADJUST_UNMUTE) {
-                if (!mVolumePolicy.volumeUpToExitSilent) {
-                    result |= AudioManager.FLAG_SHOW_SILENT_HINT;
+                if (mVolumePolicy.volumeUpToExitSilent && mRingerModeDelegate.canVolumeUpExitSilent()) {
+                     // go straight back to normal.
+                    ringerMode = RINGER_MODE_NORMAL;
                 } else {
-                  if (mHasVibrator && direction == AudioManager.ADJUST_RAISE) {
-                      ringerMode = RINGER_MODE_VIBRATE;
-                  } else {
-                      // If we don't have a vibrator or they were toggling mute
-                      // go straight back to normal.
-                      ringerMode = RINGER_MODE_NORMAL;
-                  }
+                    result |= AudioManager.FLAG_SHOW_SILENT_HINT;
                 }
+            } else if (direction == AudioManager.ADJUST_LOWER) {
+                // volume down when already in silent
+                mRingerModeDelegate.onVolumeDownInSilent(mVolumePolicy);
             }
             result &= ~FLAG_ADJUST_VOLUME;
             break;
@@ -3585,9 +3593,9 @@ public class AudioService extends IAudioService.Stub {
                     if (DEBUG_VOL) Log.v(TAG, "getActiveStreamType: forcing STREAM_MUSIC");
                     return AudioSystem.STREAM_MUSIC;
                 } else {
-                    if (DEBUG_VOL) Log.v(TAG,
-                            "getActiveStreamType: using STREAM_NOTIFICATION as default");
-                    return AudioSystem.STREAM_NOTIFICATION;
+                    if (DEBUG_VOL)
+                        Log.v(TAG, "getActiveStreamType: Forcing STREAM_MUSIC b/c default");
+                    return AudioSystem.STREAM_MUSIC;
                 }
             }
             break;
@@ -4665,6 +4673,8 @@ public class AudioService extends IAudioService.Stub {
                 Settings.System.MODE_RINGER_STREAMS_AFFECTED), false, this);
             mContentResolver.registerContentObserver(Settings.Global.getUriFor(
                 Settings.Global.DOCK_AUDIO_MEDIA_ENABLED), false, this);
+            mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                Settings.System.VOLUME_LINK_NOTIFICATION), false, this);
         }
 
         @Override
@@ -4683,6 +4693,14 @@ public class AudioService extends IAudioService.Stub {
                     setRingerModeInt(getRingerModeInternal(), false);
                 }
                 readDockAudioSettings(mContentResolver);
+
+                mLinkNotificationWithVolume = Settings.System.getIntForUser(mContentResolver,
+                        Settings.System.VOLUME_LINK_NOTIFICATION, 1, UserHandle.USER_CURRENT) == 1;
+                if (mLinkNotificationWithVolume) {
+                    mStreamVolumeAlias[AudioSystem.STREAM_NOTIFICATION] = AudioSystem.STREAM_RING;
+                } else {
+                    mStreamVolumeAlias[AudioSystem.STREAM_NOTIFICATION] = AudioSystem.STREAM_NOTIFICATION;
+                }
             }
         }
     }

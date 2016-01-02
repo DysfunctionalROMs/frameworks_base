@@ -56,16 +56,17 @@ public class QSPanel extends ViewGroup {
     private static final float TILE_ASPECT_SMALL = 0.8f;
 
     private final Context mContext;
-    protected final ArrayList<TileRecord> mRecords = new ArrayList<TileRecord>();
+    private final ArrayList<TileRecord> mRecords = new ArrayList<TileRecord>();
     private final View mDetail;
     private final ViewGroup mDetailContent;
     private final TextView mDetailSettingsButton;
     private final TextView mDetailDoneButton;
-    protected final View mBrightnessView;
+    private final View mBrightnessView;
     private final QSDetailClipper mClipper;
     private final H mHandler = new H();
 
     private int mColumns;
+    private int mNumberOfColumns;
     private int mCellWidth;
     private int mCellHeight;
     private int mLargeCellWidth;
@@ -88,6 +89,7 @@ public class QSPanel extends ViewGroup {
 
     private QSFooter mFooter;
     private boolean mGridContentVisible = true;
+    private boolean mUseMainTiles = false;
 
     private SettingsObserver mSettingsObserver;
 
@@ -146,6 +148,19 @@ public class QSPanel extends ViewGroup {
         return mBrightnessSliderEnabled;
     }
 
+    /**
+     * Use three or four columns.
+     */
+    private int useFourColumns() {
+        final Resources res = mContext.getResources();
+        if (mUseFourColumns) {
+            mNumberOfColumns = 4;
+        } else {
+            mNumberOfColumns = res.getInteger(R.integer.quick_settings_num_columns);
+        }
+        return mNumberOfColumns;
+    }
+
     private void updateDetailText() {
         mDetailDoneButton.setText(R.string.quick_settings_done);
         mDetailSettingsButton.setText(R.string.quick_settings_more_settings);
@@ -174,9 +189,13 @@ public class QSPanel extends ViewGroup {
 
     public void updateResources() {
         final Resources res = mContext.getResources();
-        final int columns = Math.max(1, res.getInteger(R.integer.quick_settings_num_columns));
+        final int columns = Math.max(1, useFourColumns());
         mCellHeight = res.getDimensionPixelSize(R.dimen.qs_tile_height);
-        mCellWidth = (int)(mCellHeight * TILE_ASPECT);
+        if (mUseFourColumns) {
+            mCellWidth = (int)(mCellHeight * TILE_ASPECT_SMALL);
+        } else {
+            mCellWidth = (int)(mCellHeight * TILE_ASPECT);
+        }
         mLargeCellHeight = res.getDimensionPixelSize(R.dimen.qs_dual_tile_height);
         mLargeCellWidth = (int)(mLargeCellHeight * TILE_ASPECT);
         mPanelPaddingBottom = res.getDimensionPixelSize(R.dimen.qs_panel_padding_bottom);
@@ -246,7 +265,11 @@ public class QSPanel extends ViewGroup {
     }
 
     public void refreshAllTiles() {
-        for (TileRecord r : mRecords) {
+        mUseMainTiles = Settings.Secure.getIntForUser(getContext().getContentResolver(),
+                Settings.Secure.QS_USE_MAIN_TILES, 1, UserHandle.USER_CURRENT) == 1;
+        for (int i = 0; i < mRecords.size(); i++) {
+            TileRecord r = mRecords.get(i);
+            r.tileView.setDual(mUseMainTiles && i < 2);
             r.tile.refreshState();
         }
         mFooter.refreshState();
@@ -490,15 +513,15 @@ public class QSPanel extends ViewGroup {
         int r = -1;
         int c = -1;
         int rows = 0;
-        boolean rowIsDual = false;
         for (TileRecord record : mRecords) {
             if (record.tileView.getVisibility() == GONE) continue;
             // wrap to next column if we've reached the max # of columns
-            // also don't allow dual + single tiles on the same row
-            if (r == -1 || c == (mColumns - 1) || rowIsDual != record.tile.supportsDualTargets()) {
+            if (mUseMainTiles && r == 0 && c == 1) {
+                r = 1;
+                c = 0;
+            } else if (r == -1 || c == (mColumns - 1)) {
                 r++;
                 c = 0;
-                rowIsDual = record.tile.supportsDualTargets();
             } else {
                 c++;
             }
@@ -509,12 +532,9 @@ public class QSPanel extends ViewGroup {
 
         View previousView = mBrightnessView;
         for (TileRecord record : mRecords) {
-            if (record.tileView.setDual(record.tile.supportsDualTargets())) {
-                record.tileView.handleStateChanged(record.tile.getState());
-            }
             if (record.tileView.getVisibility() == GONE) continue;
-            final int cw = record.row == 0 ? mLargeCellWidth : mCellWidth;
-            final int ch = record.row == 0 ? mLargeCellHeight : mCellHeight;
+            final int cw = (mUseMainTiles && record.row == 0) ? mLargeCellWidth : mCellWidth;
+            final int ch = (mUseMainTiles && record.row == 0) ? mLargeCellHeight : mCellHeight;
             record.tileView.measure(exactly(cw), exactly(ch));
             previousView = record.tileView.updateAccessibilityOrder(previousView);
         }
@@ -544,7 +564,7 @@ public class QSPanel extends ViewGroup {
         for (TileRecord record : mRecords) {
             if (record.tileView.getVisibility() == GONE) continue;
             final int cols = getColumnCount(record.row);
-            final int cw = record.row == 0 ? mLargeCellWidth : mCellWidth;
+            final int cw = (mUseMainTiles && record.row == 0) ? mLargeCellWidth : mCellWidth;
             final int extra = (w - cw * cols) / (cols + 1);
             int left = record.col * cw + (record.col + 1) * extra;
             final int top = getRowTop(record.row);
@@ -570,7 +590,8 @@ public class QSPanel extends ViewGroup {
     private int getRowTop(int row) {
         if (row <= 0) return mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop;
         return mBrightnessView.getMeasuredHeight() + mBrightnessPaddingTop
-                + mLargeCellHeight - mDualTileUnderlap + (row - 1) * mCellHeight;
+                + (mUseMainTiles ? mLargeCellHeight - mDualTileUnderlap : mCellHeight)
+                + (row - 1) * mCellHeight;
     }
 
     private int getColumnCount(int row) {
@@ -628,13 +649,13 @@ public class QSPanel extends ViewGroup {
         int y;
     }
 
-    protected static final class TileRecord extends Record {
-        public QSTile<?> tile;
-        public QSTileView tileView;
-        public int row;
-        public int col;
-        public boolean scanState;
-        public boolean openingDetail;
+    private static final class TileRecord extends Record {
+        QSTile<?> tile;
+        QSTileView tileView;
+        int row;
+        int col;
+        boolean scanState;
+        boolean openingDetail;
     }
 
     private final AnimatorListenerAdapter mTeardownDetailWhenDone = new AnimatorListenerAdapter() {
@@ -686,6 +707,9 @@ public class QSPanel extends ViewGroup {
             resolver.registerContentObserver(Settings.Secure.getUriFor(
                     Settings.Secure.QS_SHOW_BRIGHTNESS_SLIDER),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.QS_USE_FOUR_COLUMNS),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -710,6 +734,9 @@ public class QSPanel extends ViewGroup {
             mBrightnessSliderEnabled = Settings.Secure.getIntForUser(
             mContext.getContentResolver(), Settings.Secure.QS_SHOW_BRIGHTNESS_SLIDER,
                 1, UserHandle.USER_CURRENT) == 1;
+            mUseFourColumns = Settings.Secure.getIntForUser(
+            mContext.getContentResolver(), Settings.Secure.QS_USE_FOUR_COLUMNS,
+                0, UserHandle.USER_CURRENT) == 1;
         }
     }
 }
