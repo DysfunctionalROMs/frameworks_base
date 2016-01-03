@@ -22,7 +22,7 @@
     <color name="notification_guts_bg_color">@color/system_secondary_color</color>
     <color name="notification_guts_title_color">#FFFFFFFF</color>
     <color name="notification_guts_text_color">#b2FFFFFF</color>
-    <color name="notification_guts_btn_color">#FFFFFFFF</color>
+    <color name="notification_guts_btn_color">#B1F809</color>
 
     <!-- The color of the legacy notification background -->
     <color name="notification_legacy_background_color">#000000</color>
@@ -35,6 +35,17 @@
     <!-- The color of the material notification background for media notifications when no custom
          color is specified -->
     <color name="notification_material_background_media_default_color">#000000</color>
+    
+    <!-- Quick Settings - Advance tile background overlap -->
+    <color name="qs_detail_transition">#00000000</color>
+ 	
+ 	<!-- Quick Settings panel - Accent -->
+    <color name="system_accent_color">#B1F809</color>
+ 	<color name="system_primary_color">#000000</color>
+    <color name="system_secondary_color">#000000</color>
+ 	
+ 	<!-- Quick Settings tiles -->
+ 	<color name="qs_tile_text">#B1F809</color>
+ 	<color name="qs_tile_divider">#B1F809</color>
+
 </resources>
-
-
