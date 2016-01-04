@@ -32,7 +32,7 @@ public final class EdgeServiceConstants {
      * <p>
      * Positions are specified by {@code EdgeGesturePosition.FLAG}.
      */
-    public static final int POSITION_MASK = 0x0000000f;
+    public static final int POSITION_MASK = 0x0000001f;
 
     /**
      * Mask for coding sensitivity within the flags of
