@@ -17,10 +17,6 @@
  */
 -->
 <resources>
-	
-    <!-- Gesture Anywhere specific colors -->
-    <color name="gesture_overlay_background_fill_color">#80000000</color>
-    <color name="gesture_color">@android:color/holo_blue_light</color>
     
     <!-- PA PIE -->
     <color name="pie_menu_background">#C0000000</color>
