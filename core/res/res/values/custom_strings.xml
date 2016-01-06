@@ -17,7 +17,6 @@
 
     <!-- Global action Buttons -->
     <!-- Global Actions -->
-    <string name="global_action_reboot">Reboot</string>
     <string name="global_action_screenrecord">Screenrecord</string>
     <string name="global_action_screenshot">Screenshot</string>
     <string name="global_action_search">Search</string>
