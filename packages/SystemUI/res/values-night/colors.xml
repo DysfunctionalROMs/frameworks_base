@@ -45,7 +45,7 @@
     <color name="system_secondary_color">#000000</color>
  	
  	<!-- Quick Settings tiles -->
- 	<color name="qs_tile_text">#606060</color>
+ 	<color name="qs_tile_text">#e1e1e1</color>
  	<color name="qs_tile_divider">#606060</color>
 
 </resources>
