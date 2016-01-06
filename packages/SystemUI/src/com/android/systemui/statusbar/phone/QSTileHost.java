@@ -49,6 +49,7 @@ import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.MusicTile;
+import com.android.systemui.qs.tiles.LteTile;
 import com.android.systemui.qs.tiles.NfcTile;
 import com.android.systemui.qs.tiles.RebootTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
@@ -71,6 +72,9 @@ import com.android.systemui.statusbar.policy.RotationLockController;
 import com.android.systemui.statusbar.policy.SecurityController;
 import com.android.systemui.statusbar.policy.UserSwitcherController;
 import com.android.systemui.statusbar.policy.ZenModeController;
+
+import android.telephony.TelephonyManager;
+import com.android.internal.telephony.PhoneConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -161,6 +165,20 @@ public class QSTileHost implements QSTile.Host {
     @Override
     public void startActivityDismissingKeyguard(final Intent intent) {
         mStatusBar.postStartActivityDismissingKeyguard(intent, 0);
+    }
+
+    public static boolean deviceSupportsLte(Context ctx) {
+        final TelephonyManager tm = (TelephonyManager)
+                ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        return (tm.getLteOnCdmaMode() == PhoneConstants.LTE_ON_CDMA_TRUE)
+                || tm.getLteOnGsmMode() != 0;
+    }
+
+    public static boolean deviceSupportsDdsSupported(Context context) {
+        TelephonyManager tm = (TelephonyManager)
+                context.getSystemService(Context.TELEPHONY_SERVICE);
+        return tm.isMultiSimEnabled()
+                && tm.getMultiSimConfiguration() == TelephonyManager.MultiSimVariants.DSDA;
     }
 
     @Override
@@ -323,6 +341,8 @@ public class QSTileHost implements QSTile.Host {
 				return new UsbTetherTile(this);
 		    case QSConstants.TILE_MUSIC:
                 return new MusicTile(this);
+            case QSConstants.TILE_LTE:
+                return new LteTile(this);
             default:
                 throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
         }
