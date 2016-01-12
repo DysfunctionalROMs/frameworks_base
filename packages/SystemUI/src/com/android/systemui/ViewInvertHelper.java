@@ -19,6 +19,8 @@ package com.android.systemui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
@@ -85,15 +87,44 @@ public class ViewInvertHelper {
 
     private void updateInvertPaint(float intensity) {
         float components = 1 - 2 * intensity;
+        int inversionMultiple = 1;
+
+        // if config boolean to invert is false (do NOT invert),
+        // multiply components by -1 (double negative) to undo inversion.
+        // ALSO, we want to multiply the E channel by 0 to make it 0
+        if (!Resources.getSystem().getBoolean(
+                com.android.internal.R.bool.config_invert_colors_on_doze)) {
+            components = -1 * components;
+            inversionMultiple = 0;
+        }
+
         final float[] invert = {
-                components, 0f,         0f,         0f, 255f * intensity,
-                0f,         components, 0f,         0f, 255f * intensity,
-                0f,         0f,         components, 0f, 255f * intensity,
+                components, 0f,         0f,         0f, 255f * intensity * inversionMultiple,
+                0f,         components, 0f,         0f, 255f * intensity * inversionMultiple,
+                0f,         0f,         components, 0f, 255f * intensity * inversionMultiple,
                 0f,         0f,         0f,         1f, 0f
         };
         mMatrix.set(invert);
-        mGrayscaleMatrix.setSaturation(1 - intensity);
-        mMatrix.preConcat(mGrayscaleMatrix);
+
+        // we only apply grayscale if configured to do so
+        if (Resources.getSystem().getBoolean(
+                com.android.internal.R.bool.config_apply_grayscale_on_doze)) {
+            mGrayscaleMatrix.setSaturation(1 - intensity);
+            mMatrix.preConcat(mGrayscaleMatrix);
+        }
+
+        // custom tint array gets applied here (if no overlay present, default array
+        // is equal to identity - it will do nothing)
+        final TypedArray rawTint = Resources.getSystem().obtainTypedArray(
+                com.android.internal.R.array.doze_tint);
+        int len = rawTint.length();
+        float[] resolvedTint = new float[len];
+        for (int i = 0; i < len; i++)
+            resolvedTint[i] = rawTint.getFloat(i, 0);
+        rawTint.recycle();
+        final ColorMatrix tint = new ColorMatrix(resolvedTint);
+        mMatrix.preConcat(tint);
+
         mDarkPaint.setColorFilter(new ColorMatrixColorFilter(mMatrix));
     }
 }

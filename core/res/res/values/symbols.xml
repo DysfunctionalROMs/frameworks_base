@@ -2403,5 +2403,10 @@
   <java-symbol type="dimen" name="edge_gesture_trigger_distance" />
   <java-symbol type="dimen" name="edge_gesture_perpendicular_distance" />
   <java-symbol type="dimen" name="edge_gesture_trigger_thickness" />
+  
+  <!-- Doze stuff -->
+  <java-symbol type="bool" name="config_invert_colors_on_doze" />
+  <java-symbol type="bool" name="config_apply_grayscale_on_doze" />
+  <java-symbol type="array" name="doze_tint" />
 
 </resources>
