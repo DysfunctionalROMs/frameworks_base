@@ -15,13 +15,6 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!-- Global action Buttons -->
-
-    <!-- Button to reboot the phone, within the Global actions dialog -->
-    <string name="global_action_reboot">Reboot</string>
-
-    <!-- Shut down reboot dialogs -->
-
     <!-- Option to reboot the phone, within the Shut down reboot dialog -->
     <string name="shutdown_reboot_option_reboot">Reboot</string>
     <!-- Option to quick reboot the phone, within the Shut down reboot dialog -->
