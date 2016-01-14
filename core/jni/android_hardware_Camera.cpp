@@ -1188,15 +1188,12 @@ static JNINativeMethod camMethods[] = {
   { "enableFocusMoveCallback",
     "(I)V",
     (void *)android_hardware_Camera_enableFocusMoveCallback},
-<<<<<<< HEAD
   { "_sendVendorCommand",
     "(III)V",
     (void *)android_hardware_Camera_sendVendorCommand },
-=======
   { "sendRawCommand",
     "(III)V",
     (void *)android_hardware_Camera_sendRawCommand},
->>>>>>> 4f3fd6b... Add support for sending raw commands
 };
 
 struct field {
