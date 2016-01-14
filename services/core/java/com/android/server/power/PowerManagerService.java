@@ -1653,7 +1653,6 @@ public final class PowerManagerService extends SystemService
                                     mButtonsLight.setBrightness(buttonBrightness);
                                     if (buttonBrightness != 0 && mButtonTimeout != 0) {
                                         nextTimeout = now + mButtonTimeout;
-                                    }
                                 }
                             }
                         }
@@ -1707,7 +1706,7 @@ public final class PowerManagerService extends SystemService
                         + PowerManagerInternal.wakefulnessToString(mWakefulness)
                         + ", mUserActivitySummary=0x" + Integer.toHexString(mUserActivitySummary)
                         + ", nextTimeout=" + TimeUtils.formatUptime(nextTimeout));
-            }
+			}
         }
     }
 
