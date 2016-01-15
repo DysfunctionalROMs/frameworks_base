@@ -14,6 +14,8 @@
      limitations under the License.
 -->
 <resources>
+
     <!-- filter for PTP devices -->
     <usb-device class="6" subclass="1" protocol="1" />
+
 </resources>
