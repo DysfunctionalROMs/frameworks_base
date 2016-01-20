@@ -3648,6 +3648,12 @@ public final class Settings {
          * @hide
          */
         public static final String MENU_VISIBILITY = "menu_visibility";
+        
+        /**
+         * Whether to show the IME arrows in the status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_IME_ARROWS = "status_bar_ime_arrows";
 
         /**
          *  Enable statusbar double tap gesture on to put device to sleep
@@ -3794,7 +3800,7 @@ public final class Settings {
         /**
          * @hide
          */
-        public static final String PA_PIE_JUICE = "pa_pie_juice";
+        public static final String PA_PIE_JUICE = "pa_pie_juice";        
 
         /**
          * @hide
