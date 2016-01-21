@@ -663,7 +663,9 @@ public class NavigationBarView extends LinearLayout {
         mNavigationIconHints = hints;
         if (getBackButton() != null ) {
             ((ImageView) getBackButton()).setImageDrawable(null);
-            ((ImageView) getBackButton()).setImageDrawable(mVertical ? mBackLandIcon : mBackIcon);
+            ((ImageView)getBackButton()).setImageDrawable(backAlt
+                ? (mVertical ? mBackAltLandIcon : mBackAltIcon)
+                : (mVertical ? mBackLandIcon : mBackIcon));
         }
 
         final boolean showImeButton = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0
