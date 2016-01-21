@@ -290,6 +290,10 @@ public final class ShutdownThread extends Thread {
             }
             closer.dialog = sConfirmDialog;
             sConfirmDialog.setOnDismissListener(closer);
+            WindowManager.LayoutParams attrs = sConfirmDialog.getWindow().getAttributes();
+
+            attrs.alpha = setRebootDialogAlpha(context);
+
             sConfirmDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
             sConfirmDialog.show();
         } else {
@@ -300,6 +304,15 @@ public final class ShutdownThread extends Thread {
     private static boolean advancedRebootEnabled(Context context) {
         return Settings.System.getInt(context.getContentResolver(),
                 Settings.System.POWER_MENU_SHOW_ADVANCED_REBOOT, 0) == 1;
+    }
+
+    private static float setRebootDialogAlpha(Context context) {
+        int mRebootDialogAlpha = Settings.System.getInt(
+                context.getContentResolver(),
+                Settings.System.TRANSPARENT_POWER_MENU, 100);
+        double dAlpha = mRebootDialogAlpha / 100.0;
+        float alpha = (float) dAlpha;
+        return alpha;
     }
     
     private static void doSystemUIReboot() {
@@ -438,6 +451,10 @@ public final class ShutdownThread extends Thread {
         pd.setCancelable(false);
         pd.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
 
+        WindowManager.LayoutParams attrs = pd.getWindow().getAttributes();
+            
+        attrs.alpha = setRebootDialogAlpha(context);
+        
         pd.show();
 
         sInstance.mProgressDialog = pd;

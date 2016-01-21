@@ -210,12 +210,23 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             attrs.setTitle("GlobalActions");
             attrs.windowAnimations = R.style.GlobalActionsAnimation;
             attrs.gravity = Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL;
+
+            attrs.alpha = setPowerMenuAlpha();
+
             mDialog.getWindow().setAttributes(attrs);
             mDialog.show();
             mDialog.getWindow().getDecorView().setSystemUiVisibility(View.STATUS_BAR_DISABLE_EXPAND);
         }
     }
 
+    private float setPowerMenuAlpha() {
+        int mPowerMenuAlpha = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.TRANSPARENT_POWER_MENU, 100);
+        double dAlpha = mPowerMenuAlpha / 100.0;
+        float alpha = (float) dAlpha;
+        return alpha;
+    }
+    
     /**
      * Create the global actions dialog.
      * @return A new dialog.
