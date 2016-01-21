@@ -196,8 +196,6 @@ public final class ShutdownThread extends Thread {
                 showRebootOption = true;
                 break;
             }
-
-            Log.d(TAG, "longPressBehavior=" + longPressBehavior);
         }
 
         if (confirm) {
