@@ -337,6 +337,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private long mKeyguardFadingAwayDuration;
 
     int mKeyguardMaxNotificationCount;
+    
+    // Broken logo
+    private boolean mBrokenLogo;
+    private ImageView brokenLogo;
 
     // carrier label
     private TextView mCarrierLabel;
@@ -386,29 +390,29 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         void observe() {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_BUTTON_TINT),
-                    false, this, UserHandle.USER_ALL);
+                    Settings.System.NAVIGATION_BAR_BUTTON_TINT), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_BUTTON_TINT_MODE),
-                    false, this, UserHandle.USER_ALL);
+                    Settings.System.NAVIGATION_BAR_BUTTON_TINT_MODE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_GLOW_TINT),
-                    false, this, UserHandle.USER_ALL);
+                    Settings.System.NAVIGATION_BAR_GLOW_TINT), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_CONFIG),
-                    false, this, UserHandle.USER_ALL);
+                    Settings.System.NAVIGATION_BAR_CONFIG), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_CAN_MOVE),
-                    false, this, UserHandle.USER_ALL);
+                    Settings.System.NAVIGATION_BAR_CAN_MOVE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.MENU_LOCATION),
-                    false, this, UserHandle.USER_ALL);
+                    Settings.System.MENU_LOCATION), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.MENU_VISIBILITY),
-                    false, this, UserHandle.USER_ALL);
+                    Settings.System.MENU_VISIBILITY), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_IME_ARROWS),
-                    false, this, UserHandle.USER_ALL);
+                    Settings.System.NAVIGATION_BAR_IME_ARROWS), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_BROKEN_LOGO), false, this);
+            update();
+        }
+        
+        void unobserve() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.unregisterContentObserver(this);
         }
 
         @Override
@@ -440,8 +444,17 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     mNavigationBarView.updateNavigationBarSettings();
                 }
             }
+            update();
         }
     }
+    
+    public void update() {
+            ContentResolver resolver = mContext.getContentResolver();
+            mBrokenLogo = Settings.System.getIntForUser(
+                    resolver, Settings.System.STATUS_BAR_BROKEN_LOGO,
+                    0, UserHandle.USER_CURRENT) == 1;
+            showBrokenLogo(mBrokenLogo);
+	}
 
     // ensure quick settings is disabled until the current user makes it through the setup wizard
     private boolean mUserSetup = false;
@@ -3171,6 +3184,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
         }
     };
+    
+    public void showBrokenLogo(boolean show) {
+        if (mStatusBarView == null) return;
+        ContentResolver resolver = mContext.getContentResolver();
+        brokenLogo = (ImageView) mStatusBarView.findViewById(R.id.broken_logo);
+        if (brokenLogo != null) {
+            brokenLogo.setVisibility(show ? (mBrokenLogo ? View.VISIBLE : View.GONE) : View.GONE);
+        }
+    }
 
     private void resetUserExpandedStates() {
         ArrayList<Entry> activeNotifications = mNotificationData.getActiveNotifications();
