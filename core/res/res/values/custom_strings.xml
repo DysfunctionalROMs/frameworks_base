@@ -15,13 +15,6 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!-- Global action Buttons -->
-    <!-- Global Actions -->
-    <string name="global_action_screenrecord">Screenrecord</string>
-    <string name="global_action_screenshot">Screenshot</string>
-    <string name="global_action_search">Search</string>
-    <string name="global_action_voicesearch">Voice Search</string>
-
     <!-- Option to reboot the phone, within the Shut down reboot dialog -->
     <string name="shutdown_reboot_option_reboot">Reboot</string>
     <!-- Option to quick reboot the phone, within the Shut down reboot dialog -->
@@ -44,6 +37,11 @@
     <string name="shutdown_reboot_dlg_message_bootloader">Rebooting\u2026\n(Bootloader)</string>
     
     <string name="app_killed_message">App Killed</string>
+    
+    <!-- Global Actions -->
+    <string name="global_action_screenshot">Screenshot</string>
+    <string name="global_action_search">Search</string>
+    <string name="global_action_voicesearch">Voice Search</string>
     
     <!-- Title of an application permission, listed so the user can choose whether they want the application to do this. -->
     <string name="permlab_setKeyguardWallpaper">set keyguard wallpaper</string>
