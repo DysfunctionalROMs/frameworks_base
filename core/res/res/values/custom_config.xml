@@ -67,5 +67,8 @@
 
     <!-- The duration (in milliseconds) of recent app screen exit animation. -->
     <integer name="config_recentExitDur">450</integer>
+    
+    <!-- Show battery fully charged notification -->
+    <bool name="config_showBatteryFullyChargedNotification">false</bool>
 
 </resources>
