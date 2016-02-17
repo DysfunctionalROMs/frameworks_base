@@ -4444,6 +4444,12 @@ public final class Settings {
          */
         public static final String RECENT_APP_SIDEBAR_SCALE_FACTOR = "recent_app_sidebar_scale_factor";
 
+		/**
+         * Whether to display dashboard dividers
+         * @hide
+         */
+        public static final String DASHBOARD_TILEVIEW_DIVIDERS = "dashboard_tileview_dividers";
+
         /**
          * Whether to display dashboard tiles in a double line layout
          * @hide
