@@ -562,27 +562,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     UserHandle.USER_CURRENT);
             if (oldWeatherStyle != mWeatherTempStyle) {
                 updateTempView();
-            }
         }
     }
-
-    private void forceAddNavigationBar() {
-        // If we have no Navbar view and we should have one, create it
-        if (mNavigationBarView != null) {
-            return;
-        }
-
-        mNavigationBarView = mNavigationController.getNavigationBarView();
-
-        mNavigationBarView.setDisabledFlags(mDisabled1);
-        mNavigationBarView.setStatusBarCallbacks(this);
-//        addNavigationBarCallback(mNavigationBarView);
-        mNavigationBarView.updateResources(getNavbarThemedResources());
-        mNavigationBarView.notifyInflateFromUser(); // let bar know we're not starting from boot
-//        addNavigationBar(true); // dynamically adding nav bar, reset System UI visibility!
-        addNavigationBar();
-    }
->>>>>>> db5e9a4... Weather Temperature Status Bar Icon 1/2
 
     private void updateWeatherTextState(String temp) {
         if (mWeatherTempView != null) {
