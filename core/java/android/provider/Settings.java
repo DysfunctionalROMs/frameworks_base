@@ -3845,6 +3845,18 @@ public final class Settings {
         public static final String LOCK_SCREEN_SHOW_WEATHER = "lock_screen_show_weather";
 
         /**
+         * change lockscreen alpha color
+         * @hide
+         */
+        public static final String LOCKSCREEN_ALPHA = "lockscreen_alpha";
+
+        /**
+         * change lockscreen security alpha color
+         * @hide
+         */
+        public static final String LOCKSCREEN_SECURITY_ALPHA = "lockscreen_security_alpha";
+
+        /**
          * Weather condition icon on the lock screen
          * 0: monochrome
          * 1: colored

@@ -462,6 +462,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.BATTERY_SAVER_MODE_COLOR), 
 					false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_ALPHA),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_SECURITY_ALPHA),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.USE_SLIM_RECENTS), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -548,6 +554,18 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             mBrightnessControl = Settings.System.getInt(
                     resolver, Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL, 0) == 1;
+            
+            float overlayalpha = Settings.System.getFloatForUser(mContext.getContentResolver(),
+                Settings.System.LOCKSCREEN_ALPHA, 0.45f, UserHandle.USER_CURRENT);
+            if (mScrimController != null) {
+                mScrimController.setOverlayAlpha(overlayalpha);
+            }
+
+            float securityoverlayalpha = Settings.System.getFloatForUser(mContext.getContentResolver(),
+                Settings.System.LOCKSCREEN_SECURITY_ALPHA, 0.75f, UserHandle.USER_CURRENT);
+            if (mScrimController != null) {
+                mScrimController.setSecurityOverlayAlpha(securityoverlayalpha);
+            }
  
             mBrokenLogo = Settings.System.getIntForUser(
                     resolver, Settings.System.STATUS_BAR_BROKEN_LOGO,
