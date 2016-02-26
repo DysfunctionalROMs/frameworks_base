@@ -1169,6 +1169,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 updateWeatherTextState(temp.temp);
             }
         });
+        updateWeatherTextState(mWeatherController.getWeatherInfo().temp);
 
         mKeyguardUserSwitcher = new KeyguardUserSwitcher(mContext,
                 (ViewStub) mStatusBarWindow.findViewById(R.id.keyguard_user_switcher),
