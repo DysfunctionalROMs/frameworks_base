@@ -3700,12 +3700,6 @@ public final class Settings {
         public static final String DIM_NAV_BUTTONS_ANIMATE_DURATION = "dim_nav_buttons_animate_duration";
 
         /**
-         Whether the navbar menu button is on the left/right/both
-         * @hide
-         */
-        public static final String MENU_LOCATION = "menu_location";
-
-        /**
          * Whether custom hardware key rebinding is enabled
          * @hide
          */

@@ -60,6 +60,7 @@ public class ActionConstants {
     public static final String ACTION_LOCKDOWN             = "**lockdown**";
     public static final String ACTION_SOUND                = "**sound**";
     public static final String ACTION_USERS                = "**users**";
+    public static final String ACTION_NOW_ON_TAP           = "**now_on_tap**";
 
     // no action
     public static final String ACTION_NULL                 = "**null**";
@@ -88,6 +89,7 @@ public class ActionConstants {
         + ACTION_NULL    + ACTION_DELIMITER
         + ICON_EMPTY     + ACTION_DELIMITER
         + ACTION_HOME    + ACTION_DELIMITER
+        + ACTION_NOW_ON_TAP + ACTION_DELIMITER
         + ACTION_NULL    + ACTION_DELIMITER
         + ICON_EMPTY     + ACTION_DELIMITER
         + ACTION_RECENTS + ACTION_DELIMITER

@@ -222,9 +222,7 @@ public class ActionHelper {
             resId = systemUiResources.getIdentifier(
                         SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_recent", null, null);
         } else if (clickAction.equals(ActionConstants.ACTION_SEARCH)
-                || clickAction.equals(ActionConstants.ACTION_VOICE_SEARCH)
-                || clickAction.equals(ActionConstants.ACTION_ASSIST)
-                || clickAction.equals(ActionConstants.ACTION_KEYGUARD_SEARCH)) {
+                || clickAction.equals(ActionConstants.ACTION_ASSIST)) {
             resId = systemUiResources.getIdentifier(
                         SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_search", null, null);
         } else if (clickAction.equals(ActionConstants.ACTION_KEYGUARD_SEARCH)) {
@@ -254,9 +252,6 @@ public class ActionHelper {
         } else if (clickAction.equals(ActionConstants.ACTION_VIB_SILENT)) {
             resId = systemUiResources.getIdentifier(
                         SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_ring_vib_silent", null, null);
-        } else if (clickAction.equals(ActionConstants.ACTION_EXPANDED_DESKTOP)) {
-            resId = systemUiResources.getIdentifier(
-                        SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_expanded_desktop", null, null);
         } else if (clickAction.equals(ActionConstants.ACTION_KILL)) {
             resId = systemUiResources.getIdentifier(
                         SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_killtask", null, null);
@@ -275,32 +270,10 @@ public class ActionHelper {
         } else if (clickAction.equals(ActionConstants.ACTION_TORCH)) {
             resId = systemUiResources.getIdentifier(
                         SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_torch", null, null);
-        } else if (clickAction.equals(ActionConstants.ACTION_CAMERA)) {
-            resId = systemUiResources.getIdentifier(
-                        SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_camera", null, null);
-        } else if (clickAction.equals(ActionConstants.ACTION_POWER_OFF)) {
-            resId = com.android.internal.R.drawable.ic_lock_power_off_alpha;
-        } else if (clickAction.equals(ActionConstants.ACTION_REBOOT)) {
-            resId = com.android.internal.R.drawable.ic_lock_reboot_alpha;
-        } else if (clickAction.equals(ActionConstants.ACTION_AIRPLANE)) {
-            resId = com.android.internal.R.drawable.ic_lock_airplane_mode_off_am_alpha;
-        } else if (clickAction.equals(ActionConstants.ACTION_LOCKDOWN)) {
-            resId = com.android.internal.R.drawable.ic_lock_lock_alpha;
         } else {
             resId = systemUiResources.getIdentifier(
                         SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_null", null, null);
         }
         return resId;
-    }
-
-    public static Drawable getPowerMenuIconImage(Context context,
-            String clickAction, String customIcon) {
-        Drawable d = getActionIconImage(context, clickAction, customIcon);
-        if (d != null) {
-            d.mutate();
-            d = ImageHelper.getColoredDrawable(d, 
-                    context.getResources().getColor(com.android.internal.R.color.dslv_icon_dark));
-        }
-        return d;
     }
 }
