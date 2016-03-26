@@ -1138,7 +1138,13 @@ public class UsageStatsService extends SystemService implements
      * Observe settings changes for {@link Settings.Global#APP_IDLE_CONSTANTS}.
      */
     private class SettingsObserver extends ContentObserver {
-        private static final String KEY_IDLE_DURATION = "idle_duration";
+        /**
+         * This flag has been used to disable app idle on older builds with bug b/26355386.
+         */
+        @Deprecated
+        private static final String KEY_IDLE_DURATION_OLD = "idle_duration";
+
+        private static final String KEY_IDLE_DURATION = "idle_duration2";
         private static final String KEY_WALLCLOCK_THRESHOLD = "wallclock_threshold";
         private static final String KEY_PAROLE_INTERVAL = "parole_interval";
         private static final String KEY_PAROLE_DURATION = "parole_duration";
