@@ -30,6 +30,7 @@ import android.app.StatusBarManager;
 import android.app.WallpaperManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentCallbacks2;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -2886,6 +2887,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mPieController.setNavigationIconHints(hints);
         }
         checkBarModes();
+    }
+    
+    @Override // CommandQueue
+    public void showCustomIntentAfterKeyguard(Intent intent) {
+        startActivityDismissingKeyguard(intent, false, false);
     }
 
     @Override // CommandQueue
