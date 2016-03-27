@@ -578,6 +578,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 if (mNavigationBarView != null) {
                     mNavigationBarView.updateNavigationBarSettings();
                     mNavigationBarView.onNavButtonTouched();
+				}
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_ROTATION))
                     || uri.equals(Settings.System.getUriFor(
@@ -600,7 +601,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     if (mBatterySaverWarningColor == -2) {
                         mBatterySaverWarningColor = mContext.getResources()
                                 .getColor(com.android.internal.R.color.battery_saver_mode_color);
-					}
 				}
             }
         }
