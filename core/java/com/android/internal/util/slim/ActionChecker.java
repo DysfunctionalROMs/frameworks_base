@@ -38,7 +38,13 @@ public class ActionChecker {
     public static boolean containsAction(Context context,
             ActionConfig config, String action) {
 
-        if (!actionConfigContainsAction(config, action)) return true;
+        if (!actionConfigContainsAction(config, action)) {
+            return true;
+        }
+
+        if (!Action.isNavBarDefault(context)) {
+            return true;
+        }
 
         for (int i = 0; i < mConfigs.size(); i++) {
             String configsString = Settings.System.getStringForUser(context.getContentResolver(),

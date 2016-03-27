@@ -54,46 +54,29 @@ public class ActionConstants {
     public static final String ACTION_MEDIA_NEXT           = "**media_next**";
     public static final String ACTION_MEDIA_PLAY_PAUSE     = "**media_play_pause**";
     public static final String ACTION_WAKE_DEVICE          = "**wake_device**";
-    public static final String ACTION_POWER_OFF            = "**poweroff**";
-    public static final String ACTION_REBOOT               = "**reboot**";
-    public static final String ACTION_AIRPLANE             = "**airplane**";
-    public static final String ACTION_LOCKDOWN             = "**lockdown**";
-    public static final String ACTION_SOUND                = "**sound**";
-    public static final String ACTION_USERS                = "**users**";
     public static final String ACTION_NOW_ON_TAP           = "**now_on_tap**";
 
     // no action
-    public static final String ACTION_NULL                 = "**null**";
+    public static final String ACTION_NULL            = "**null**";
 
     // this shorcut constant is only used to identify if the user
     // selected in settings a custom app...after it is choosed intent uri
     // is saved in the ButtonConfig object
-    public static final String ACTION_APP                  = "**app**";
+    public static final String ACTION_APP          = "**app**";
 
     public static final String ICON_EMPTY = "empty";
     public static final String SYSTEM_ICON_IDENTIFIER = "system_shortcut=";
     public static final String ACTION_DELIMITER = "|";
 
-    public static final String POWER_MENU_CONFIG_DEFAULT =
-          ACTION_POWER_OFF + ACTION_DELIMITER
-        + ICON_EMPTY       + ACTION_DELIMITER
-        + ACTION_REBOOT    + ACTION_DELIMITER
-        + ICON_EMPTY       + ACTION_DELIMITER
-        + ACTION_AIRPLANE  + ACTION_DELIMITER
-        + ICON_EMPTY       + ACTION_DELIMITER
-        + ACTION_SOUND     + ACTION_DELIMITER
-        + ICON_EMPTY       + ACTION_DELIMITER;
-
     public static final String NAVIGATION_CONFIG_DEFAULT =
-          ACTION_BACK    + ACTION_DELIMITER
-        + ACTION_NULL    + ACTION_DELIMITER
-        + ICON_EMPTY     + ACTION_DELIMITER
-        + ACTION_HOME    + ACTION_DELIMITER
+          ACTION_BACK       + ACTION_DELIMITER
+        + ACTION_NULL       + ACTION_DELIMITER
+        + ICON_EMPTY        + ACTION_DELIMITER
+        + ACTION_HOME       + ACTION_DELIMITER
         + ACTION_NOW_ON_TAP + ACTION_DELIMITER
-        + ACTION_NULL    + ACTION_DELIMITER
-        + ICON_EMPTY     + ACTION_DELIMITER
-        + ACTION_RECENTS + ACTION_DELIMITER
-        + ACTION_NULL    + ACTION_DELIMITER
+        + ICON_EMPTY        + ACTION_DELIMITER
+        + ACTION_RECENTS    + ACTION_DELIMITER
+        + ACTION_NULL       + ACTION_DELIMITER
         + ICON_EMPTY;
 
     public static final String NAV_RING_CONFIG_DEFAULT =
