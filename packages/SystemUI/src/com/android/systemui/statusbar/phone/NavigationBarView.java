@@ -1049,14 +1049,13 @@ public class NavigationBarView extends LinearLayout {
     public void onFinishInflate() {
         mRot0 = (FrameLayout) findViewById(R.id.rot0);
         mRot90 = (FrameLayout) findViewById(R.id.rot90);
-
+        
         mRotatedViews[Surface.ROTATION_0] =
                 mRotatedViews[Surface.ROTATION_180] = findViewById(R.id.rot0);
         mRotatedViews[Surface.ROTATION_90] = findViewById(R.id.rot90);
-
         mRotatedViews[Surface.ROTATION_270] = mRotatedViews[Surface.ROTATION_90];
-
-        mCurrentView = mRotatedViews[Surface.ROTATION_0];
+        mCurrentView = mRotatedViews[Surface.ROTATION_0];        
+        
         updateSettings(true);
 
         if (getImeSwitchButton() != null)
