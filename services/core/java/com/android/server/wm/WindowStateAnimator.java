@@ -1430,7 +1430,6 @@ class WindowStateAnimator {
                 if (WindowManagerService.SHOW_TRANSACTIONS) WindowManagerService.logSurface(w,
                         "POS " + left + ", " + top, null);
                 mSurfaceControl.setPosition(left, top);
-                updateSurfaceWindowCrop(recoveringMemory);
                 if (mSurfaceControlBlur != null) {
                     mSurfaceControlBlur.setPosition(left, top);
                 }
@@ -1459,7 +1458,6 @@ class WindowStateAnimator {
                 mSurfaceControl.setMatrix(
                         mDsDx * w.mHScale, mDtDx * w.mVScale,
                         mDsDy * w.mHScale, mDtDy * w.mVScale);
-                updateSurfaceWindowCrop(recoveringMemory);
                 mAnimator.setPendingLayoutChanges(w.getDisplayId(),
                         WindowManagerPolicy.FINISH_LAYOUT_REDO_WALLPAPER);
                 if ((w.mAttrs.flags & LayoutParams.FLAG_DIM_BEHIND) != 0) {
@@ -1486,7 +1484,7 @@ class WindowStateAnimator {
             }
         }
 
-        //updateSurfaceWindowCrop(recoveringMemory);
+        updateSurfaceWindowCrop(recoveringMemory);
     }
 
     public void prepareSurfaceLocked(final boolean recoveringMemory) {
