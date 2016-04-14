@@ -167,7 +167,7 @@ public class KeyguardStatusBarView extends RelativeLayout {
     private void setKeyguardClockVisibility(boolean visible) {
         ContentResolver resolver = mContext.getContentResolver();
         boolean showKeyguardClock = (Settings.System.getIntForUser(
-                resolver, Settings.System.KEYGUARD_STATUS_BAR_CLOCK, 1,
+                resolver, Settings.System.KEYGUARD_STATUS_BAR_CLOCK, 0,
                 UserHandle.USER_CURRENT) == 1);
         int keyguardClockLocation = Settings.System.getIntForUser(
                 resolver, Settings.System.KEYGUARD_STATUSBAR_CLOCK_STYLE, 0,
