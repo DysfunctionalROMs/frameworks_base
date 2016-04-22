@@ -3967,7 +3967,6 @@ public final class Settings {
         public static final String MENU_LOCATION = "menu_location";
 
         /**
-         * Wether the navbar menu button should show or not
          * @hide
          */
         public static final String MENU_VISIBILITY = "menu_visibility";
@@ -4805,6 +4804,12 @@ public final class Settings {
          *  @hide
          */
         public static final String SYSTEMUI_RECENTS_MEM_DISPLAY = "systemui_recents_mem_display";
+
+        /**
+         * whether to enable /disable showing charging current on lockscreen
+         * @hide
+         */
+        public static final String LOCK_SCREEN_SHOW_CURRENT = "lock_screen_show_current";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
