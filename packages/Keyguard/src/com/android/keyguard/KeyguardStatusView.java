@@ -326,14 +326,14 @@ public class KeyguardStatusView extends GridLayout implements
             mDateView.setVisibility(View.VISIBLE);
         } else {
             mDateView = (TextClock) findViewById(R.id.date_view);
-            mDateView.setVisibility(View.INVISIBLE);
+            mDateView.setVisibility(View.GONE);
         }
         if (showAlarm && nextAlarm != null) {
             mAlarmStatusView = (TextView) findViewById(R.id.alarm_status);
             mAlarmStatusView.setVisibility(View.VISIBLE);
         } else {
             mAlarmStatusView = (TextView) findViewById(R.id.alarm_status);
-            mAlarmStatusView.setVisibility(View.INVISIBLE);
+            mAlarmStatusView.setVisibility(View.GONE);
         }
     }
 
