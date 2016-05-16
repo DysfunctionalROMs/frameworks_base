@@ -4170,6 +4170,21 @@ public final class Settings {
          * @hide
          */
         public static final String PA_PIE_CHEVRON = "pa_pie_chevron";
+        
+        /**
+         * Change quick settings tiles animation style
+         *
+         * @hide
+         */
+        public static final String ANIM_TILE_STYLE = "anim_tile_style";
+
+
+        /**
+         * Change quick settings tiles animation duration
+         *
+         * @hide
+         */
+        public static final String ANIM_TILE_DURATION = "anim_tile_duration";
 
         /**
          * Volume rocker wake
