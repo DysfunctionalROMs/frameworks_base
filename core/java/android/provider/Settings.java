@@ -4883,6 +4883,12 @@ public final class Settings {
          *  @hide
          */
         public static final String SYSTEMUI_RECENTS_MEM_DISPLAY = "systemui_recents_mem_display";
+        
+        /** 
+         * Whether to show the battery fully charged notification
+         * @hide
+         */
+        public static final String BATTERY_FULLY_CHARGED_NOTIFICATION = "battery_fully_charged_notification";
 
         /**
          * whether to enable /disable showing charging current on lockscreen
