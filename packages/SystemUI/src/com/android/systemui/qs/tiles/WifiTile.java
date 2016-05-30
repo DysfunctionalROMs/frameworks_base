@@ -16,7 +16,9 @@
 
 package com.android.systemui.qs.tiles;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.provider.Settings;
@@ -92,9 +94,14 @@ public class WifiTile extends QSTile<QSTile.SignalState> {
 
     @Override
     protected void handleClick() {
-        mState.copyTo(mStateBeforeClick);
-        MetricsLogger.action(mContext, getMetricsCategory(), !mState.enabled);
-        mController.setWifiEnabled(!mState.enabled);
+		if (Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.QS_WIFI_DETAIL, 0, ActivityManager.getCurrentUser()) == 1) {
+            showDetail(true);
+        } else {
+            mState.copyTo(mStateBeforeClick);
+            MetricsLogger.action(mContext, getMetricsCategory(), !mState.enabled);
+            mController.setWifiEnabled(!mState.enabled);
+        }
     }
 
     @Override
