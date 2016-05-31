@@ -4900,6 +4900,26 @@ public final class Settings {
         * USB Data automatic unlock
         */
        public static final String USB_DATA_AUTO_UNLOCK = "usb_data_auto_unlock";
+       
+       /**
+        * Custom Icon for the logo
+        * @hide
+        */
+        public static final String KEYGUARD_LOGO_CUSTOM = "keyguard_logo_custom";
+
+        /**
+		 * Style of Status bar logo
+         * 0 - Left (default)
+         * 1 - Right
+         * @hide
+		 */
+		public static final String KEYGUARD_LOGO_SHOW = "keyguard_logo_show";
+
+        /**
+         * Color of the custom icon on the lock screen
+         * @hide
+         */
+        public static final String KEYGUARD_LOGO_COLOR = "keyguard_logo_color";
 
         /**
          * Custom System Animations

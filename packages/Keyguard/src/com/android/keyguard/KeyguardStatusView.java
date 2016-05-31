@@ -69,6 +69,7 @@ public class KeyguardStatusView extends GridLayout implements
     private boolean mShowWeather;
     private int mIconNameValue = 0;
     private WeatherController mWeatherController;
+    private KeyguardRomLogo mRomLogo;
 
     //On the first boot, keygard will start to receiver TIME_TICK intent.
     //And onScreenTurnedOff will not get called if power off when keyguard is not started.
@@ -82,6 +83,7 @@ public class KeyguardStatusView extends GridLayout implements
             if (mEnableRefresh) {
                 refresh();
             }
+            updateLogo();
         }
 
         @Override
@@ -90,6 +92,7 @@ public class KeyguardStatusView extends GridLayout implements
                 if (DEBUG) Slog.v(TAG, "refresh statusview showing:" + showing);
                 refresh();
                 updateOwnerInfo();
+                updateLogo();
             }
         }
 
@@ -98,18 +101,21 @@ public class KeyguardStatusView extends GridLayout implements
             setEnableMarquee(true);
             mEnableRefresh = true;
             refresh();
+            updateLogo();
         }
 
         @Override
         public void onFinishedGoingToSleep(int why) {
             setEnableMarquee(false);
             mEnableRefresh = false;
+            updateLogo();
         }
 
         @Override
         public void onUserSwitchComplete(int userId) {
             refresh();
             updateOwnerInfo();
+            updateLogo();
         }
     };
 
@@ -143,6 +149,7 @@ public class KeyguardStatusView extends GridLayout implements
         mDateView.setShowCurrentUserTime(true);
         mClockView.setShowCurrentUserTime(true);
         mOwnerInfo = (TextView) findViewById(R.id.owner_info);
+        mRomLogo = (KeyguardRomLogo) findViewById(R.id.keyguard_rom_logo_container);
         mWeatherView = findViewById(R.id.keyguard_weather_view);
         mWeatherCity = (TextView) findViewById(R.id.city);
         mWeatherConditionImage = (ImageView) findViewById(R.id.weather_image);
@@ -153,6 +160,7 @@ public class KeyguardStatusView extends GridLayout implements
         setEnableMarquee(shouldMarquee);
         refresh();
         updateOwnerInfo();
+        updateLogo();
 
         // Disable elegant text height because our fancy colon makes the ymin value huge for no
         // reason.
@@ -186,6 +194,7 @@ public class KeyguardStatusView extends GridLayout implements
         refreshTime();
         refreshAlarmStatus(nextAlarm);
         updateSettings(false);
+        updateLogo();
     }
 
     void refreshAlarmStatus(AlarmManager.AlarmClockInfo nextAlarm) {
@@ -271,6 +280,12 @@ public class KeyguardStatusView extends GridLayout implements
             updateSettings(false);
         }
     }
+    
+    private void updateLogo() {
+		updateLogoVisibility();
+        updateLogoColor();
+        updateLogoImage();
+    }
 
     private void updateSettings(boolean forceHide) {
         final ContentResolver resolver = getContext().getContentResolver();
@@ -334,6 +349,32 @@ public class KeyguardStatusView extends GridLayout implements
         } else {
             mAlarmStatusView = (TextView) findViewById(R.id.alarm_status);
             mAlarmStatusView.setVisibility(View.GONE);
+        }
+    }
+    
+    private void updateLogoVisibility() {
+        final boolean showLogo = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.KEYGUARD_LOGO_SHOW, 1) == 1;
+
+        if (mRomLogo != null) {
+            mRomLogo.showLogo(showLogo);
+        }
+    }
+
+    private void updateLogoColor() {
+        int color = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.KEYGUARD_LOGO_COLOR, 0xff1976D2);
+
+        if (mRomLogo != null) {
+            mRomLogo.setIconColor(color);
+
+        }
+    }
+
+    private void updateLogoImage() {
+
+        if (mRomLogo != null) {
+            mRomLogo.updateLogoImage();
         }
     }
 
