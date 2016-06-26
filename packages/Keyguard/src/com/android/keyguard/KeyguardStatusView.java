@@ -354,7 +354,7 @@ public class KeyguardStatusView extends GridLayout implements
     
     private void updateLogoVisibility() {
         final boolean showLogo = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.KEYGUARD_LOGO_SHOW, 1) == 1;
+                Settings.System.KEYGUARD_LOGO_SHOW, 0) == 1;
 
         if (mRomLogo != null) {
             mRomLogo.showLogo(showLogo);
