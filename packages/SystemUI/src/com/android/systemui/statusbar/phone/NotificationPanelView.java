@@ -52,6 +52,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.internal.logging.MetricsLogger;
@@ -248,6 +249,12 @@ public class NotificationPanelView extends PanelView implements
     // QS alpha
     private int mQSShadeAlpha;
 
+    // Broken panel logo
+    private ImageView mBrokenPanelLogo;
+    private int mQSPanelLogo;
+    private int mQSPanelLogoColor;
+    private int mQSPanelLogoAlpha;
+
     public NotificationPanelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(!DEBUG);
@@ -279,6 +286,7 @@ public class NotificationPanelView extends PanelView implements
         mKeyguardStatusView = (KeyguardStatusView) findViewById(R.id.keyguard_status_view);
         mQsContainer = (QSContainer) findViewById(R.id.quick_settings_container);
         mQsPanel = (QSPanel) findViewById(R.id.quick_settings_panel);
+        mBrokenPanelLogo = (ImageView) findViewById(R.id.broken_panel_logo);
         mClockView = (TextView) findViewById(R.id.clock_view);
         mScrollView = (ObservableScrollView) findViewById(R.id.scroll_view);
         mScrollView.setListener(this);
@@ -315,6 +323,8 @@ public class NotificationPanelView extends PanelView implements
                 }
             }
         });
+
+        setQSPanelLogo();
         setQSBackgroundAlpha();
         mSettingsObserver = new SettingsObserver(mHandler);
     }
@@ -407,7 +417,7 @@ public class NotificationPanelView extends PanelView implements
         }
         updateMaxHeadsUpTranslation();
     }
-    
+
     @Override
     public void onAttachedToWindow() {
         mSettingsObserver.observe();
@@ -2560,6 +2570,15 @@ public class NotificationPanelView extends PanelView implements
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_TRANSPARENT_SHADE),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_PANEL_LOGO),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_PANEL_LOGO_COLOR),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_PANEL_LOGO_ALPHA),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -2590,6 +2609,13 @@ public class NotificationPanelView extends PanelView implements
                     UserHandle.USER_CURRENT) == 1;
             mQSShadeAlpha = Settings.System.getInt(
                     resolver, Settings.System.QS_TRANSPARENT_SHADE, 255);
+            mQSPanelLogo = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.QS_PANEL_LOGO, 0);
+            mQSPanelLogoColor = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.QS_PANEL_LOGO_COLOR, mContext.getResources().getColor(R.color.system_secondary_color));
+            mQSPanelLogoAlpha = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.QS_PANEL_LOGO_ALPHA, 51);
+            setQSPanelLogo();
             setQSBackgroundAlpha();
         }
     }
@@ -2600,6 +2626,20 @@ public class NotificationPanelView extends PanelView implements
         }
         if (mQsPanel != null) {
             mQsPanel.setQSShadeAlphaValue(mQSShadeAlpha);
+        }
+    }
+
+    private void setQSPanelLogo() {
+        if (mQSPanelLogo == 0) {
+            mBrokenPanelLogo.setVisibility(View.GONE);
+        } else if (mQSPanelLogo == 1) {
+            mBrokenPanelLogo.setImageAlpha(mQSPanelLogoAlpha);
+            mBrokenPanelLogo.setColorFilter(mContext.getResources().getColor(R.color.system_secondary_color));
+            mBrokenPanelLogo.setVisibility(View.VISIBLE);
+        } else if (mQSPanelLogo == 2) {
+            mBrokenPanelLogo.setImageAlpha(mQSPanelLogoAlpha);
+            mBrokenPanelLogo.setColorFilter(mQSPanelLogoColor);
+            mBrokenPanelLogo.setVisibility(View.VISIBLE);
         }
     }
 }
