@@ -5009,6 +5009,21 @@ public final class Settings {
         public static final String QS_PANEL_LOGO_ALPHA = "qs_panel_logo_alpha";
 
         /**
+         *
+         * Whether to apply a shadow on  the text of header
+         * value is the radius of the shadow that is to be applied.
+         * @hide
+         */
+        public static final String STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW = "status_bar_custom_header_text_shadow";
+
+        /**
+         *
+         * Apply a custom color to the text shadow on the header
+         * @hide
+         */
+        public static final String STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW_COLOR = "status_bar_custom_header_text_shadow_color";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

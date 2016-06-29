@@ -167,6 +167,8 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private int mQSHeaderAlpha;
 
     private int headerShadow;
+    private float textShadow;
+    private int tShadowColor;
     private int customHeader;
     
     public StatusBarHeaderView(Context context, AttributeSet attrs) {
@@ -408,6 +410,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         mEmergencyCallsOnly.setVisibility(mExpanded && mShowEmergencyCallsOnly ? VISIBLE : GONE);
         mBatteryLevel.setForceShown(mExpanded && mShowBatteryTextExpanded);
         mBatteryLevel.setVisibility(View.VISIBLE);
+        applyTextShadow();
         applyHeaderBackgroundShadow();
     }
 
@@ -1011,6 +1014,10 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CUSTOM_HEADER_SHADOW), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW_COLOR), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CUSTOM_HEADER), false, this, UserHandle.USER_ALL);
             update();
         }
@@ -1057,6 +1064,14 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
             headerShadow = Settings.System.getIntForUser(mContext.getContentResolver(),
                     Settings.System.STATUS_BAR_CUSTOM_HEADER_SHADOW, 0,
+                    UserHandle.USER_CURRENT);
+
+            textShadow = Settings.System.getFloatForUser(mContext.getContentResolver(),
+                    Settings.System.STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW, 0,
+                    UserHandle.USER_CURRENT);
+
+            tShadowColor = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW_COLOR, 0,
                     UserHandle.USER_CURRENT);
 
             customHeader = Settings.System.getIntForUser(mContext.getContentResolver(),
@@ -1115,7 +1130,9 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     public void updateHeader(final Drawable headerImage, final boolean force) {
         post(new Runnable() {
              public void run() {
-                 doUpdateStatusBarCustomHeader(headerImage, force);
+                // TODO we dont need to do this every time but we dont have
+                // an other place to know right now when custom header is enabled
+                doUpdateStatusBarCustomHeader(headerImage, force);
             }
         });
     }
@@ -1129,6 +1146,22 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             }
         });
     }
+
+    /**
+     * makes text more readable on light backgrounds
+     */
+    private void applyTextShadow() {
+        mTime.setShadowLayer(textShadow, 0, 0, tShadowColor);
+        mAmPm.setShadowLayer(textShadow, 0, 0, tShadowColor);
+        mDateCollapsed.setShadowLayer(textShadow, 0, 0, tShadowColor);
+        mDateExpanded.setShadowLayer(textShadow, 0, 0, tShadowColor);
+        mBatteryLevel.setShadowLayer(textShadow, 0, 0, tShadowColor);
+        mAlarmStatus.setShadowLayer(textShadow, 0, 0, tShadowColor);
+        mQsDetailHeaderTitle.setShadowLayer(textShadow, 0, 0, tShadowColor);
+        mWeatherLine1.setShadowLayer(textShadow, 0, 0, tShadowColor);
+        mWeatherLine2.setShadowLayer(textShadow, 0, 0, tShadowColor);
+    }
+
 
     private void setQSHeaderAlpha() {
         if (mHeaderView != null) {
