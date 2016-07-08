@@ -59,6 +59,7 @@ import com.android.systemui.qs.tiles.ScreenshotTile;
 import com.android.systemui.qs.tiles.ScreenTimeoutTile;
 import com.android.systemui.qs.tiles.SyncTile;
 import com.android.systemui.qs.tiles.UsbTetherTile;
+import com.android.systemui.qs.tiles.Viper4AndroidTile;
 import com.android.systemui.qs.tiles.VolumeTile;
 import com.android.systemui.qs.tiles.WifiTile;
 import com.android.systemui.qs.tiles.KernelAdiutorTile;
@@ -354,6 +355,8 @@ public class QSTileHost implements QSTile.Host {
                 return new ScreenrecordTile(this);
             case QSConstants.TILE_KERNEL_ADIUTOR:
                 return new KernelAdiutorTile(this);
+            case QSConstants.TILE_VIPER4ANDROID:
+                return new Viper4AndroidTile(this);
             default:
                 throw new IllegalArgumentException("Bad tile spec: " + tileSpec);
         }
