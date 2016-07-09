@@ -507,7 +507,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.BATTERY_SAVER_MODE_COLOR),
-					false, this, UserHandle.USER_ALL);
+                    false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_ALPHA),
                     false, this, UserHandle.USER_ALL);
@@ -553,6 +553,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_GREETING_COLOR),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_STROKE), false, this,
+                    UserHandle.USER_ALL);
             update();
         }
 
@@ -599,7 +602,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 if (mNavigationBarView != null) {
                     mNavigationBarView.updateNavigationBarSettings();
                     mNavigationBarView.onNavButtonTouched();
-				}
+                }
             } else if (uri.equals(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_ROTATION))
                     || uri.equals(Settings.System.getUriFor(
@@ -634,7 +637,19 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     if (mBatterySaverWarningColor == -2) {
                         mBatterySaverWarningColor = mContext.getResources()
                                 .getColor(com.android.internal.R.color.battery_saver_mode_color);
-				}
+                }
+            } else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.QS_STROKE))) {
+                    int mQSStroke = Settings.System.getIntForUser(
+                            mContext.getContentResolver(),
+                            Settings.System.QS_STROKE, 1,
+                            UserHandle.USER_CURRENT);
+                    if (mQSStroke == 0) {
+                        updateRowStates();
+                        updateSpeedbump();
+                        updateClearAll();
+                        updateEmptyShadeView();
+                    }
             }
             update();
         }
@@ -1129,7 +1144,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
         if (mContext.getResources().getBoolean(R.bool.enable_operator_name)) {
             mCarrierText = mStatusBarView.findViewById(R.id.status_carrier_text);
-		}
+        }
 
         mStackScroller = (NotificationStackScrollLayout) mStatusBarWindow.findViewById(
                 R.id.notification_stack_scroller);
@@ -1694,8 +1709,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 shadeEntry.notifyFullScreenIntentLaunched();
                 MetricsLogger.count(mContext, "note_fullscreen", 1);
             } catch (PendingIntent.CanceledException e) {
-			}
-		}
+            }
+        }
             // usual case: status bar visible & not immersive
         addNotificationViews(shadeEntry, ranking);
         // Recalculate the position of the sliding windows and the titles.
