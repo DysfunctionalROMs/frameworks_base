@@ -533,10 +533,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     Settings.System.STATUS_BAR_CUSTOM_HEADER_SHADOW),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW), 
+                    Settings.System.STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW_COLOR), 
+                    Settings.System.STATUS_BAR_CUSTOM_HEADER_TEXT_SHADOW_COLOR),
                     false, this, UserHandle.USER_ALL);
             update();
         }
@@ -609,6 +609,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                                 .getColor(com.android.internal.R.color.battery_saver_mode_color);
 				}
             }
+            update();
         }
     }
 
@@ -1293,6 +1294,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 (ViewStub) mStatusBarWindow.findViewById(R.id.keyguard_user_switcher),
                 mKeyguardStatusBar, mNotificationPanel, mUserSwitcherController);
 
+        mBrokenLogo = Settings.System.getIntForUser(mContext.getContentResolver(),
+            Settings.System.STATUS_BAR_BROKEN_LOGO, 0, mCurrentUserId) == 1;
+        showBrokenLogo(mBrokenLogo);
 
         // Set up the quick settings tile panel
         mQSPanel = (QSPanel) mStatusBarWindow.findViewById(R.id.quick_settings_panel);
