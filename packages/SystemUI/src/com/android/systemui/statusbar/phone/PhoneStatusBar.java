@@ -2181,7 +2181,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
 
         // apply user lockscreen image
-        if (mMediaMetadata == null && backdropBitmap == null) {
+        if (backdropBitmap == null && mBlurredImage == null) {
             backdropBitmap = mKeyguardWallpaper;
         }
 
