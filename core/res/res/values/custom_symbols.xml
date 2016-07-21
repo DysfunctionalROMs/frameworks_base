@@ -254,4 +254,7 @@
   <java-symbol type="bool" name="config_stylusGestures" />
   <java-symbol type="string" name="stylus_app_not_installed" />
 
+  <!-- Wifi AP Disabled from Subscription change -->
+  <java-symbol type="string" name="subscription_change_disabled_wifi_ap" />
+
 </resources>
