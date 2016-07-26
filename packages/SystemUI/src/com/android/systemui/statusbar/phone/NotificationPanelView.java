@@ -2641,7 +2641,7 @@ public class NotificationPanelView extends PanelView implements
             mCustomStrokeColor = Settings.System.getInt(mContext.getContentResolver(),
                         Settings.System.QS_STROKE_COLOR, mContext.getResources().getColor(R.color.system_accent_color));
             mCustomStrokeThickness = Settings.System.getInt(mContext.getContentResolver(),
-                        Settings.System.QS_STROKE_THICKNESS, 4);
+                        Settings.System.QS_STROKE_THICKNESS, 10);
             mCustomCornerRadius = Settings.System.getInt(mContext.getContentResolver(),
                         Settings.System.QS_CORNER_RADIUS, 0);
             setQSStroke();
