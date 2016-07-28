@@ -300,6 +300,7 @@ public class StatusBarIconController implements Tunable {
             hideNotificationIconArea(true);
         } else {
             animateHide(mSystemIconArea, false);
+            animateHide(mCenterClockLayout, false);
             animateHide(mNotificationIconArea, false);
         }
         animateShow(mGreetingLayout, true, true);
@@ -307,6 +308,7 @@ public class StatusBarIconController implements Tunable {
 
     public void hideGreeting() {
         animateShow(mSystemIconArea, true);
+        animateShow(mCenterClockLayout, true);
         animateShow(mNotificationIconArea, true);
         animateHide(mGreetingLayout, true, true);
     }
