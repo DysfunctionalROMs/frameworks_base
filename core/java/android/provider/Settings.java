@@ -4600,7 +4600,7 @@ public final class Settings {
          */
         public static final String RECENT_CARD_TEXT_COLOR = "recent_card_text_color";
 
-	    /**
+        /**
          * The camera instance to use.
          * 0 = Rear Camera
          * 1 = Front Camera
@@ -4681,7 +4681,7 @@ public final class Settings {
          */
         public static final String RECENT_APP_SIDEBAR_SCALE_FACTOR = "recent_app_sidebar_scale_factor";
 
-		/**
+        /**
          * Whether to display dashboard dividers
          * @hide
          */
@@ -4699,7 +4699,7 @@ public final class Settings {
          */
         public static final String DASHBOARD_COLUMNS = "dashboard_columns";
 
-		/**
+        /**
          * Whether to show switches for wifi/cell/bt in the settings dashboard
          * @hide
          */
@@ -4731,7 +4731,7 @@ public final class Settings {
          */
         public static final String VOLUME_MUSIC_CONTROLS = "volume_music_controls";
 
-      	/**
+        /**
          * Whether to enable status and navigation bar color in battery saver mode.
          *
          * @hide
@@ -4847,16 +4847,16 @@ public final class Settings {
         public static final String STATUS_BAR_IME_SWITCHER = "status_bar_ime_switcher";
 
         /**
-	 * Whether to display app circle sidebar
-	 * @hide
-	 */
+     * Whether to display app circle sidebar
+     * @hide
+     */
         public static final String ENABLE_APP_CIRCLE_BAR = "enable_app_circle_bar";
 
         /**
-	 * A list of packages to include in app circle bar
-	 * This should be a string of packages separated by |
-	 * @hide
-	 */
+     * A list of packages to include in app circle bar
+     * This should be a string of packages separated by |
+     * @hide
+     */
         public static final String WHITELIST_APP_CIRCLE_BAR = "whitelist_app_circle_bar";
 
         /**
@@ -5010,12 +5010,12 @@ public final class Settings {
         public static final String KEYGUARD_LOGO_CUSTOM = "keyguard_logo_custom";
 
         /**
-		 * Style of Status bar logo
+         * Style of Status bar logo
          * 0 - Left (default)
          * 1 - Right
          * @hide
-		 */
-		public static final String KEYGUARD_LOGO_SHOW = "keyguard_logo_show";
+         */
+        public static final String KEYGUARD_LOGO_SHOW = "keyguard_logo_show";
 
         /**
          * Color of the custom icon on the lock screen
@@ -7732,6 +7732,11 @@ public final class Settings {
          * @hide
          */
         public static final String QS_WIFI_DETAIL = "qs_wifi_detail";
+        /**
+         * Whether to show detail view for the bluetooth tile
+         * @hide
+         */
+        public static final String QS_BT_DETAIL = "qs_bt_detail";
 
         /**
          * Whether detail view for the location tile is enabled
@@ -8810,7 +8815,7 @@ public final class Settings {
        public static final String WIFI_COUNTRY_CODE = "wifi_country_code";
 
        /**
-       	* 802.11 country code in ISO 3166 format set from the sim card
+        * 802.11 country code in ISO 3166 format set from the sim card
         * @hide
         */
        public static final String WIFI_COUNTRY_CODE_SIM0 = "wifi_country_code_sim0";

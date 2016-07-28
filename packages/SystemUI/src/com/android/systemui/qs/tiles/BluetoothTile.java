@@ -16,9 +16,11 @@
 
 package com.android.systemui.qs.tiles;
 
+import android.app.ActivityManager;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -70,9 +72,14 @@ public class BluetoothTile extends QSTile<QSTile.BooleanState>  {
 
     @Override
     protected void handleClick() {
-        final boolean isEnabled = (Boolean)mState.value;
-        MetricsLogger.action(mContext, getMetricsCategory(), !isEnabled);
-        mController.setBluetoothEnabled(!isEnabled);
+        if (Settings.Secure.getIntForUser(mContext.getContentResolver(),
+            Settings.Secure.QS_BT_DETAIL, 0, ActivityManager.getCurrentUser()) == 1) {
+            showDetail(true);
+        } else {
+            final boolean isEnabled = (Boolean)mState.value;
+            MetricsLogger.action(mContext, getMetricsCategory(), !isEnabled);
+            mController.setBluetoothEnabled(!isEnabled);
+        }
     }
 
     @Override
