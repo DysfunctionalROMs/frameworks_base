@@ -103,7 +103,7 @@ public class ActionHelper {
         Settings.System.putString(context.getContentResolver(),
                     Settings.System.LOCKSCREEN_SHORTCUTS, config);
     }
-    
+
     public static ArrayList<ActionConfig> getRecentAppSidebarConfig(Context context) {
         return (ConfigSplitHelper.getActionConfigValues(context,
                 getRecentAppSidebarProvider(context), null, null, false));
@@ -171,7 +171,7 @@ public class ActionHelper {
                 }
             } catch (NameNotFoundException e) {
                 resId = systemUiResources.getIdentifier(
-                    SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_null", null, null);
+                    SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_empty", null, null);
                 if (resId > 0) {
                     d = systemUiResources.getDrawable(resId);
                     return d;
@@ -275,7 +275,7 @@ public class ActionHelper {
                         SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_torch", null, null);
         } else {
             resId = systemUiResources.getIdentifier(
-                        SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_null", null, null);
+                        SYSTEMUI_METADATA_NAME + ":drawable/ic_sysbar_empty", null, null);
         }
         return resId;
     }
