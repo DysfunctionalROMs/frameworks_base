@@ -273,7 +273,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             WindowManager.LayoutParams attrs = mDialog.getWindow().getAttributes();
             attrs.setTitle("GlobalActions");
             attrs.windowAnimations = R.style.GlobalActionsAnimation;
-            attrs.gravity = Gravity.RIGHT|Gravity.CENTER_HORIZONTAL;
+            attrs.gravity = Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL;
 
             attrs.alpha = setPowerMenuAlpha();
 
