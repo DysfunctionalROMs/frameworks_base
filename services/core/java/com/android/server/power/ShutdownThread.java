@@ -50,7 +50,6 @@ import android.provider.Settings;
 import android.system.ErrnoException;
 import android.system.Os;
 
-import com.android.internal.util.ThemeUtils;
 import com.android.internal.telephony.ITelephony;
 import com.android.server.pm.PackageManagerService;
 
@@ -147,7 +146,7 @@ public final class ShutdownThread extends Thread {
     public static void shutdown(final Context context, boolean confirm) {
         mReboot = false;
         mRebootSafeMode = false;
-        shutdownInner(getUiContext(context), confirm);
+        shutdownInner(context, confirm);
     }
 
     static void shutdownInner(final Context context, boolean confirm) {
@@ -205,8 +204,6 @@ public final class ShutdownThread extends Thread {
 
         if (confirm) {
             final CloseDialogReceiver closer = new CloseDialogReceiver(context);
-            final Context mUiContext = getUiContext(context);
-
             if (sConfirmDialog != null) {
                 sConfirmDialog.dismiss();
                 sConfirmDialog = null;
@@ -223,7 +220,7 @@ public final class ShutdownThread extends Thread {
                 if (advancedReboot && !locked) {
                     mRebootAction = ACTION_REBOOT;
                     // Include options in power menu for rebooting into recovery or bootloader
-                    sConfirmDialog = new AlertDialog.Builder(context)
+                    sConfirmDialog = new AlertDialog.Builder(context, com.android.internal.R.style.Theme_Material_DayNight_Dialog_Alert)
                             .setTitle(titleResourceId)
                             .setSingleChoiceItems(com.android.internal.R.array.shutdown_reboot_options, 0, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -249,7 +246,7 @@ public final class ShutdownThread extends Thread {
                                         } catch (RemoteException e) {
                                             Log.e(TAG, "failure trying to perform quick reboot", e);
                                         }
-                                    } else {
+                                    } else { 
 										if (mRebootAction == ACTION_SYSTEMUI_REBOOT) {
                                             mRebootAction = ACTION_SYSTEMUI_REBOOT;
                                             doSystemUIReboot();
@@ -280,7 +277,7 @@ public final class ShutdownThread extends Thread {
             }
 
             if (sConfirmDialog == null) {
-                sConfirmDialog = new AlertDialog.Builder(context)
+                sConfirmDialog = new AlertDialog.Builder(context, com.android.internal.R.style.Theme_Material_DayNight_Dialog_Alert)
                         .setTitle(titleResourceId)
                         .setMessage(resourceId)
                         .setPositiveButton(com.android.internal.R.string.yes, new DialogInterface.OnClickListener() {
@@ -317,7 +314,7 @@ public final class ShutdownThread extends Thread {
         float alpha = (float) dAlpha;
         return alpha;
     }
-
+    
     private static void doSystemUIReboot() {
         Helpers.restartSystemUI();
     }
@@ -357,7 +354,7 @@ public final class ShutdownThread extends Thread {
         mRebootSafeMode = false;
         mRebootUpdate = false;
         mRebootReason = reason;
-        shutdownInner(getUiContext(context), confirm);
+        shutdownInner(context, confirm);
     }
 
     /**
@@ -390,7 +387,7 @@ public final class ShutdownThread extends Thread {
         }
 
         // Throw up a system dialog to indicate the device is rebooting / shutting down.
-        ProgressDialog pd = new ProgressDialog(context);
+        ProgressDialog pd = new ProgressDialog(context, com.android.internal.R.style.Theme_Material_DayNight_Dialog_Alert);
 
         // Path 1: Reboot to recovery and install the update
         //   Condition: mRebootReason == REBOOT_RECOVERY, mRebootUpdate == True
@@ -455,9 +452,9 @@ public final class ShutdownThread extends Thread {
         pd.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
 
         WindowManager.LayoutParams attrs = pd.getWindow().getAttributes();
-
+            
         attrs.alpha = setRebootDialogAlpha(context);
-
+        
         pd.show();
 
         sInstance.mProgressDialog = pd;
@@ -915,12 +912,5 @@ public final class ShutdownThread extends Thread {
         } catch (Exception e) {
             Log.e(TAG, "Unknown exception while trying to invoke rebootOrShutdown");
         }
-	}
-
-    private static Context getUiContext(Context context) {
-        Context mUiContext = null;
-        mUiContext = ThemeUtils.createUiContext(context);
-        mUiContext.setTheme(android.R.style.Theme_DeviceDefault_Light_DarkActionBar);
-        return mUiContext != null ? mUiContext : context;
     }
 }
