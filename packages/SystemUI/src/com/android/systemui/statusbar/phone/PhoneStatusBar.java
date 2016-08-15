@@ -413,7 +413,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     boolean mDisableHomeLongpress;
 
     // tracking calls to View.setSystemUiVisibility()
-    int mSystemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE;
+    protected int mSystemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE;
 
     // last value sent to window manager
     private int mLastDispatchedSystemUiVisibility = ~View.SYSTEM_UI_FLAG_VISIBLE;
@@ -793,7 +793,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     private int mInteractingWindows;
     private boolean mAutohideSuspended;
-    private int mStatusBarMode;
+    protected int mStatusBarMode;
     private int mNavigationBarMode;
     private StatusBarHeaderMachine mStatusBarHeaderMachine;
 
@@ -3167,7 +3167,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
     }
 
-    private int computeBarMode(int oldVis, int newVis, BarTransitions transitions,
+    protected int computeBarMode(int oldVis, int newVis, BarTransitions transitions,
             int transientFlag, int translucentFlag) {
         final int oldMode = barMode(oldVis, transientFlag, translucentFlag);
         final int newMode = barMode(newVis, transientFlag, translucentFlag);
