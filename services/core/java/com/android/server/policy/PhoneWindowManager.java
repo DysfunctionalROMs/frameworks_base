@@ -110,6 +110,7 @@ import android.service.dreams.IDreamManager;
 import android.service.notification.ZenModeConfig;
 import android.speech.RecognizerIntent;
 import android.telecom.TelecomManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.EventLog;
 import android.util.Log;
@@ -1599,7 +1600,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mAppOpsManager = (AppOpsManager) mContext.getSystemService(Context.APP_OPS_SERVICE);
         mHasFeatureWatch = mContext.getPackageManager().hasSystemFeature(FEATURE_WATCH);
 
-        mHasAlertSlider = mContext.getResources().getBoolean(com.android.internal.R.bool.config_hasAlertSlider);
+        mHasAlertSlider = mContext.getResources().getBoolean(R.bool.config_hasAlertSlider)
+                && !TextUtils.isEmpty(mContext.getResources().getString(R.string.alert_slider_state_path))
+                && !TextUtils.isEmpty(mContext.getResources().getString(R.string.alert_slider_uevent_match_path));
 
         // Init display burn-in protection
         boolean burnInProtectionEnabled = context.getResources().getBoolean(

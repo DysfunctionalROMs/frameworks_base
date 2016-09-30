@@ -110,6 +110,7 @@ import android.util.SparseIntArray;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityManager;
 
+import com.android.internal.R;
 import com.android.internal.util.XmlUtils;
 import com.android.server.EventLogTags;
 import com.android.server.LocalServices;
@@ -646,7 +647,9 @@ public class AudioService extends IAudioService.Stub {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         mHasVibrator = vibrator == null ? false : vibrator.hasVibrator();
 
-        mHasAlertSlider = mContext.getResources().getBoolean(com.android.internal.R.bool.config_hasAlertSlider);
+        mHasAlertSlider = mContext.getResources().getBoolean(R.bool.config_hasAlertSlider)
+                && !TextUtils.isEmpty(mContext.getResources().getString(R.string.alert_slider_state_path))
+                && !TextUtils.isEmpty(mContext.getResources().getString(R.string.alert_slider_uevent_match_path));
 
         // Initialize volume
         int maxVolume = SystemProperties.getInt("ro.config.vc_call_vol_steps",
