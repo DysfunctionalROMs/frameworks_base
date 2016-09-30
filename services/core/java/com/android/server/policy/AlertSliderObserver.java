@@ -31,8 +31,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Slog;
 
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 
 public class AlertSliderObserver extends UEventObserver {
     private static final String TAG = AlertSliderObserver.class.getSimpleName();
@@ -83,20 +84,19 @@ public class AlertSliderObserver extends UEventObserver {
     }
 
     private void init() {
-        char[] buffer = new char[1024];
-
         try {
-            final String path = mContext.getResources().getString(com.android.internal.R.string.alert_slider_state_path);
+            final String path = mContext.getResources().getString(
+                    com.android.internal.R.string.alert_slider_state_path);
             FileReader file = new FileReader(path);
-            int len = file.read(buffer, 0, 1024);
+            BufferedReader br = new BufferedReader(file);
+            String value = br.readLine();
             file.close();
-            mState = Integer.valueOf((new String(buffer, 0, len)).trim());
+            br.close();
+            mState = Integer.valueOf(value);
             update();
-        } catch (FileNotFoundException e) {
-            Slog.w(TAG, "This device does not have a Alert Slider");
+        } catch (IOException e) {
+            Slog.w(TAG, "This device does not have an Alert Slider");
             stopObserving();
-        } catch (Exception e) {
-            Slog.e(TAG, "" , e);
         }
     }
 
@@ -109,18 +109,18 @@ public class AlertSliderObserver extends UEventObserver {
     private Handler mHandler = new Handler(Looper.myLooper(), null, true) {
         @Override
         public void handleMessage(Message msg) {
+            final boolean inverted = isOrderInverted();
+            final int silentMode = getSilentMode();
             switch (mState) {
                 case 1:
-                    setZenMode(isOrderInverted() ? Settings.Global.ZEN_MODE_OFF
-                            : getSilentMode());
+                    setZenMode(inverted ? Settings.Global.ZEN_MODE_OFF : silentMode);
                     break;
                 case 2:
-                   setZenMode(Settings.Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS);
-                   break;
+                    setZenMode(Settings.Global.ZEN_MODE_IMPORTANT_INTERRUPTIONS);
+                    break;
                 case 3:
-                   setZenMode(isOrderInverted() ? getSilentMode()
-                           : Settings.Global.ZEN_MODE_OFF);
-                   break;
+                    setZenMode(inverted ? silentMode : Settings.Global.ZEN_MODE_OFF);
+                    break;
             }
         }
     };
@@ -136,12 +136,16 @@ public class AlertSliderObserver extends UEventObserver {
         }
     }
 
+    // Check if ordered has been set to inverted.
     private boolean isOrderInverted() {
         return Settings.System.getIntForUser(
                     mContext.getContentResolver(), Settings.System.ALERT_SLIDER_ORDER, 0,
                     UserHandle.USER_CURRENT) != 0;
     }
 
+    // Get silent mode for silent state:
+    // - ALARMS ONLY (Default)
+    // - TOTAL SILENCE
     private int getSilentMode() {
         int silentMode = Settings.System.getIntForUser(
                 mContext.getContentResolver(), Settings.System.ALERT_SLIDER_SILENT_MODE, 0,

@@ -3624,6 +3624,7 @@ public final class Settings {
          * @hide
          */
         public static final String SWAP_NAVIGATION_KEYS = "swap_navigation_keys";
+
         /**
          * Whether user can swap the order of the Alert Slider.
          * * Whether user can invert the order of the Alert Slider.
