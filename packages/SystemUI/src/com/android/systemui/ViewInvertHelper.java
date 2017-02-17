@@ -120,7 +120,7 @@ public class ViewInvertHelper {
         mGrayscaleMatrix.setSaturation(1 - intensity);
         mMatrix.preConcat(mGrayscaleMatrix);
         mDarkPaint.setColorFilter(new ColorMatrixColorFilter(
-                mShouldInvert ? mMatrix : mGrayscaleMatrix));
+                mThemeInvert ? mMatrix : mGrayscaleMatrix));
     }
 
     public void setInverted(boolean invert, boolean fade, long delay) {
