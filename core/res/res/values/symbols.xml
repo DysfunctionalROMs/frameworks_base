@@ -2815,4 +2815,7 @@
   <java-symbol type="bool" name="use_lock_pattern_drawable" />
   <java-symbol type="drawable" name="lockscreen_notselected" />
   <java-symbol type="drawable" name="lockscreen_selected" />
+  
+  <!-- Whether to enable HumanInteractionController by default -->
+  <java-symbol type="bool" name="config_HICEnabledDefault" />
 </resources>
