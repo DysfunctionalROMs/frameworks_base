@@ -20,7 +20,7 @@
 
 #include <android/hardware/power/1.1/IPower.h>
 #include <nativehelper/JNIHelp.h>
-#include <vendor/slim/power/1.0/ISlimPower.h>
+#include <vendor/broken/power/1.0/IBrokenPower.h>
 #include "jni.h"
 
 #include <nativehelper/ScopedUtfChars.h>
@@ -47,8 +47,8 @@ using android::hardware::power::V1_0::Feature;
 using android::String8;
 using IPowerV1_1 = android::hardware::power::V1_1::IPower;
 using IPowerV1_0 = android::hardware::power::V1_0::IPower;
-using ISlimPowerV1_0 = vendor::slim::power::V1_0::ISlimPower;
-using vendor::slim::power::V1_0::SlimFeature;
+using IBrokenPowerV1_0 = vendor::broken::power::V1_0::IBrokenPower;
+using vendor::broken::power::V1_0::BrokenFeature;
 
 namespace android {
 
@@ -105,7 +105,7 @@ static void connectPowerHalLocked() {
     }
 }
 
-// Check validity of current handle to the Slim power HAL service, and call getService() if necessary.
+// Check validity of current handle to the Broken power HAL service, and call getService() if necessary.
 // The caller must be holding gPowerHalMutex.
 void connectSlimPowerHalLocked() {
     if (gSlimPowerHalExists && gSlimPowerHalV1_0_ == nullptr) {
